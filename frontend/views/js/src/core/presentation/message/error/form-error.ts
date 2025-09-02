@@ -1,0 +1,9 @@
+export const nameMinError = "Name must at least 1 character";
+export const nameMaxError = "Name cannot exceed 100 characters";
+export const emailInvalidError = "Invalid email format";
+export const emailMinError = "Email must at least 1 character";
+export const emailMaxError = "Email cannot exceed 100 characters";
+export const passwordMinError = "Password must be at least 8 characters";
+export const passwordMaxError = "Password too long";
+export const descriptionMaxError = "Description cannot exceed 500 characters";
+export const addressMaxError = "Address cannot exceed 500 characters";

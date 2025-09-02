@@ -1,0 +1,23 @@
+{
+  "src/main.tsx": {
+    "file": "assets/main-CQZKN6YP.js",
+    "name": "main",
+    "src": "src/main.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/pages/welcome.tsx"
+    ],
+    "css": [
+      "assets/main-BuDLsoRd.css"
+    ]
+  },
+  "src/pages/welcome.tsx": {
+    "file": "assets/welcome-CRe3Ef_Y.js",
+    "name": "welcome",
+    "src": "src/pages/welcome.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx"
+    ]
+  }
+}
