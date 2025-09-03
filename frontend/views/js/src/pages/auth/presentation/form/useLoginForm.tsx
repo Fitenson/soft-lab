@@ -2,6 +2,7 @@ import { passwordMaxError, usernameMaxError } from '@/pages/user/presentation/er
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 
 
 export const loginSchema = z.object({
@@ -23,12 +24,14 @@ const useLoginForm = () => {
 
 
     const setFormError = (error: unknown) => {
-        const errors = error?.response?.data?.errors ?? {};
+        const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
+        const errors = axiosError?.response?.data?.errors ?? {};
 
         if (Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
                 // Remove "user." prefix if it exists
-                const normalizedField = field.replace(/^user\./, "");
+                const normalizedField = field.replace(/^user\./, "") as keyof LoginModel;
+                
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
                         type: "server",

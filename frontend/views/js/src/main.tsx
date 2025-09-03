@@ -11,11 +11,20 @@ import { ThemeProvider } from '@/components/ui/theme/ThemeProvider';
 
 
 const queryClient = new QueryClient();
+const pages = import.meta.glob('./pages/**/*.tsx');
 
 
 createInertiaApp({
     title: () => 'Soft Lab',
-    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+    resolve: (name) => {
+        console.log('Inertia page name: ', name);
+        const path = `./pages/${name}.tsx`;
+        if(!pages[path]) {
+            console.log('Inertia page not found: ', path);
+        }
+
+        return resolvePageComponent(`./pages/${name}.tsx`, pages)
+    },
     setup({ el, App, props }) {
         const root = createRoot(el);
         root.render(
