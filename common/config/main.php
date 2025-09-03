@@ -18,5 +18,8 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'router' => [
+            'class' => common\routing\Route::class
+        ]
     ],
 ];
