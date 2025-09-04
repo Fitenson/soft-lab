@@ -1,1 +1,0 @@
-import{j as e}from"./main-3WrBxh6g.js";import r from"./auth-layout-YBM-D7Fx.js";function s(){return e.jsx(r,{children:e.jsx("section",{children:e.jsx("h1",{children:"Register"})})})}export{s as default};

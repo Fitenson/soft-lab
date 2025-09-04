@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import useLoginForm from "./presentation/form/useLoginForm";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/ui/link";
+import { Button } from "@/components/ui/button";
 
 
 export default function LoginPage() {
@@ -32,10 +33,10 @@ export default function LoginPage() {
                                         control={form.control}
                                         name={loginFormField.username}
                                         render={({ field}) => (
-                                            <FormItem className="space-y-2">
+                                            <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">Username</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your username" {...field} />
+                                                    <Input placeholder="Enter your username" {...field} required />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -46,17 +47,21 @@ export default function LoginPage() {
                                         control={form.control}
                                         name={loginFormField.password}
                                         render={({ field}) => (
-                                            <FormItem className="space-y-2">
+                                            <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">Password</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your password" {...field} />
+                                                    <Input placeholder="Enter your password" {...field} type="password" required />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
                                         )}
                                     />
+
+                                    <Button className="w-full my-2">
+                                        Login
+                                    </Button>
                                 </CardContent>
-                                <CardFooter className="text-center my-4">
+                                <CardFooter className="flex justify-center my-4">
                                     <p className="space-x-4">
                                         <span>Don't have account with us?</span>
                                         <Link to="/register">Register now</Link>
