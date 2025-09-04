@@ -28,13 +28,13 @@ class DbMigration extends Migration {
         return $this;
     }
 
-    public function referenceTable(string $table): self
+    public function refTable(string $table): self
     {
         $this->currentForeignKey->setRefTable($table);
         return $this;
     }
 
-    public function referenceColumn(string $column): self
+    public function refColumn(string $column): self
     {
         $this->currentForeignKey->setRefColumn($column);
         return $this;
