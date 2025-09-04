@@ -1,5 +1,6 @@
 <?php
 
-Yii::$app->router
-->prefix('auth')
-->get('auth/login');
+return [
+    'login' => 'auth/login',
+    'register' => 'auth/register',
+];

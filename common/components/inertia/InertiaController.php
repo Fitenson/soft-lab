@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace common\components\inertia;
 
 use tebe\inertia\web\Controller;
 

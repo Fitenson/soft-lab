@@ -43,9 +43,16 @@ const useLoginForm = () => {
     }
 
 
+    const loginFormField = {
+        username: "username",
+        password: "password"
+    } as const;
+    
+
     return {
         form,
-        setFormError
+        setFormError,
+        loginFormField
     }
 }
 

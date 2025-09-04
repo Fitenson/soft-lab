@@ -16,15 +16,7 @@ const pages = import.meta.glob('./pages/**/*.tsx');
 
 createInertiaApp({
     title: () => 'Soft Lab',
-    resolve: (name) => {
-        console.log('Inertia page name: ', name);
-        const path = `./pages/${name}.tsx`;
-        if(!pages[path]) {
-            console.log('Inertia page not found: ', path);
-        }
-
-        return resolvePageComponent(`./pages/${name}.tsx`, pages)
-    },
+    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, pages),
     setup({ el, App, props }) {
         const root = createRoot(el);
         root.render(

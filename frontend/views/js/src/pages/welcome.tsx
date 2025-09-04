@@ -39,7 +39,7 @@ const Welcome = () => {
                     <Button 
                         size="lg" 
                         className="rounded-2xl px-6"
-                        onClick={() => router.visit('/auth/login')}
+                        onClick={() => router.visit('/login')}
                     >
                         Login
                     </Button>
