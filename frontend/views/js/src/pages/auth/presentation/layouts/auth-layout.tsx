@@ -1,3 +1,4 @@
+import ModeToggleTab from "@/components/ui/mode-toggle-tab";
 import type { ReactNode } from "react";
 
 
@@ -8,7 +9,14 @@ type AuthLayoutProps = {
 
 const AuthLayout = ({ children}: AuthLayoutProps) => {
     return (
-        <main className="relative max-w-full max-h-full overflow-x-hidden">{children}</main>
+        <main className="bg-background dark:bg-background w-full h-full flex flex-col overflow-x-hidden">
+            <div className="absolute top-4 right-4">
+                <ModeToggleTab/>
+            </div>
+            <div>
+                {children}
+            </div>
+        </main>
     );
 }
 

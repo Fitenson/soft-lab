@@ -1,15 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import ModeToggleTab from "@/components/ui/mode-toggle-tab";
 import { router } from "@inertiajs/react";
+import AuthLayout from "./auth/presentation/layouts/auth-layout";
 
 
 const Welcome = () => {
     return (
-        <main className="bg-background dark:bg-background min-h-screen flex flex-col">
-            <div className="absolute top-4 right-4">
-                <ModeToggleTab />
-            </div>
+        <AuthLayout>
             <section className="flex-1 flex flex-col justify-center items-center px-6">
                 <motion.h1
                     className="text-primary dark:text-primary text-4xl md:text-5xl font-bold mb-4"
@@ -53,7 +50,7 @@ const Welcome = () => {
             <footer className="py-6 text-sm text-muted-foreground text-center">
                 © {new Date().getFullYear()} Your Company. All rights reserved.
             </footer>
-        </main>
+        </AuthLayout>
     );
 };
 

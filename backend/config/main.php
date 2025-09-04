@@ -14,6 +14,10 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'response' => [
+            'format' => yii\web\Response::FORMAT_JSON,
+            'charset' => 'UTF-8',
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
