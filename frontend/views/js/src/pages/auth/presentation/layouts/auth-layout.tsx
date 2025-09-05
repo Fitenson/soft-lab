@@ -7,18 +7,26 @@ type AuthLayoutProps = {
 }
 
 
-const AuthLayout = ({ children}: AuthLayoutProps) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
     return (
-        <main className="bg-background dark:bg-background w-full h-full flex flex-col overflow-x-hidden">
+        <main className="bg-background dark:bg-background min-h-screen flex flex-col overflow-x-hidden">
+            {/* Theme toggle button */}
             <div className="absolute top-4 right-4">
-                <ModeToggleTab/>
+                <ModeToggleTab />
             </div>
-            <div>
+
+            {/* Content area */}
+            <div className="flex-1 flex flex-col justify-center items-center">
                 {children}
             </div>
+
+            {/* Footer pinned at bottom */}
+            <footer className="py-6 text-sm text-muted-foreground text-center">
+                © {new Date().getFullYear()} Your Company. All rights reserved.
+            </footer>
         </main>
     );
-}
+};
 
 
 export default AuthLayout;

@@ -35,21 +35,16 @@ const Welcome = () => {
                 >
                     <Button 
                         size="lg" 
-                        className="rounded-2xl px-6"
+                        className="rounded-2xl px-8"
                         onClick={() => router.visit('/login')}
                     >
                         Login
                     </Button>
-                    <Button size="lg" variant="outline" className="rounded-2xl px-6">
+                    <Button size="lg" variant="outline" className="rounded-2xl px-8">
                         Sign up
                     </Button>
                 </motion.div>
             </section>
-
-            {/* Footer */}
-            <footer className="py-6 text-sm text-muted-foreground text-center">
-                © {new Date().getFullYear()} Your Company. All rights reserved.
-            </footer>
         </AuthLayout>
     );
 };

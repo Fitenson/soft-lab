@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\auth\api;
+namespace backend\modules\auth\api;
 
 use backend\controllers\RestController;
 
