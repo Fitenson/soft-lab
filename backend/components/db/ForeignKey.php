@@ -46,15 +46,15 @@ class ForeignKey {
 
     public function setName(): void
     {
-        if($this->table) {
+        if(empty($this->table)) {
             throw new IntegrityException('Missing table when creating foreign key');
         }
 
-        if($this->refTable) {
+        if(empty($this->refTable)) {
             throw new IntegrityException('Missing reference table when creating foreign key');
         }
 
-        if($this->refColumn) {
+        if(empty($this->refColumn)) {
             throw new IntegrityException('Missing reference column when creating foreign key');
         }
 
@@ -69,7 +69,7 @@ class ForeignKey {
 
     public function getTable(): string
     {
-        return $this->table;
+        return $this->wrapTable($this->table);
     }
 
     public function getColumn(): string
@@ -79,7 +79,7 @@ class ForeignKey {
 
     public function getRefTable(): string
     {
-        return $this->refTable;
+        return $this->wrapTable($this->refTable);
     }
 
     public function getRefColumn(): string
@@ -95,5 +95,14 @@ class ForeignKey {
     public function getOnUpdate(): string
     {
         return $this->onUpdate;
+    }
+
+    private function wrapTable(string $table): string
+    {
+        // If already wrapped with {{%...}}, leave as is
+        if (preg_match('/^\{\{%.*\}\}$/', $table)) {
+            return $table;
+        }
+        return "{{%$table}}";
     }
 }

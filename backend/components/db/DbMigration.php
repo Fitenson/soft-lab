@@ -76,10 +76,11 @@ class DbMigration extends Migration {
 
     public function addForeignKeys(): void
     {
-        foreach($this->foreignKeys as $foreignKey) {
+        foreach ($this->foreignKeys as $foreignKey) {
             $this->addForeignKey(
                 $foreignKey->getName(),
-                "{{%{$foreignKey->getTable()}}}",
+                $foreignKey->getTable(),
+                $foreignKey->getColumn(),
                 $foreignKey->getRefTable(),
                 $foreignKey->getRefColumn(),
                 $foreignKey->getOnDelete()

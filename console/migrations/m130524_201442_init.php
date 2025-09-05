@@ -9,68 +9,84 @@ class m130524_201442_init extends DbMigration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
+        // Create main user table
         $this->createTable('{{%user}}', [
             'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
             'username' => $this->string(100)->notNull()->unique(),
-            'fullName' => $this->string(255)->null(),
-            'gender' => $this->string(50)->null(),
-            'title' => $this->string(50)->null(),
-            'phoneNo' => $this->string(100)->null(),
-            'description' => $this->string(500)->null(),
-            'address' => $this->string(500)->null(),
+            'fullName' => $this->string(255),
+            'gender' => $this->string(50),
+            'title' => $this->string(50),
+            'phoneNo' => $this->string(100),
+            'description' => $this->string(500),
+            'address' => $this->string(500),
             'authKey' => $this->string(32)->notNull(),
             'passwordHash' => $this->string()->notNull(),
             'passwordResetToken' => $this->string()->unique(),
             'email' => $this->string(100)->notNull()->unique(),
 
             'valid' => $this->boolean(),
-            '_actionUUID' => $this->string(50)->null(),
+            '_actionUUID' => $this->string(50),
             '_version' => $this->integer(),
-            'createdAt' => $this->string(50)->null(),
-            'updatedAt' => $this->string(50)->null(),
-            'createdBy' => $this->string(50)->null(),
-            'updatedBy' => $this->string(50)->null(),
+            'createdAt' => $this->string(50),
+            'updatedAt' => $this->string(50),
+            'createdBy' => $this->string(50),
+            'updatedBy' => $this->string(50),
         ], $tableOptions);
 
-        $this->createForeignKey()->table('user')->column('createdBy')->refTable('user')->refColumn('id')->onDeleteNull()->build();
-        $this->createForeignKey()->table('user')->column('updatedBy')->refTable('user')->refColumn('id')->onDeleteNull()->build();
-
-        $this->addForeignKeys();
-
+        // Create user_history table (no foreign keys)
         $this->createTable('{{%user_history}}', [
             'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
-            'UUID' => $this->string(50)->null(),
+            'UUID' => $this->string(50),
             'username' => $this->string(100)->notNull()->unique(),
-            'fullName' => $this->string(255)->null(),
-            'gender' => $this->string(50)->null(),
-            'title' => $this->string(50)->null(),
-            'phoneNo' => $this->string(100)->null(),
-            'description' => $this->string(500)->null(),
-            'address' => $this->string(500)->null(),
+            'fullName' => $this->string(255),
+            'gender' => $this->string(50),
+            'title' => $this->string(50),
+            'phoneNo' => $this->string(100),
+            'description' => $this->string(500),
+            'address' => $this->string(500),
             'authKey' => $this->string(32)->notNull(),
             'passwordHash' => $this->string()->notNull(),
             'passwordResetToken' => $this->string()->unique(),
             'email' => $this->string(100)->notNull()->unique(),
 
             'valid' => $this->boolean(),
-            '_actionUUID' => $this->string(50)->null(),
+            '_actionUUID' => $this->string(50),
             '_version' => $this->integer(),
-            'createdAt' => $this->string(50)->null(),
-            'updatedAt' => $this->string(50)->null(),
-            'createdBy' => $this->string(50)->null(),
-            'updatedBy' => $this->string(50)->null(),
-            'user_id' => $this->string(50)->null(),
-            'action' => $this->string(50)->null(),
-            'date_created' => $this->string(50)->null(),
+            'createdAt' => $this->string(50),
+            'updatedAt' => $this->string(50),
+            'createdBy' => $this->string(50),
+            'updatedBy' => $this->string(50),
+            'user_id' => $this->string(50),
+            'action' => $this->string(50),
+            'date_created' => $this->string(50),
         ], $tableOptions);
+
+        // Add only the self-referencing foreign keys
+        $this->createForeignKey()
+            ->table('user')
+            ->column('createdBy')
+            ->refTable('user')
+            ->refColumn('UUID')
+            ->onDeleteNull()
+            ->build();
+
+        $this->createForeignKey()
+            ->table('user')
+            ->column('updatedBy')
+            ->refTable('user')
+            ->refColumn('UUID')
+            ->onDeleteNull()
+            ->build();
+
+        $this->addForeignKeys();
     }
 
     public function down()
     {
+        $this->dropTable('{{%user_history}}');
         $this->dropTable('{{%user}}');
     }
-} 
+}

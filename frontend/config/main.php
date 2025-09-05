@@ -12,8 +12,14 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'inertia' => [
+            'class' => tebe\inertia\Inertia::class,
+            'rootElementId' => 'app',
+            'view' => '@frontend/views/layouts/inertia',
+        ],
         'request' => [
-            'csrfParam' => '_csrf-frontend',
+            'class' => 'tebe\inertia\web\Request',             
+            'cookieValidationKey' => 'soft-lab'
         ],
         'user' => [
             'identityClass' => 'common\models\User',
