@@ -6,10 +6,25 @@ import useLoginForm from "./presentation/form/useLoginForm";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
+// import useShowToast from "@/hooks/use-show-toast";
+import Auth from "./domain/entity/Auth";
+import useAuthService from "./domain/service/useAuthService";
 
 
 export default function LoginPage() {
+    // const showToast = useShowToast();
     const { form, loginFormField } = useLoginForm();
+    const { login } = useAuthService();
+
+
+    const submit = () => {
+        const formValues = form.getValues();
+        const auth = new Auth(formValues);
+
+        const data = login(auth);
+
+        console.log(data);
+    }
 
 
     return (
@@ -27,7 +42,7 @@ export default function LoginPage() {
                             <CardDescription className="text-center text-2xl my-2 mb-2">Welcome Back</CardDescription>
                         </CardHeader>
                         <Form {...form}>
-                            <form>
+                            <form onSubmit={form.handleSubmit(submit)}>
                                 <CardContent className="space-y-6 mx-4">
                                     <FormField
                                         control={form.control}

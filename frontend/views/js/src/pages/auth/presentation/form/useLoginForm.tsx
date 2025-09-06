@@ -13,7 +13,7 @@ export const loginSchema = z.object({
 
 export type LoginModel = z.infer<typeof loginSchema>;
 
-const useLoginForm = () => {    
+const useLoginForm = () => {
     const form = useForm<LoginModel>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
