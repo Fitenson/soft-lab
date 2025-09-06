@@ -1,10 +1,12 @@
 <?php
 
-namespace backend\modules\user;
+namespace backend\modules\user\data\models;
 
 use Yii;
 use yii\base\UserException;
 use yii\web\IdentityInterface;
+
+use backend\modules\user\data\query\UserQuery;
 
 /**
  * This is the model class for table "user".
@@ -17,6 +19,7 @@ use yii\web\IdentityInterface;
  * @property string|null $phoneNo
  * @property string|null $description
  * @property string|null $address
+ * @property string|null $accessToken
  * @property string $authKey
  * @property string $passwordHash
  * @property string|null $passwordResetToken
@@ -51,13 +54,13 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
     public function rules()
     {
         return [
-            [['fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'passwordResetToken', 'valid', '_actionUUID', '_version', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'verification_token'], 'default', 'value' => null],
+            [['fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'valid', '_actionUUID', '_version', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'verification_token'], 'default', 'value' => null],
             [['UUID', 'username', 'authKey', 'passwordHash', 'email'], 'required'],
             [['valid', '_version'], 'integer'],
             [['UUID', 'gender', 'title', '_actionUUID', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 50],
             [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
             [['fullName', 'passwordHash', 'passwordResetToken', 'verification_token'], 'string', 'max' => 255],
-            [['description', 'address'], 'string', 'max' => 500],
+            [['description', 'address', 'accessToken'], 'string', 'max' => 500],
             [['authKey'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
@@ -82,6 +85,7 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
             'phoneNo' => 'Phone No',
             'description' => 'Description',
             'address' => 'Address',
+            'accessToken' => 'Access Token',
             'authKey' => 'Auth Key',
             'passwordHash' => 'Password Hash',
             'passwordResetToken' => 'Password Reset Token',
@@ -146,7 +150,6 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
         return new UserQuery(get_called_class());
     }
 
-
     public static function findIdentity($id)
     {
         return static::findOne($id);
@@ -169,6 +172,32 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
 
     public function validateAuthKey($authKey)
     {
-        throw new UserException('Not yet implemented');
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function validateAccessToken($access_token)
+    {
+        return Yii::$app->security->validatePassword($access_token, $this->access_token);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->authKey = Yii::$app->security->generateRandomString();
+    }
+
+    public function generateAccessToken()
+    {
+        $this->accessToken = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->passwordHash);
     }
 }

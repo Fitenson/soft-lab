@@ -16,7 +16,7 @@ abstract class Entity {
     }
 
 
-    public function toArray(): array
+    public function asArray(): array
     {
         $data = [];
         $reflection = new ReflectionClass($this);

@@ -21,8 +21,8 @@ return [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
-        'requestHandler' => [
-            'class' => 'backend\components\request\RequestHandler'
+        'exception' => [
+            'class' => backend\components\exception\ExceptionService::class
         ],
         'user' => [
             'identityClass' => 'common\models\User',

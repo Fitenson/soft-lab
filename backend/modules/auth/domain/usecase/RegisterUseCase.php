@@ -16,10 +16,8 @@ class RegisterUseCase {
     }
 
 
-    public function handle(array $data)
+    public function execute(Auth $auth)
     {
-        $auth = new Auth($data);
-
         return $this->authRepository->register($auth);
     }
 }

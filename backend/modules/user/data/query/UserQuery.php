@@ -1,7 +1,8 @@
 <?php
 
-namespace backend\modules\user;
+namespace backend\modules\user\data\query;
 
+use backend\modules\user\data\models\User;
 use Yii;
 
 /**
@@ -32,11 +33,5 @@ class UserQuery extends \backend\components\db\AppQuery
     public function one($db = null)
     {
         return parent::one($db);
-    }
-
-    public function generateAuthKey(): self
-    {
-        $this->authKey = Yii::$app->security->generateRandomString();
-        return $this;
     }
 }

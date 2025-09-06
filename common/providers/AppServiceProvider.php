@@ -2,13 +2,16 @@
 
 namespace common\providers;
 
+use backend\components\provider\Provider;
 use DI\ContainerBuilder;
 use backend\modules\auth\di\AuthProvider;
 
 
-class AppServiceProvider {
-    public static function register(ContainerBuilder $builder): void
+class AppServiceProvider extends Provider {
+    public static function definitions(ContainerBuilder $builder): array
     {
-        AuthProvider::register($builder);
+        return self::merge([
+            AuthProvider::class
+        ]);
     }
 }

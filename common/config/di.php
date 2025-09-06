@@ -1,10 +1,8 @@
 <?php
 
+use DI\ContainerBuilder;
 use common\providers\AppServiceProvider;
-use Di\ContainerBuilder;
 
 $builder = new ContainerBuilder();
 
-AppServiceProvider::register($builder);
-
-return $builder->build();
+return AppServiceProvider::definitions($builder);
