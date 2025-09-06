@@ -3,6 +3,8 @@
 namespace backend\modules\user;
 
 use Yii;
+use yii\base\UserException;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -33,7 +35,7 @@ use Yii;
  * @property User[] $users
  * @property User[] $users0
  */
-class User extends \backend\components\db\AppModel
+class User extends \backend\components\db\AppModel implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -142,5 +144,31 @@ class User extends \backend\components\db\AppModel
     public static function find()
     {
         return new UserQuery(get_called_class());
+    }
+
+
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['accessToken' => $token]);
+    }
+
+    public function getId()
+    {
+        throw new UserException('Not yet implemented');
+    }
+
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        throw new UserException('Not yet implemented');
     }
 }

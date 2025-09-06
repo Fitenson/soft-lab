@@ -2,6 +2,8 @@
 
 namespace backend\modules\user;
 
+use Yii;
+
 /**
  * This is the ActiveQuery class for [[User]].
  *
@@ -30,5 +32,11 @@ class UserQuery extends \backend\components\db\AppQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function generateAuthKey(): self
+    {
+        $this->authKey = Yii::$app->security->generateRandomString();
+        return $this;
     }
 }

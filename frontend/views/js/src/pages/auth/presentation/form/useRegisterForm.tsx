@@ -1,4 +1,4 @@
-import { passwordMaxError, usernameMaxError, fullNameMaxError, emailMaxError } from '@/pages/user/presentation/error/form-message';
+import { passwordMaxError, usernameMaxError, fullNameMaxError, emailMaxError, passwordMinError } from '@/pages/user/presentation/error/form-message';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +9,7 @@ export const registerSchema = z.object({
     fullName: z.string().max(100, { error: fullNameMaxError}),
     username: z.string().max(100, { error: usernameMaxError}),
     email: z.string().max(50, { error: emailMaxError}),
-    password: z.string().max(50, passwordMaxError)
+    password: z.string().min(5, passwordMinError).max(50, passwordMaxError)
 });
 
 
