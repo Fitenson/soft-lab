@@ -3,15 +3,15 @@
 namespace common\providers;
 
 use backend\components\provider\Provider;
-use DI\ContainerBuilder;
-use backend\modules\auth\di\AuthProvider;
 
 
 class AppServiceProvider extends Provider {
-    public static function definitions(ContainerBuilder $builder): array
+    public static function register(): void
     {
-        return self::merge([
-            AuthProvider::class
-        ]);
+        $providers = require __DIR__ . './../config/di.php';
+
+        foreach($providers as $provider) {
+            $provider::register();
+        }
     }
 }

@@ -2,17 +2,16 @@
 
 namespace backend\modules\auth\di;
 
-use DI\ContainerBuilder;
-use backend\modules\auth\data\repository\YiiAuthRepository;
+use Yii;
+use backend\components\provider\Provider;
 use backend\modules\auth\domain\repository\AuthRepository;
+use backend\modules\auth\data\repository\YiiAuthRepository;
 
 
-class AuthProvider
+class AuthProvider extends Provider
 {
-    public static function register(ContainerBuilder $builder): void
+    public static function register(): void
     {
-        $builder->addDefinitions([
-            AuthRepository::class => \DI\autowire(YiiAuthRepository::class),
-        ]);
+        Yii::$container->set(AuthRepository::class, YiiAuthRepository::class);
     }
 }

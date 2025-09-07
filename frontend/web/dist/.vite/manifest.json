@@ -1,45 +1,47 @@
 {
-  "_auth-layout-C_KDVnni.js": {
-    "file": "assets/auth-layout-C_KDVnni.js",
+  "_auth-layout-m6ox_UNA.js": {
+    "file": "assets/auth-layout-m6ox_UNA.js",
     "name": "auth-layout",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx"
     ]
   },
-  "_link-D6oZzuTQ.js": {
-    "file": "assets/link-D6oZzuTQ.js",
+  "_link-BfdR1BUq.js": {
+    "file": "assets/link-BfdR1BUq.js",
     "name": "link",
     "imports": [
       "src/main.tsx",
-      "_auth-layout-C_KDVnni.js",
-      "_zod-DQgSZ5kd.js"
+      "_auth-layout-m6ox_UNA.js",
+      "_zod-Dxe6MdjK.js"
     ]
   },
-  "_proxy-DjQRUTTw.js": {
-    "file": "assets/proxy-DjQRUTTw.js",
+  "_proxy-CJxw2Hvx.js": {
+    "file": "assets/proxy-CJxw2Hvx.js",
     "name": "proxy",
     "imports": [
       "src/main.tsx"
     ]
   },
-  "_zod-DQgSZ5kd.js": {
-    "file": "assets/zod-DQgSZ5kd.js",
+  "_zod-Dxe6MdjK.js": {
+    "file": "assets/zod-Dxe6MdjK.js",
     "name": "zod",
     "imports": [
       "src/main.tsx"
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-Mvd8qjuX.js",
+    "file": "assets/main-Bm82VARw.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "dynamicImports": [
+      "src/pages/auth/data/repository/useAuthRepository.tsx",
+      "src/pages/auth/domain/service/useAuthService.tsx",
       "src/pages/auth/login.tsx",
       "src/pages/auth/presentation/form/useLoginForm.tsx",
       "src/pages/auth/presentation/form/useRegisterForm.tsx",
-      "_auth-layout-C_KDVnni.js",
+      "_auth-layout-m6ox_UNA.js",
       "src/pages/auth/register.tsx",
       "src/pages/dashboard/dashboard.tsx",
       "src/pages/welcome.tsx"
@@ -48,56 +50,77 @@
       "assets/main-Bm7M1beE.css"
     ]
   },
+  "src/pages/auth/data/repository/useAuthRepository.tsx": {
+    "file": "assets/useAuthRepository-DipXdMEt.js",
+    "name": "useAuthRepository",
+    "src": "src/pages/auth/data/repository/useAuthRepository.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx"
+    ]
+  },
+  "src/pages/auth/domain/service/useAuthService.tsx": {
+    "file": "assets/useAuthService-CL8spJBu.js",
+    "name": "useAuthService",
+    "src": "src/pages/auth/domain/service/useAuthService.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/pages/auth/data/repository/useAuthRepository.tsx",
+      "src/main.tsx"
+    ]
+  },
   "src/pages/auth/login.tsx": {
-    "file": "assets/login-B9tKQCwN.js",
+    "file": "assets/login-B-qGBG26.js",
     "name": "login",
     "src": "src/pages/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-C_KDVnni.js",
-      "_link-D6oZzuTQ.js",
+      "_auth-layout-m6ox_UNA.js",
+      "_link-BfdR1BUq.js",
       "src/pages/auth/presentation/form/useLoginForm.tsx",
-      "_proxy-DjQRUTTw.js",
-      "_zod-DQgSZ5kd.js"
+      "src/pages/auth/domain/service/useAuthService.tsx",
+      "_proxy-CJxw2Hvx.js",
+      "_zod-Dxe6MdjK.js",
+      "src/pages/auth/data/repository/useAuthRepository.tsx"
     ]
   },
   "src/pages/auth/presentation/form/useLoginForm.tsx": {
-    "file": "assets/useLoginForm-CaLvNZj4.js",
+    "file": "assets/useLoginForm-BgzhEm6F.js",
     "name": "useLoginForm",
     "src": "src/pages/auth/presentation/form/useLoginForm.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_zod-DQgSZ5kd.js",
+      "_zod-Dxe6MdjK.js",
       "src/main.tsx"
     ]
   },
   "src/pages/auth/presentation/form/useRegisterForm.tsx": {
-    "file": "assets/useRegisterForm-BcgIVFcX.js",
+    "file": "assets/useRegisterForm-4EmhosS-.js",
     "name": "useRegisterForm",
     "src": "src/pages/auth/presentation/form/useRegisterForm.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_zod-DQgSZ5kd.js",
+      "_zod-Dxe6MdjK.js",
       "src/main.tsx"
     ]
   },
   "src/pages/auth/register.tsx": {
-    "file": "assets/register-B3oXgRKJ.js",
+    "file": "assets/register-B5ojtv4k.js",
     "name": "register",
     "src": "src/pages/auth/register.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-C_KDVnni.js",
-      "_link-D6oZzuTQ.js",
+      "_auth-layout-m6ox_UNA.js",
+      "_link-BfdR1BUq.js",
       "src/pages/auth/presentation/form/useRegisterForm.tsx",
-      "_proxy-DjQRUTTw.js",
-      "_zod-DQgSZ5kd.js"
+      "_proxy-CJxw2Hvx.js",
+      "_zod-Dxe6MdjK.js"
     ]
   },
   "src/pages/dashboard/dashboard.tsx": {
-    "file": "assets/dashboard-BzOpt45q.js",
+    "file": "assets/dashboard-C-bHztol.js",
     "name": "dashboard",
     "src": "src/pages/dashboard/dashboard.tsx",
     "isDynamicEntry": true,
@@ -106,14 +129,14 @@
     ]
   },
   "src/pages/welcome.tsx": {
-    "file": "assets/welcome-BdZ0_STX.js",
+    "file": "assets/welcome-DqNPfF12.js",
     "name": "welcome",
     "src": "src/pages/welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-C_KDVnni.js",
-      "_proxy-DjQRUTTw.js"
+      "_auth-layout-m6ox_UNA.js",
+      "_proxy-CJxw2Hvx.js"
     ]
   }
 }

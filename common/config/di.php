@@ -1,8 +1,8 @@
 <?php
 
-use DI\ContainerBuilder;
-use common\providers\AppServiceProvider;
+use backend\modules\auth\di\AuthProvider;
 
-$builder = new ContainerBuilder();
 
-return AppServiceProvider::definitions($builder);
+return [
+    AuthProvider::class
+];

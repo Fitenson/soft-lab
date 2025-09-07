@@ -12,7 +12,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => require __DIR__ . './../../common/providers/AppModuleProvider.php',
     'components' => [
         'response' => [
             'format' => yii\web\Response::FORMAT_JSON,
@@ -45,14 +45,11 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => require __DIR__ . './../routes/web.php',
         ],
-        */
     ],
     'params' => $params,
 ];

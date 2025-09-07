@@ -10,7 +10,11 @@ abstract class Entity {
     {
         foreach($data as $key => $value) {
             if(property_exists($this, $key)) {
-                $this->$key = $value;
+                $setter = 'set' . ucfirst($key);
+
+                if(method_exists($this, $setter)) {
+                    $this->$setter($value);
+                }
             }
         }
     }

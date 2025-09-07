@@ -6,6 +6,12 @@ use yii\base\Model;
 
 
 abstract class Form extends Model {
+    public function attributes()
+    {
+        return array_keys(get_object_vars($this));
+    }
+
+
     public function beforeValidate()
     {
         if(!parent::beforeValidate()) {
@@ -17,6 +23,8 @@ abstract class Form extends Model {
                 $this->addError($name, 'Invalid characters detected');
             }
         }
+
+        return true;
     }
 
 
@@ -46,5 +54,5 @@ abstract class Form extends Model {
     }
 
 
-    abstract public function toDto();
+    abstract public function asArray();
 }

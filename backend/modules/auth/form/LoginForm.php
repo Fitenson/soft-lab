@@ -20,7 +20,7 @@ class LoginForm extends Form {
     }
 
 
-    public function toDto()
+    public function asArray()
     {
         return [
             'username' => $this->username,

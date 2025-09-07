@@ -1,0 +1,1 @@
+import o from"./useAuthRepository-DipXdMEt.js";import"./main-Bm82VARw.js";const g=()=>{const{login:r,register:t}=o();return{login:async e=>await r(e),register:async e=>await t(e)}};export{g as default};

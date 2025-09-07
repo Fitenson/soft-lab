@@ -2,6 +2,7 @@
 
 namespace backend\components\exception;
 
+use Yii;
 use yii\base\Component;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -15,23 +16,40 @@ class ExceptionService extends Component
     /**
      * Throw a mapped exception based on HTTP status code.
      *
-     * @param string $message
+     * @param string|array $message
      * @param int    $statusCode
      * @throws \Throwable
      */
-    public function throw(string $message, int $statusCode): void
+    public function throw($error, ?int $statusCode): array
     {
-        $map = [
-            400 => BadRequestHttpException::class,
-            401 => UnauthorizedHttpException::class,
-            404 => NotFoundHttpException::class,
-            422 => UnprocessableEntityHttpException::class,
-        ];
+        switch($statusCode) {
+            case 400:
+                $name = 'Bad Request';
+                break;
 
-        if (isset($map[$statusCode])) {
-            throw new $map[$statusCode]($message, $statusCode);
+            case 401:
+                $name = 'Unauthorized';
+                break;
+
+            case 404:
+                $name = 'Not Found';
+                break;
+
+            case 422:
+                $name = 'UnprocessableEntity Entity';
+                break;
+
+            default:
+                $name = 'Internal Server';
+                $statusCode = 500;
         }
 
-        throw new ServerErrorHttpException($message, $statusCode);
+        Yii::$app->response->statusCode = $statusCode;
+        
+        return [
+            'name' => $name,
+            'errors' => $error,
+            'statusCode' => $statusCode
+        ];
     }
 }

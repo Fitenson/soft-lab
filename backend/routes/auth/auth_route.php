@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'backend/auth/register' => 'backend/modules/auth/api/register',
-    'backend/auth/login' => 'backend/modules/auth/api/login',
+    'backend/auth/login'    => 'auth/auth/login',
+    'backend/auth/register' => 'auth/auth/register',
 ];

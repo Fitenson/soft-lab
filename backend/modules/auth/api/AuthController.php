@@ -3,7 +3,6 @@
 namespace backend\modules\auth\api;
 
 use Yii;
-use yii\web\UnprocessableEntityHttpException;
 
 use backend\controllers\RestController;
 use backend\modules\auth\domain\entity\Auth;
@@ -15,10 +14,10 @@ use backend\modules\auth\form\RegisterForm;
 class AuthController extends RestController {
     private AuthService $authService;
 
-
-    public function __construct($id, $module = 'test', AuthService $authService, $config = [])
+    public function init()
     {
-        $this->authService = $authService;
+        parent::init();
+        $this->authService = Yii::$container->get(AuthService::class);
     }
 
 
@@ -33,7 +32,7 @@ class AuthController extends RestController {
             Yii::$app->exception->throw('Validation failed', 422);
         }
 
-        $data = $form->toDto();
+        $data = $form->asArray();
         $auth = $this->authService->login(new Auth($data));
 
         return $auth;
@@ -42,16 +41,14 @@ class AuthController extends RestController {
 
     public function actionRegister() 
     {
-        $data = Yii::$app->request->post();
-
         $form = new RegisterForm();
-        $form->load($data, '');
+        $form->load(Yii::$app->request->post(), '');
 
-        if(!$form->validate()) {
-            throw new UnprocessableEntityHttpException('Validation failed');
+        if (!$form->validate()) {
+            return Yii::$app->exception->throw($form->getErrors(), 422);
         }
 
-        $data = $form->toDto();
+        $data = $form->asArray();
         $auth = $this->authService->register(new Auth($data));
 
         return $auth;
