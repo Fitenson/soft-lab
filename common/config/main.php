@@ -11,6 +11,6 @@ return [
         ],
         'router' => [
             'class' => common\routing\Route::class
-        ]
+        ],
     ],
 ];

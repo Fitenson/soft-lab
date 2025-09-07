@@ -13,7 +13,11 @@ Event::on(ActiveRecord::class, ActiveRecord::EVENT_BEFORE_INSERT, function ($eve
     $model->valid = ($model->valid === null) ? 1 : $model->valid;
     $model->_version = 1;
     $model->createdAt = strtotime('now');
-    $model->createdBy = Yii::$app->user->id;
+    $model->createdBy = !empty(Yii::$app->user->id) ? Yii::$app->user->id : null;
+
+    // echo '<pre>';
+    // print_r($model);
+    // die;
 });
 
 

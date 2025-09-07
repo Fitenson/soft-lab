@@ -9,7 +9,7 @@ use backend\components\repository\BaseRepository;
 use backend\modules\auth\domain\entity\Auth;
 use backend\modules\auth\domain\repository\AuthRepository;
 use backend\modules\user\data\models\User;
-
+use Exception;
 
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
     public function login(Auth $auth): Auth
@@ -46,8 +46,10 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         $User->passwordHash = Yii::$app->security->generatePasswordHash($data['password']);
         $User->generateAuthKey();
         $User->generateAccessToken();
-        $User->save(false);
-
+        
+        if(!$User->save(false)) {
+            Yii::$app->exception->throw($User->getErrors(), 500);
+        }
 
         return new Auth([
             'username' => $User->username,

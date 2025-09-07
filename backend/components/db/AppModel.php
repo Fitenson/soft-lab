@@ -16,5 +16,7 @@ class AppModel extends ActiveRecord {
                 $this->$attribute = NULL;
             }
         }
+
+        return parent::beforeSave($insert);
     }
 }

@@ -18,6 +18,15 @@ class RegisterUseCase {
 
     public function execute(Auth $auth)
     {
-        return $this->authRepository->register($auth);
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $auth = $this->authRepository->register($auth);
+            $transaction->commit();
+
+            return $auth;
+        } catch(\Exception $error) {
+            $transaction->rollBack();
+            return Yii::$app->exception->throw($error->getMessage(), 422);
+        }
     }
 }

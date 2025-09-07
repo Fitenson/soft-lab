@@ -51,6 +51,8 @@ class AuthController extends RestController {
         $data = $form->asArray();
         $auth = $this->authService->register(new Auth($data));
 
+        $auth = $auth->asArray();
+
         return $auth;
     }
 }

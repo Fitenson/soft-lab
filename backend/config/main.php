@@ -43,7 +43,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'class' => 'backend\components\exception\ApiErrorHandler',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

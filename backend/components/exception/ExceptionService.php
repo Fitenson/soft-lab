@@ -20,7 +20,7 @@ class ExceptionService extends Component
      * @param int    $statusCode
      * @throws \Throwable
      */
-    public function throw($error, ?int $statusCode): array
+    public function throw($error, ?int $statusCode): void
     {
         switch($statusCode) {
             case 400:
@@ -45,11 +45,19 @@ class ExceptionService extends Component
         }
 
         Yii::$app->response->statusCode = $statusCode;
-        
-        return [
+
+        $payload = [
             'name' => $name,
             'errors' => $error,
             'statusCode' => $statusCode
         ];
+
+        throw new ApiException($payload, $statusCode);
+        
+        // return [
+        //     'name' => $name,
+        //     'errors' => $error,
+        //     'statusCode' => $statusCode
+        // ];
     }
 }
