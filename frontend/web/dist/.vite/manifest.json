@@ -1,37 +1,37 @@
 {
-  "_Auth-BBjgiChq.js": {
-    "file": "assets/Auth-BBjgiChq.js",
+  "_Auth-CiyVdTfp.js": {
+    "file": "assets/Auth-CiyVdTfp.js",
     "name": "Auth",
     "imports": [
       "src/main.tsx",
-      "_auth-layout-BUDgzigp.js",
-      "_zod-mwrdqCVt.js"
+      "_auth-layout-ClwYdWSJ.js",
+      "_zod-AJFCT_Mk.js"
     ]
   },
-  "_auth-layout-BUDgzigp.js": {
-    "file": "assets/auth-layout-BUDgzigp.js",
+  "_auth-layout-ClwYdWSJ.js": {
+    "file": "assets/auth-layout-ClwYdWSJ.js",
     "name": "auth-layout",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx"
     ]
   },
-  "_proxy-Co_9OD72.js": {
-    "file": "assets/proxy-Co_9OD72.js",
+  "_proxy-CNJEoGFq.js": {
+    "file": "assets/proxy-CNJEoGFq.js",
     "name": "proxy",
     "imports": [
       "src/main.tsx"
     ]
   },
-  "_zod-mwrdqCVt.js": {
-    "file": "assets/zod-mwrdqCVt.js",
+  "_zod-AJFCT_Mk.js": {
+    "file": "assets/zod-AJFCT_Mk.js",
     "name": "zod",
     "imports": [
       "src/main.tsx"
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-C8i2bDRg.js",
+    "file": "assets/main-TZ_1gral.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
@@ -41,7 +41,7 @@
       "src/pages/auth/login.tsx",
       "src/pages/auth/presentation/form/useLoginForm.tsx",
       "src/pages/auth/presentation/form/useRegisterForm.tsx",
-      "_auth-layout-BUDgzigp.js",
+      "_auth-layout-ClwYdWSJ.js",
       "src/pages/auth/register.tsx",
       "src/pages/dashboard/dashboard.tsx",
       "src/pages/welcome.tsx"
@@ -51,7 +51,7 @@
     ]
   },
   "src/pages/auth/data/repository/useAuthRepository.tsx": {
-    "file": "assets/useAuthRepository-Cbtuv2UU.js",
+    "file": "assets/useAuthRepository-Cu5eOTrq.js",
     "name": "useAuthRepository",
     "src": "src/pages/auth/data/repository/useAuthRepository.tsx",
     "isDynamicEntry": true,
@@ -60,7 +60,7 @@
     ]
   },
   "src/pages/auth/domain/service/useAuthService.tsx": {
-    "file": "assets/useAuthService-DNVaVVZ8.js",
+    "file": "assets/useAuthService-Dco5PblK.js",
     "name": "useAuthService",
     "src": "src/pages/auth/domain/service/useAuthService.tsx",
     "isDynamicEntry": true,
@@ -70,59 +70,59 @@
     ]
   },
   "src/pages/auth/login.tsx": {
-    "file": "assets/login-B116eUrI.js",
+    "file": "assets/login-M3DAgUV2.js",
     "name": "login",
     "src": "src/pages/auth/login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-BUDgzigp.js",
-      "_Auth-BBjgiChq.js",
+      "_auth-layout-ClwYdWSJ.js",
+      "_Auth-CiyVdTfp.js",
       "src/pages/auth/presentation/form/useLoginForm.tsx",
       "src/pages/auth/domain/service/useAuthService.tsx",
-      "_proxy-Co_9OD72.js",
-      "_zod-mwrdqCVt.js",
+      "_proxy-CNJEoGFq.js",
+      "_zod-AJFCT_Mk.js",
       "src/pages/auth/data/repository/useAuthRepository.tsx"
     ]
   },
   "src/pages/auth/presentation/form/useLoginForm.tsx": {
-    "file": "assets/useLoginForm-BQHh53Za.js",
+    "file": "assets/useLoginForm-CBWIdpQy.js",
     "name": "useLoginForm",
     "src": "src/pages/auth/presentation/form/useLoginForm.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_zod-mwrdqCVt.js",
+      "_zod-AJFCT_Mk.js",
       "src/main.tsx"
     ]
   },
   "src/pages/auth/presentation/form/useRegisterForm.tsx": {
-    "file": "assets/useRegisterForm-CCWSeIu5.js",
+    "file": "assets/useRegisterForm-B2F1mzvC.js",
     "name": "useRegisterForm",
     "src": "src/pages/auth/presentation/form/useRegisterForm.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_zod-mwrdqCVt.js",
+      "_zod-AJFCT_Mk.js",
       "src/main.tsx"
     ]
   },
   "src/pages/auth/register.tsx": {
-    "file": "assets/register-Bcp0d1jQ.js",
+    "file": "assets/register-21WTLFul.js",
     "name": "register",
     "src": "src/pages/auth/register.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-BUDgzigp.js",
-      "_Auth-BBjgiChq.js",
+      "_auth-layout-ClwYdWSJ.js",
+      "_Auth-CiyVdTfp.js",
       "src/pages/auth/presentation/form/useRegisterForm.tsx",
       "src/pages/auth/domain/service/useAuthService.tsx",
-      "_proxy-Co_9OD72.js",
-      "_zod-mwrdqCVt.js",
+      "_proxy-CNJEoGFq.js",
+      "_zod-AJFCT_Mk.js",
       "src/pages/auth/data/repository/useAuthRepository.tsx"
     ]
   },
   "src/pages/dashboard/dashboard.tsx": {
-    "file": "assets/dashboard-t8daG3ic.js",
+    "file": "assets/dashboard-Cf_aPRX9.js",
     "name": "dashboard",
     "src": "src/pages/dashboard/dashboard.tsx",
     "isDynamicEntry": true,
@@ -131,14 +131,14 @@
     ]
   },
   "src/pages/welcome.tsx": {
-    "file": "assets/welcome-Cqf1c79j.js",
+    "file": "assets/welcome-oL0TP94h.js",
     "name": "welcome",
     "src": "src/pages/welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/main.tsx",
-      "_auth-layout-BUDgzigp.js",
-      "_proxy-Co_9OD72.js"
+      "_auth-layout-ClwYdWSJ.js",
+      "_proxy-CNJEoGFq.js"
     ]
   }
 }

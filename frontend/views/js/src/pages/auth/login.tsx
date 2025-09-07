@@ -6,24 +6,34 @@ import useLoginForm from "./presentation/form/useLoginForm";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
-// import useShowToast from "@/hooks/use-show-toast";
+import useShowToast from "@/hooks/use-show-toast";
 import Auth from "./domain/entity/Auth";
 import useAuthService from "./domain/service/useAuthService";
 
 
 export default function LoginPage() {
-    // const showToast = useShowToast();
-    const { form, loginFormField } = useLoginForm();
+    const showToast = useShowToast();
+    const { form, loginFormField, setFormError } = useLoginForm();
     const { login } = useAuthService();
 
 
-    const submit = () => {
+    const submit = async () => {
         const formValues = form.getValues();
         const auth = new Auth(formValues);
 
-        const data = login(auth);
-
-        console.log(data);
+        await login(auth, {
+            onSuccess: (data) => {
+                console.log(data);
+                showToast("Success", "Login successfully", "success");
+            },
+            onError: (error) => {
+                setFormError(error, {
+                    setToastError(message) {
+                        showToast("Success", message, "error");
+                    },
+                });
+            }
+        });
     }
 
 

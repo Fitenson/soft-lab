@@ -28,7 +28,7 @@ export default function RegisterPage() {
             },
             onError: (error) => {
                 setFormError(error, {
-                    setToast: (message) => {
+                    setToastError: (message: string) => {
                         showToast("Error", message, "error");
                     }
                 });
@@ -51,7 +51,7 @@ export default function RegisterPage() {
                             <CardTitle className="text-3xl font-bold text-center">Soft Lab</CardTitle>
                             <CardDescription className="text-center text-2xl my-2 mb-2">Welcome New User</CardDescription>
                         </CardHeader>
-                        <Form {...form}>
+                        <Form {...form}>0
                             <form onSubmit={form.handleSubmit(submit)}>
                                 <CardContent className="space-y-6 mx-4">
                                     <FormField

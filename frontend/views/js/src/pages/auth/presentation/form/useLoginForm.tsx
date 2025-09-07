@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
 
 
 export const loginSchema = z.object({
@@ -23,9 +24,15 @@ const useLoginForm = () => {
     });
 
 
-    const setFormError = (error: unknown) => {
+    const setFormError: SetFormError = (
+        error: unknown,
+        options?: SetFormErrorOptions
+    ) => {
+        const { setToastError } = options || {};
         const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
         const errors = axiosError?.response?.data?.errors ?? {};
+
+        console.log(errors);
 
         if (Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
@@ -39,6 +46,8 @@ const useLoginForm = () => {
                     });
                 }
             });
+        } else if(typeof errors === "string") {
+            setToastError?.(errors);
         }
     }
 

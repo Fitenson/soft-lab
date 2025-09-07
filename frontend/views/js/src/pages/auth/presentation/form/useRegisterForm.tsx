@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
 
 
 export const registerSchema = z.object({
@@ -27,10 +28,11 @@ const useRegisterForm = () => {
     });
 
 
-    const setFormError = (
+    const setFormError: SetFormError = (
         error: unknown,
-        setToast?: (message: unknown) => void
+        options?: SetFormErrorOptions
     ) => {
+        const { setToastError } = options || {};
         const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
@@ -46,8 +48,8 @@ const useRegisterForm = () => {
                     });
                 }
             });
-        } else {
-            setToast?.(errors);
+        } else if(typeof errors === "string") {
+            setToastError?.(errors);
         }
     }
 
