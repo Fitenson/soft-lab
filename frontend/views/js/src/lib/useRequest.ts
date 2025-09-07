@@ -25,7 +25,7 @@ export interface Options {
 export const useRequest = <T>(): AxiosRequestResult<T> => {
     const axiosInstance = useMemo(() => {
         return axios.create({
-            baseURL: import.meta.env.VITE_API_BASE_URL,
+            baseURL: 'http://softlab-backend.test/backend',
             withCredentials: true,
         });
     }, []);

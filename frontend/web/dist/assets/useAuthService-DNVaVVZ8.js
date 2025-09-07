@@ -1,0 +1,1 @@
+import c from"./useAuthRepository-Cbtuv2UU.js";import"./main-C8i2bDRg.js";async function i(e,{onSuccess:t,onError:s}={}){try{const r=await e();return t?.(r),r}catch(r){throw s?.(r),r}}const g=()=>{const{login:e,register:t}=c();return{login:async(o,n)=>i(()=>e(o),n),register:async(o,n)=>i(()=>t(o),n)}};export{g as default};

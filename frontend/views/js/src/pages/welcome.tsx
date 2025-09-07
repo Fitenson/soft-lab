@@ -40,7 +40,12 @@ const Welcome = () => {
                     >
                         Login
                     </Button>
-                    <Button size="lg" variant="outline" className="rounded-2xl px-8">
+                    <Button 
+                        size="lg" 
+                        variant="outline" 
+                        className="rounded-2xl px-8"
+                        onClick={() => router.visit('/register')}
+                    >
                         Sign up
                     </Button>
                 </motion.div>

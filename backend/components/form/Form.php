@@ -2,13 +2,17 @@
 
 namespace backend\components\form;
 
+use ReflectionClass;
 use yii\base\Model;
 
 
 abstract class Form extends Model {
     public function attributes()
     {
-        return array_keys(get_object_vars($this));
+        $reflect = new \ReflectionClass($this);
+        $props = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+        return array_map(fn($p) => $p->getName(), $props);
     }
 
 

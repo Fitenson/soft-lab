@@ -6,10 +6,35 @@ import useRegisterForm from "./presentation/form/useRegisterForm";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
+import Auth from "./domain/entity/Auth";
+import useAuthService from "./domain/service/useAuthService";
+import useShowToast from "@/hooks/use-show-toast";
 
 
 export default function RegisterPage() {
-    const { form, registerFormField } = useRegisterForm();
+    const showToast = useShowToast();
+    const { form, registerFormField, setFormError } = useRegisterForm();
+    const { register } = useAuthService();
+
+
+    const submit = async () => {
+        const formValues = form.getValues();
+        const auth = new Auth(formValues);
+
+        await register(auth, {
+            onSuccess: (data) => {
+                console.log(data);
+                showToast("Success", "Registration success", "success");
+            },
+            onError: (error) => {
+                setFormError(error, {
+                    setToast: (message) => {
+                        showToast("Error", message, "error");
+                    }
+                });
+            }
+        });
+    }
 
 
     return (
@@ -27,7 +52,7 @@ export default function RegisterPage() {
                             <CardDescription className="text-center text-2xl my-2 mb-2">Welcome New User</CardDescription>
                         </CardHeader>
                         <Form {...form}>
-                            <form>
+                            <form onSubmit={form.handleSubmit(submit)}>
                                 <CardContent className="space-y-6 mx-4">
                                     <FormField
                                         control={form.control}

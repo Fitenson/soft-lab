@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use yii\filters\Cors;
 use yii\rest\ActiveController;
 
 

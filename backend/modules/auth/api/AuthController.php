@@ -48,6 +48,10 @@ class AuthController extends RestController {
             return Yii::$app->exception->throw($form->getErrors(), 422);
         }
 
+        // echo '<pre>';
+        // print_r($form->getErrors());
+        // die;
+
         $data = $form->asArray();
         $auth = $this->authService->register(new Auth($data));
 

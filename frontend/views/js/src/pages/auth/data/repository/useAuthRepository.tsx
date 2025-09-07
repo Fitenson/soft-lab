@@ -22,11 +22,13 @@ const useAuthRepository = () => {
     const register = async (auth: Auth) => {
         const formData = new FormData();
 
+        formData.append("fullName", auth.getFullName());
         formData.append("username", auth.getUsername());
+        formData.append("email", auth.getEmail());
         formData.append("password", auth.getPassword());
 
         return await request({
-            url: "/auth/login",
+            url: "/auth/register",
             method: "POST",
             data: formData
         });

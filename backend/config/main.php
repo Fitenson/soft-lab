@@ -1,5 +1,7 @@
 <?php
 
+use yii\filters\Cors;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -52,4 +54,14 @@ return [
         ],
     ],
     'params' => $params,
+    'as corsFilter' => [
+        'class' => Cors::class,
+        'cors' => [
+            'Origin' => ['http://softlab.test'], // or ['*']
+            'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+            'Access-Control-Request-Headers' => ['*'],
+            'Access-Control-Allow-Credentials' => true,
+            'Access-Control-Max-Age' => 3600,
+        ],
+    ],
 ];

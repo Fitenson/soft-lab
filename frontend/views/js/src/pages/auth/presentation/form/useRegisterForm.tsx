@@ -27,7 +27,10 @@ const useRegisterForm = () => {
     });
 
 
-    const setFormError = (error: unknown) => {
+    const setFormError = (
+        error: unknown,
+        setToast?: (message: unknown) => void
+    ) => {
         const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
@@ -43,6 +46,8 @@ const useRegisterForm = () => {
                     });
                 }
             });
+        } else {
+            setToast?.(errors);
         }
     }
 

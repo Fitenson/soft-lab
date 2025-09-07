@@ -41,7 +41,7 @@ class m130524_201442_init extends DbMigration
         $this->createTable('{{%user_history}}', [
             'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
             'UUID' => $this->string(50),
-            'username' => $this->string(100)->notNull()->unique(),
+            'username' => $this->string(100)->notNull(),
             'fullName' => $this->string(255),
             'gender' => $this->string(50),
             'title' => $this->string(50),
@@ -51,8 +51,8 @@ class m130524_201442_init extends DbMigration
             'accessToken' => $this->string(500)->null(),
             'authKey' => $this->string(32)->notNull(),
             'passwordHash' => $this->string()->notNull(),
-            'passwordResetToken' => $this->string()->unique(),
-            'email' => $this->string(100)->notNull()->unique(),
+            'passwordResetToken' => $this->string(),
+            'email' => $this->string(100)->notNull(),
 
             'valid' => $this->boolean(),
             '_actionUUID' => $this->string(50),
