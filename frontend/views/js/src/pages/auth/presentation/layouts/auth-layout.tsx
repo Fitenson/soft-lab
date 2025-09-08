@@ -9,7 +9,7 @@ type AuthLayoutProps = {
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
     return (
-        <main className="bg-background dark:bg-background min-h-screen flex flex-col overflow-x-hidden">
+        <main className="bg-background dark:bg-background h-screen flex flex-col overflow-x-hidden">
             {/* Theme toggle button */}
             <div className="absolute top-4 right-4">
                 <ModeToggleTab />

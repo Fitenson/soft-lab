@@ -41,7 +41,7 @@ export default function RegisterPage() {
 
     return (
         <AuthLayout>
-            <section className="flex min-h-screen min-w-screen items-center justify-center">
+            <section className="flex w-full items-center justify-center">
                 <motion.div
                     initial={{  opacity: 0, y: 20 }}
                     animate={{  opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export default function RegisterPage() {
                             <CardTitle className="text-3xl font-bold text-center">Soft Lab</CardTitle>
                             <CardDescription className="text-center text-2xl my-2 mb-2">Welcome New User</CardDescription>
                         </CardHeader>
-                        <Form {...form}>0
+                        <Form {...form}>
                             <form onSubmit={form.handleSubmit(submit)}>
                                 <CardContent className="space-y-6 mx-4">
                                     <FormField

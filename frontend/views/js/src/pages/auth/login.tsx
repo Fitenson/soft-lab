@@ -10,6 +10,7 @@ import Auth from "./domain/entity/Auth";
 import useAuthService from "./domain/service/useAuthService";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { LoadingButton } from "@/components/buttons/loading-button";
+import { router } from "@inertiajs/react";
 
 
 export default function LoginPage() {
@@ -27,6 +28,7 @@ export default function LoginPage() {
             onSuccess: (data) => {
                 console.log(data);
                 showToast("Success", "Login successfully", "success");
+                router.visit('/dashboard');
             },
             onError: (error) => {
                 setFormError(error, {
@@ -41,56 +43,75 @@ export default function LoginPage() {
 
     return (
         <AuthLayout>
-            <section className="flex min-h-screen min-w-screen items-center justify-center">
+            <section className="flex w-full items-center justify-center">
                 <motion.div
-                    initial={{  opacity: 0, y: 20 }}
-                    animate={{  opacity: 1, y: 0 }}
-                    transition={{  duration: 0.6 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
                     className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl"
                 >
-                    <Card className="rounded-2xl shadow-md">
+                    <Card className="rounded-2xl shadow-md h-auto">
                         <CardHeader>
-                            <CardTitle className="text-3xl font-bold text-center">Soft Lab</CardTitle>
-                            <CardDescription className="text-center text-2xl my-2 mb-2">Welcome Back</CardDescription>
+                            <CardTitle className="text-3xl font-bold text-center">
+                                Soft Lab
+                            </CardTitle>
+                            <CardDescription className="text-center text-2xl my-2 mb-2">
+                                Welcome Back
+                            </CardDescription>
                         </CardHeader>
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(submit)}>
-                                <CardContent className="space-y-6 mx-4">
+                            <form
+                                onSubmit={form.handleSubmit(submit)}
+                                className="flex flex-col h-full"
+                            >
+                                <CardContent className="flex-1 space-y-6 mx-4">
+                                    {/* Username */}
                                     <FormField
                                         control={form.control}
                                         name={loginFormField.username}
-                                        render={({ field}) => (
+                                        render={({ field }) => (
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">Username</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your username" {...field} required />
+                                                    <Input
+                                                        placeholder="Enter your username"
+                                                        {...field}
+                                                        required
+                                                    />
                                                 </FormControl>
-                                                <FormMessage/>
+                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
 
+                                    {/* Password */}
                                     <FormField
                                         control={form.control}
                                         name={loginFormField.password}
-                                        render={({ field}) => (
+                                        render={({ field }) => (
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">Password</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your password" {...field} type="password" required />
+                                                    <Input
+                                                        placeholder="Enter your password"
+                                                        {...field}
+                                                        type="password"
+                                                        required
+                                                    />
                                                 </FormControl>
-                                                <FormMessage/>
+                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
 
-                                    <LoadingButton 
+                                    <LoadingButton
                                         className="w-full my-2"
                                         isLoading={isLoading}
                                     >
                                         Login
                                     </LoadingButton>
                                 </CardContent>
+                                    
                                 <CardFooter className="flex justify-center my-4">
                                     <p className="space-x-4">
                                         <span>Don't have account with us?</span>
