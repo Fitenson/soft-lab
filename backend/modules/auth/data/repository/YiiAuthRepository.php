@@ -3,13 +3,12 @@
 namespace backend\modules\auth\data\repository;
 
 use Yii;
-use yii\web\NotFoundHttpException;
 
 use backend\components\repository\BaseRepository;
 use backend\modules\auth\domain\entity\Auth;
 use backend\modules\auth\domain\repository\AuthRepository;
 use backend\modules\user\data\models\User;
-use Exception;
+
 
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
     public function login(Auth $auth): Auth
@@ -26,6 +25,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             Yii::$app->exception->throw('Incorrect username or password', 401);
         }
 
+        Yii::$app->user->login($User);
 
         return new Auth([
             'username' => $User->username,

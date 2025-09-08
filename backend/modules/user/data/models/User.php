@@ -162,7 +162,7 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
 
     public function getId()
     {
-        throw new UserException('Not yet implemented');
+        return $this->getPrimaryKey();
     }
 
     public function getAuthKey()

@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import AuthLayout from "./auth/presentation/layouts/auth-layout";
 
 
 const Welcome = () => {
+    const { props } = usePage<{ isGuest: boolean }>();
+    const { isGuest } = props;
+    
+
     return (
         <AuthLayout>
             <section className="flex-1 flex flex-col justify-center items-center px-6">
@@ -33,25 +37,51 @@ const Welcome = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.6 }}
                 >
-                    <Button 
-                        size="lg" 
-                        className="rounded-2xl px-8"
-                        onClick={() => router.visit('/login')}
-                    >
-                        Login
-                    </Button>
-                    <Button 
-                        size="lg" 
-                        variant="outline" 
-                        className="rounded-2xl px-8"
-                        onClick={() => router.visit('/register')}
-                    >
-                        Sign up
-                    </Button>
+                    {isGuest ? <GuestDisplay/> : <AuthenticatedDisplay/>}
                 </motion.div>
             </section>
         </AuthLayout>
     );
 };
+
+
+function GuestDisplay () {
+    return (
+        <>
+            <Button 
+                size="lg" 
+                className="rounded-2xl px-8"
+                onClick={() => router.visit('/login')}
+            >
+                Login
+            </Button>
+            <Button 
+                size="lg" 
+                variant="outline" 
+                className="rounded-2xl px-8"
+                onClick={() => router.visit('/register')}
+            >
+                Sign up
+            </Button>
+        </>
+    );
+}
+
+
+function AuthenticatedDisplay() {
+    return (
+        <>
+            <Button 
+                size="lg" 
+                variant="outline" 
+                className="rounded-2xl px-8"
+                onClick={() => router.visit('/dashboard')}
+            >
+                Dashboard
+            </Button>
+        </>
+    );
+}
+
 
 export default Welcome;
