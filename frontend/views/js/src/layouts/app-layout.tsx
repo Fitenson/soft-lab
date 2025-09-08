@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import type { BreadcrumbItem } from "@/types";
 
 
 interface AppLayoutProps {
-    children: ReactNode
+    children: ReactNode;
+    breadcrumbs?: BreadcrumbItem
 }
 
 
