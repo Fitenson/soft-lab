@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import AuthLayout from "./auth/presentation/layouts/auth-layout";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 
 
 const Welcome = () => {
-    const { props } = usePage<{ isGuest: boolean }>();
-    const { isGuest } = props;
+    const auth = useAppSelector(state => state.auth);
     
 
     return (
@@ -37,7 +37,7 @@ const Welcome = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.6 }}
                 >
-                    {isGuest ? <GuestDisplay/> : <AuthenticatedDisplay/>}
+                    {auth ? <AuthenticatedDisplay/> : <GuestDisplay/>}
                 </motion.div>
             </section>
         </AuthLayout>
@@ -72,8 +72,7 @@ function AuthenticatedDisplay() {
     return (
         <>
             <Button 
-                size="lg" 
-                variant="outline" 
+                size="lg"
                 className="rounded-2xl px-8"
                 onClick={() => router.visit('/dashboard')}
             >

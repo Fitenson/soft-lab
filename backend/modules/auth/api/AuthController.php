@@ -20,6 +20,13 @@ class AuthController extends RestController {
         $this->authService = Yii::$container->get(AuthService::class);
     }
 
+    public function behaviors()
+    {
+        $behaviours = parent::behaviors();
+        unset($behaviours['authenticator']);
+        return $behaviours;
+    }
+
 
     public function actionLogin()
     {

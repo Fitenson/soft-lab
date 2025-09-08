@@ -11,10 +11,13 @@ import useAuthService from "./domain/service/useAuthService";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { router } from "@inertiajs/react";
+import { useDispatch } from "react-redux";
+import { setAuth } from "./presentation/redux/authSlice";
 
 
 export default function LoginPage() {
     const showToast = useShowToast();
+    const dispatch = useDispatch();
     const isLoading = useAppSelector(state => state.loading.global);
     const { form, loginFormField, setFormError } = useLoginForm();
     const { login } = useAuthService();
@@ -26,14 +29,15 @@ export default function LoginPage() {
 
         await login(auth, {
             onSuccess: (data) => {
-                console.log(data);
+                const auth = new Auth(data);
+                dispatch(setAuth(auth));
                 showToast("Success", "Login successfully", "success");
                 router.visit('/dashboard');
             },
             onError: (error) => {
                 setFormError(error, {
                     setToastError(message) {
-                        showToast("Success", message, "error");
+                        showToast("Failed", message, "error");
                     },
                 });
             }

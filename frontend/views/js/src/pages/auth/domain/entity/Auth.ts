@@ -56,4 +56,21 @@ export default class Auth extends BaseEntity<AuthModel> implements AuthModel {
     {
         return this.password;
     }
+
+    asJson() {
+        return {
+            UUID: this.UUID,
+            username: this.username,
+            fullName: this.fullName,
+            email: this.email,
+            password: this.password
+        };
+    }
+
+    
+    static fromJson(json: string): Auth
+    {
+        const data = JSON.parse(json);
+        return new Auth(data);
+    }
 }

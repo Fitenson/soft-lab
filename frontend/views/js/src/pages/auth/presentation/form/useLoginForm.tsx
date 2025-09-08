@@ -32,13 +32,12 @@ const useLoginForm = () => {
         const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
-        console.log(errors);
-
-        if (Object.keys(errors).length > 0) {
+        if (typeof errors === "string") {
+            setToastError?.(errors);
+        } else if (errors && Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
-                // Remove "user." prefix if it exists
                 const normalizedField = field.replace(/^user\./, "") as keyof LoginModel;
-                
+            
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
                         type: "server",
@@ -46,8 +45,6 @@ const useLoginForm = () => {
                     });
                 }
             });
-        } else if(typeof errors === "string") {
-            setToastError?.(errors);
         }
     }
 

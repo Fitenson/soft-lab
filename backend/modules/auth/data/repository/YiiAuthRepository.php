@@ -16,7 +16,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         $checkUser = User::find()->where(['username' => $auth->getUsername()])->exists();
 
         if(empty($checkUser)) {
-            Yii::$app->exception->throw('User not found', 404);
+            Yii::$app->exception->throw('Incorrect username or password', 401);
         }
 
         $User = User::findOne(['username' => $auth->getUsername()]);

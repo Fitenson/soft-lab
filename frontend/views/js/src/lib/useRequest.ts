@@ -6,12 +6,12 @@ import { setIsLoading } from "@/core/presentation/store/loadingSlice";
 import { store } from "@/core/presentation/store";
 
 
-export type AxiosRequestResult<T> = {
+export type AxiosRequestResult = {
     isLoading: boolean;
     error: unknown;
-    data: T | null;
+    // data: T | null;
     axiosInstance: AxiosInstance
-    request: (options: Options) => Promise<T>;
+    request: <T>(options: Options) => Promise<T>;
 }
 
 export interface Options {
@@ -22,7 +22,7 @@ export interface Options {
 }
 
 
-export const useRequest = <T>(): AxiosRequestResult<T> => {
+export const useRequest = (): AxiosRequestResult => {
     const axiosInstance = useMemo(() => {
         return axios.create({
             baseURL: 'http://softlab-backend.test/backend',
@@ -30,12 +30,12 @@ export const useRequest = <T>(): AxiosRequestResult<T> => {
         });
     }, []);
 
-    const [data, setData] = useState<T | null>(null);
+    // const [data, setData] = useState<T | null>(null);
     const isLoading = useAppSelector(state => state.loading.global);
     const [error, setError] = useState<unknown>(null);
 
 
-    const request = async (options?: Options): Promise<T> => {
+    const request = async <T>(options?: Options): Promise<T> => {
         store.dispatch(setIsLoading(true));
 
         try {
@@ -49,8 +49,8 @@ export const useRequest = <T>(): AxiosRequestResult<T> => {
                 }
             });
 
-            setData(response.data);
-            return response.data;
+            // setData(response.data as T);
+            return response.data as T;
         } catch(error) {
             setError(error);
             throw error;
@@ -61,5 +61,5 @@ export const useRequest = <T>(): AxiosRequestResult<T> => {
     }
 
 
-    return { data, isLoading, error, request, axiosInstance };
+    return { isLoading, error, request, axiosInstance };
 }
