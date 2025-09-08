@@ -5,14 +5,16 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import useRegisterForm from "./presentation/form/useRegisterForm";
 import { Input } from "@/components/ui/input";
 import Link from "@/components/ui/link";
-import { Button } from "@/components/ui/button";
 import Auth from "./domain/entity/Auth";
 import useAuthService from "./domain/service/useAuthService";
 import useShowToast from "@/hooks/use-show-toast";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector";
+import { LoadingButton } from "@/components/buttons/loading-button";
 
 
 export default function RegisterPage() {
     const showToast = useShowToast();
+    const isLoading = useAppSelector(state => state.loading.global);
     const { form, registerFormField, setFormError } = useRegisterForm();
     const { register } = useAuthService();
 
@@ -110,9 +112,12 @@ export default function RegisterPage() {
                                         )}
                                     />
 
-                                    <Button className="w-full my-2">
+                                    <LoadingButton
+                                        className="w-full my-2"
+                                        isLoading={isLoading}
+                                    >
                                         Register
-                                    </Button>
+                                    </LoadingButton>
                                 </CardContent>
                                 <CardFooter className="flex justify-center my-4">
                                     <p className="space-x-4">
