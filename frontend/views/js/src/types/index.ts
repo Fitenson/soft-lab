@@ -17,3 +17,8 @@ export interface NavItem {
     icon?: LucideIcon | null;
     isActive?: boolean;
 }
+
+export interface MainItem <T> {
+    total: string;
+    rows: T[]
+}

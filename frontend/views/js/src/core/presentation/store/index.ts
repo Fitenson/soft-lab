@@ -4,7 +4,7 @@ import loadingReducer from "@/core/presentation/store/loadingSlice";
 import Auth from "@/pages/auth/domain/entity/Auth";
 import authReducer from "@/pages/auth/presentation/redux/authSlice";
 import sidebarReducer from "@/core/presentation/store/sidebarSlice";
-// import userDataTableReducer from "@/pages/user/presentation/redux/userDataTableSlice";
+import userDataTableReducer from "@/pages/user/presentation/redux/userDataTableSlice";
 // import userReducer from "@/pages/user/presentation/redux/userSlice";
 
 
@@ -22,7 +22,7 @@ export const store = configureStore({
         loading: loadingReducer,
         auth: authReducer,
         sidebar: sidebarReducer,
-        // userDataTable: userDataTableReducer,
+        userDataTable: userDataTableReducer,
         // user: userReducer
     },
     preloadedState: {

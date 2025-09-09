@@ -2,28 +2,42 @@ import BaseEntity from "@/core/domain/entity/BaseEntity";
 import type { UserModel } from "@/pages/user/data/models/UserModel";
 
 
-export default class User extends BaseEntity<UserModel> implements UserModel {
-    public UUID!: string;
-    public username!: string;
-    public fullName!: string;
-    public email!: string;
-    public title!: string;
-    public profileImage!: string;
-    public description!: string;
-    public address!: string;
-    public gender!: string;
-    public phoneNo!: string;
-    public valid!: boolean;
-    public createdAtFormat!: string;
-    public createdByName!: string;
-    public updatedAtFormat!: string;
-    public updatedByName!: string;
+export default class User extends BaseEntity<UserModel> {
+    private UUID: string;
+    private username: string;
+    private fullName: string;
+    private email: string;
+    private title: string;
+    private profileImage: string;
+    private description: string;
+    private address: string;
+    private gender: string;
+    private phoneNo: string;
+    private valid: boolean;
+    private createdAtFormat: string;
+    private createdByName: string;
+    private updatedAtFormat: string;
+    private updatedByName: string;
+
 
     constructor(data: Partial<UserModel>) {
         super();
-        Object.assign(this, data);
+        this.UUID = data.UUID ?? "";
+        this.username = data.username ?? "";
+        this.fullName = data.fullName ?? "";
+        this.email = data.email ?? "";
+        this.title = data.title ?? "";
+        this.profileImage = data.profileImage ?? "";
+        this.description = data.description ?? "";
+        this.address = data.address ?? "";
+        this.gender = data.gender ?? "";
+        this.phoneNo = data.phoneNo ?? "";
+        this.valid = data.valid ?? true;
+        this.createdAtFormat = data.createdAtFormat ?? "";
+        this.createdByName = data.createdByName ?? "";
+        this.updatedAtFormat = data.updatedAtFormat ?? "";
+        this.updatedByName = data.updatedByName ?? "";
     }
-
 
     setUUID(UUID: string): void
     {
@@ -78,5 +92,81 @@ export default class User extends BaseEntity<UserModel> implements UserModel {
     setValid(valid: boolean): void
     {
         this.valid = valid;
+    }
+
+
+    getUUID(): string
+    {
+        return this.UUID;
+    }
+
+    getUsername(): string
+    {
+        return this.username;
+    }
+
+    getFullName(): string
+    {
+        return this.fullName;
+    }
+
+    getProfileImage(): string
+    {
+        return this.profileImage;
+    }
+
+    getEmail(): string
+    {
+        return this.email;
+    }
+
+    getDescription(): string
+    {
+        return this.description;
+    }
+
+    getAddress(): string
+    {
+        return this.address;
+    }
+
+    getGender(): string
+    {
+        return this.gender;
+    }
+
+    getTitle(): string
+    {
+        return this.title;
+    }
+
+    getPhoneNo(): string
+    {
+        return this.phoneNo;
+    }
+
+    getValid(): boolean
+    {
+        return this.valid;
+    }
+
+    getCreatedAtFormat(): string
+    {
+        return this.createdAtFormat;
+    }
+
+    getCreatedByName(): string
+    {
+        return this.createdByName;
+    }
+
+    getUpdatedAtFormat(): string
+    {
+        return this.updatedAtFormat;
+    }
+
+    getUpdatedByName(): string
+    {
+        return this.updatedByName;
     }
 }

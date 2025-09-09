@@ -1,10 +1,10 @@
-import { NavFooter } from "@/components/app/nav-footer";
+// import { NavFooter } from "@/components/app/nav-footer";
 import { NavMain } from "@/components/app/nav-main";
-import { NavUser } from "@/components/app/nav-user";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+// import { NavUser } from "@/components/app/nav-user";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, UserRound, Building } from 'lucide-react';
+import { LayoutGrid, UserRound, Building } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -25,18 +25,18 @@ const mainNavItems: NavItem[] = [
     }
 ];
 
-const footerNavItems: NavItem[] = [
-    // {
-    //     title: 'Repository',
-    //     href: 'https://github.com/laravel/react-starter-kit',
-    //     icon: Folder,
-    // },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+// const footerNavItems: NavItem[] = [
+//     // {
+//     //     title: 'Repository',
+//     //     href: 'https://github.com/laravel/react-starter-kit',
+//     //     icon: Folder,
+//     // },
+//     {
+//         title: 'Documentation',
+//         href: 'https://laravel.com/docs/starter-kits#react',
+//         icon: BookOpen,
+//     },
+// ];
 
 export function AppSidebar() {
     return (
@@ -57,10 +57,10 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
-            </SidebarFooter>
+            {/*<SidebarFooter>*/}
+            {/*    <NavFooter items={footerNavItems} className="mt-auto" />*/}
+            {/*    <NavUser />*/}
+            {/*</SidebarFooter>*/}
         </Sidebar>
     );
 }

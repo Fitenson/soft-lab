@@ -2,22 +2,27 @@ import BaseEntity from "@/core/domain/entity/BaseEntity";
 import type { AuthModel } from "@/pages/auth/data/model/AuthModel";
 
 
-export default class Auth extends BaseEntity<AuthModel> implements AuthModel {
-    public UUID!: string;
-    public username!: string;
-    public fullName!: string;
-    public email!: string;
-    public password!: string;
-    public profileImage!: string;
+export default class Auth extends BaseEntity<AuthModel> {
+    private UUID: string;
+    private username: string;
+    private fullName: string;
+    private email: string;
+    private password: string;
+    private profileImage: string;
 
 
     constructor(data: Partial<AuthModel>) {
         super();
-        Object.assign(this, data);
+        this.UUID = data.UUID ?? "";
+        this.username = data.username ?? "";
+        this.fullName = data.fullName ?? "";
+        this.email = data.email ?? "";
+        this.password = data.password ?? "";
+        this.profileImage = data.profileImage ?? "";
     }
 
 
-    setUUID(UUID: string): void 
+    setUUID(UUID: string): void
     {
         this.UUID = UUID;
     }
