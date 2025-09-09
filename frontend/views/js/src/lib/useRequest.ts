@@ -19,6 +19,7 @@ export interface Options {
     method?: Method;
     data?: AxiosRequestConfig["data"];
     config?: AxiosRequestConfig;
+    withLoading?: boolean;
 }
 
 
@@ -36,7 +37,11 @@ export const useRequest = (): AxiosRequestResult => {
 
 
     const request = async <T>(options?: Options): Promise<T> => {
-        store.dispatch(setIsLoading(true));
+        const shouldShowLoading = options?.withLoading !== false;
+
+        if(shouldShowLoading) {
+            store.dispatch(setIsLoading(true));
+        }
 
         try {
             const response = await axiosInstance.request<T>({
@@ -56,7 +61,9 @@ export const useRequest = (): AxiosRequestResult => {
             throw error;
         }
         finally {
-            store.dispatch(setIsLoading(false));
+            if(shouldShowLoading) {
+                store.dispatch(setIsLoading(false));
+            }
         }
     }
 

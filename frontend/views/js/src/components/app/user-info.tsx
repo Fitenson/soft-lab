@@ -1,22 +1,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAppSelector } from '@/core/presentation/store/useAppSelector';
+import Auth from '@/pages/auth/domain/entity/Auth';
 
 
-export function UserInfo() {
-    const auth = useAppSelector(state => state.auth.auth);
+interface UserInfoProps {
+    user: Auth | null
+}
 
 
+export function UserInfo({ user }: UserInfoProps) {
     return (
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                <AvatarImage src={auth?.getProfileImage()} alt={auth?.getFullName()} />
+                <AvatarImage src={user?.getProfileImage()} alt={user?.getFullName()} />
                 <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                    {auth?.getFullName()}
+                    {user?.getFullName()}
                 </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{auth?.getFullName()}</span>
-                <span className="truncate text-xs text-muted-foreground">{auth?.getEmail()}</span>
+                <span className="truncate font-medium">{user?.getFullName()}</span>
+                <span className="truncate text-xs text-muted-foreground">{user?.getEmail()}</span>
             </div>
         </>
     );
