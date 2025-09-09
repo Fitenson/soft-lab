@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import loadingReducer from "@/core/presentation/store/loadingSlice";
 import Auth from "@/pages/auth/domain/entity/Auth";
 import authReducer from "@/pages/auth/presentation/redux/authSlice";
+import sidebarReducer from "@/core/presentation/store/sidebarSlice";
 // import userDataTableReducer from "@/pages/user/presentation/redux/userDataTableSlice";
 // import userReducer from "@/pages/user/presentation/redux/userSlice";
 
@@ -19,7 +20,8 @@ function loadAuthFromStorage() {
 export const store = configureStore({
     reducer: {
         loading: loadingReducer,
-        auth: authReducer
+        auth: authReducer,
+        sidebar: sidebarReducer,
         // userDataTable: userDataTableReducer,
         // user: userReducer
     },

@@ -1,6 +1,6 @@
-import HeadingSmall from '@/components/heading-small';
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import HeadingSmall from "@/components/app/heading-small";
+import InputError from "@/components/app/input-error";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -32,7 +32,7 @@ export default function DeleteUser() {
 
                         <Form
                             method="delete"
-                            action={route('profile.destroy')}
+                            // action={rou}
                             options={{
                                 preserveScroll: true,
                             }}

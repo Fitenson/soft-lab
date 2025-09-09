@@ -7,13 +7,13 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuT
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/app/user-menu-content';
-import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
-import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
+import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { useAppSelector } from '@/core/presentation/store/useAppSelector';
 
 const mainNavItems: NavItem[] = [
     {
@@ -36,16 +36,16 @@ const rightNavItems: NavItem[] = [
     },
 ];
 
-const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
+// const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
 interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const page = usePage<SharedData>();
-    const { auth } = page.props;
-    const getInitials = useInitials();
+    const auth = useAppSelector(state => state.auth.auth);
+
+
     return (
         <>
             <div className="border-b border-sidebar-border/80">
@@ -108,16 +108,17 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             href={item.href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                page.url === item.href && activeItemStyles,
-                                                'h-9 cursor-pointer px-3',
+                                                // page.url === item.href && activeItemStyles,
+                                                // 'h-9 cursor-pointer px-3',
                                             )}
                                         >
                                             {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
                                             {item.title}
                                         </Link>
-                                        {page.url === item.href && (
+                                        <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
+                                        {/* {page.url === item.href && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
-                                        )}
+                                        )} */}
                                     </NavigationMenuItem>
                                 ))}
                             </NavigationMenuList>
@@ -156,15 +157,15 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="size-10 rounded-full p-1">
                                     <Avatar className="size-8 overflow-hidden rounded-full">
-                                        <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
+                                        <AvatarImage src={auth?.profileImage} alt={auth?.fullName} />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user.name)}
+                                            {auth?.fullName}
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
-                                <UserMenuContent user={auth.user} />
+                                <UserMenuContent user={auth} />
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

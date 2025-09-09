@@ -8,6 +8,7 @@ export default class Auth extends BaseEntity<AuthModel> implements AuthModel {
     public fullName!: string;
     public email!: string;
     public password!: string;
+    public profileImage!: string;
 
 
     constructor(data: Partial<AuthModel>) {
@@ -36,6 +37,11 @@ export default class Auth extends BaseEntity<AuthModel> implements AuthModel {
         this.password = password;
     }
 
+    setProfileImage(profileImage: string): void
+    {
+        this.profileImage = profileImage;
+    }
+
 
     getUsername(): string
     {
@@ -57,13 +63,20 @@ export default class Auth extends BaseEntity<AuthModel> implements AuthModel {
         return this.password;
     }
 
+    getProfileImage(): string
+    {
+        return this.profileImage;
+    }
+
+
     asJson() {
         return {
             UUID: this.UUID,
             username: this.username,
             fullName: this.fullName,
             email: this.email,
-            password: this.password
+            password: this.password,
+            profileImage: this.profileImage
         };
     }
 
