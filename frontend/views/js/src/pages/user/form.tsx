@@ -6,7 +6,6 @@ import AppLayout from "@/layouts/app-layout";
 import UserLayout from "@/pages/user/presentation/layouts/user-layout.tsx";
 
 import UserViewModel from "@/pages/user/data/dto/UserViewModel";
-import UserForm from "@/pages/user/presentation/form/UserForm";
 import { UserModel } from "./presentation/schema/userSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { FormMessage } from "@/components/ui/form";
@@ -17,47 +16,50 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import useShowToast from "@/hooks/use-show-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import useUserService from "@/pages/user/domain/service/useUserService";
-import useUserForm from "./presentation/form/useUserForm";
+import useUserForm from "@/pages/user/presentation/hooks/useUserForm.tsx";
+import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
+import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
 
 
 type Props = {
-    userData: UserModel
+    user: UserDTO
 }
 
 
-export default function UserFormView({ userData }: Props) {
-    const user = new User(userData);
+export default function UserFormView({ user }: Props) {
+    const userViewModel = new UserViewModel(user);
     const isLoading = useAppSelector(state => state.loading.global);
     const showToast = useShowToast();
-    const { userForm, setUserFormError } = useUserForm({ user: user });
-    // const { createUser, updateUser } = useUserService();
+    const { form, setFormError } = useUserForm({ userViewModel: userViewModel });
+    const { create, update } = useUserService();
 
 
     const breadcrumbs = [
         ...breadcrumbItems,
-        { title: user.getName() || "Create", href: '/' }
+        { title: userViewModel.name || "Create", href: '/' }
     ];
 
 
     const submit = async () => {
-        const formValues = userForm.getValues();
+        const formValues = form.getValues();
 
         try {
             let response;
 
-            if(!isEmpty(user.getId())) {
-                response = await updateUser({ user: user, formValues: formValues });
+            if(userViewModel.UUID) {
+                const userDTO: UserDTO = { ...formValues };
+                userViewModel = await update(userDTO);
 
                 showToast('Success', 'Update user successfully', 'success');
             } else {
-                response = await createUser({ formValues: formValues });
+                const userDTO: UserDTO = { ...formValues };
+                userViewModel = await create(userDTO);
                 showToast('Success', 'Create user successfully', 'success');
 
-                console.log(response);
-                router.visit(`/user/${response?.userId}`);
+                router.visit(`/user/${userViewModel.UUID}`);
             }
         } catch(error) {
-            setUserFormError(error);
+            setFormError(error);
             showToast("Error", "Error on create", "error");
         }
     }
@@ -65,12 +67,12 @@ export default function UserFormView({ userData }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="UserViewModel" />
-            <Head title={user.name} />
+            <Head title="User" />
+            <Head title={userViewModel.fullName} />
 
             <UserLayout>
-                <Form {...userForm}>
-                    <form className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full items-start" onSubmit={userForm.handleSubmit(submit)}>
+                <Form {...form}>
+                    <form className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
                         <TopActionBar
                             saveAction={{}}
                             browseAction={{ to: "/user" }}
@@ -78,11 +80,11 @@ export default function UserFormView({ userData }: Props) {
                         />
 
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getName()}
+                            control={form.control}
+                            name={UserFormField.username.name}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>{UserFormField.username.label}</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -95,11 +97,11 @@ export default function UserFormView({ userData }: Props) {
                         />
 
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getFullName()}
+                            control={form.control}
+                            name={UserFormField.fullName.name}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Full Name</FormLabel>
+                                    <FormLabel>{UserFormField.fullName.label}</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -112,11 +114,11 @@ export default function UserFormView({ userData }: Props) {
                         />
 
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getEmail()}
+                            control={form.control}
+                            name={UserFormField.email.name}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>{UserFormField.email.label}</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -129,11 +131,11 @@ export default function UserFormView({ userData }: Props) {
                         />
 
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getGender()}
+                            control={form.control}
+                            name={UserFormField.gender.name}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Gender</FormLabel>
+                                    <FormLabel>{UserFormField.gender.label}</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger>
@@ -154,11 +156,11 @@ export default function UserFormView({ userData }: Props) {
 
                         <div className="flex flex-row col-span-full w-full gap-6 items-start">
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getDescription()}
+                            control={form.control}
+                            name={UserFormField.description.name}
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>{UserFormField.description.label}</FormLabel>
                                     <FormControl>
                                         <Textarea
                                             {...field}
@@ -172,11 +174,11 @@ export default function UserFormView({ userData }: Props) {
                         />
 
                         <FormField
-                            control={userForm.control}
-                            name={UserForm.getAddress()}
+                            control={form.control}
+                            name={UserFormField.address.name}
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel>Address</FormLabel>
+                                    <FormLabel>{UserFormField.address.label}</FormLabel>
                                     <FormControl>
                                         <Textarea
                                             {...field}

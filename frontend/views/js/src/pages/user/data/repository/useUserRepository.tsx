@@ -24,8 +24,8 @@ const useUserRepository = () => {
     }
 
 
-    const create = async (user: UserEntity) => {
-        const userDto = user.asDto();
+    const create = async (userEntity: UserEntity) => {
+        const userDto = userEntity.asDto();
         const formData = new FormData();
 
         formData.append("user[username]", userDto.username ?? "");
@@ -49,8 +49,8 @@ const useUserRepository = () => {
     }
 
 
-    const update = async (user: UserEntity) => {
-        const userDto = user.asDto();
+    const update = async (userEntity: UserEntity) => {
+        const userDto = userEntity.asDto();
         const formData = new FormData();
 
         formData.append("user[username]", userDto.username ?? "");

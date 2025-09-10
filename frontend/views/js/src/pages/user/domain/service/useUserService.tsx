@@ -1,8 +1,9 @@
 import { handleServiceCall, type ServiceCallback } from "@/core/domain/service/serviceHandler";
 import useUserRepository from "@/pages/user/data/repository/useUserRepository";
 import type { DataTableType, Params } from "@/types";
-import type UserEntity from "../entity/UserEntity";
+import UserEntity from "../entity/UserEntity";
 import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
+import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
 
 
 const useUserService = () => {
@@ -25,19 +26,21 @@ const useUserService = () => {
 
 
     const create = async (
-        user: UserEntity,
+        userDTO: UserDTO,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
-        const userEntity = await handleServiceCall<UserEntity>(async () => createRepo(user), callbacks);
+        let userEntity = new UserEntity(userDTO);
+        userEntity = await handleServiceCall<UserEntity>(async () => createRepo(userEntity), callbacks);
         return userEntity.asViewModel();
     };
 
 
     const update = async (
-        user: UserEntity,
+        userDTO: UserDTO,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
-        const userEntity = await handleServiceCall<UserEntity>(async () => updateRepo(user), callbacks);
+        let userEntity = new UserEntity(userDTO);
+        userEntity = await handleServiceCall<UserEntity>(async () => updateRepo(userEntity), callbacks);
         return userEntity.asViewModel();
     };
 
