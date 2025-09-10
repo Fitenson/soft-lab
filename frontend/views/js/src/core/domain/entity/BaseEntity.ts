@@ -24,14 +24,11 @@ export default abstract class BaseEntity <T> {
     }
 
     /** Map entity back to API/DTO */
-    asModel(): Partial<T> {
+    asDto(): Partial<T> {
         return this.model;
     }
 
-    /** Optionally get raw model data */
-    getModel(): Partial<T> {
-        return this.model;
-    }
+    abstract asViewModel(): Partial<T>;
 
     /** Generic clone */
     clone(): this {

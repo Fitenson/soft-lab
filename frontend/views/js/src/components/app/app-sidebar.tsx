@@ -14,7 +14,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'User',
+        title: 'UserViewModel',
         href: '/user',
         icon: UserRound,
     },

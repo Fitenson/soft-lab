@@ -1,4 +1,4 @@
-export interface AuthModel {
+export interface AuthDTO {
     UUID: string;
     username: string;
     fullName: string;

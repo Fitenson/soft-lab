@@ -11,6 +11,13 @@ use backend\modules\user\data\models\User;
 
 
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
+    private string $actionUUID;
+
+    public function setActionUUID(string $actionUUID) {
+        $this->actionUUID = $actionUUID;
+    }
+
+
     public function login(Auth $auth): Auth
     {
         $checkUser = User::find()->where(['username' => $auth->getUsername()])->exists();
@@ -24,6 +31,10 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         if (!$User || !$User->validatePassword($auth->getPassword())) {
             Yii::$app->exception->throw('Incorrect username or password', 401);
         }
+
+        $User->_actionUUID = $this->actionUUID;
+        $User->generateAccessToken();
+        $User->save(false);
 
         Yii::$app->user->login($User);
 
@@ -57,5 +68,15 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             'email' => $User->email,
             'password' => $User->accessToken,
         ]);
+    }
+
+
+    public function logout(): bool
+    {
+        $User = User::findOne(['username' => Yii::$app->user->identity->username]);
+        $User->accessToken = null;
+        Yii::$app->user->logout($User);
+
+        return $User->save(false);
     }
 }

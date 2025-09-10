@@ -2,10 +2,11 @@
 
 namespace backend\controllers;
 
-use backend\modules\user\data\models\User;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
+
+use backend\modules\user\data\models\User;
 
 
 class RestController extends ActiveController {

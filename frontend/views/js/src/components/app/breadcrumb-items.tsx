@@ -7,7 +7,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'User',
+        title: 'UserViewModel',
         href: '/user',
     },
 ];

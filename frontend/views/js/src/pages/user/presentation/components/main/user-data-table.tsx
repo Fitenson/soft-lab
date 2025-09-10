@@ -16,22 +16,22 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import type { RootState } from "@/core/presentation/store";
 import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useUserService from "@/pages/user/domain/service/useUserService";
-import User from "@/pages/user/domain/entity/UserEntity"
-import useShowToast from "@/hooks/use-show-toast";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import useUserService from "@/pages/user/domain/service/useUserService";
+import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts"
+// import useShowToast from "@/hooks/use-show-toast";
 import DataTable from "@/core/presentation/table/DataTable";
 import { useState } from "react";
 
 
-interface DataTableProps<TData extends User> {
+interface DataTableProps<TData extends UserViewModel> {
     columns: ColumnDef<TData>[]
     data: TData[]
     onRefresh?: () => void;
 }
 
 
-export default function UserDataTable<TData extends User>({
+export default function UserDataTable<TData extends UserViewModel>({
         columns,
         data,
         onRefresh
@@ -51,22 +51,22 @@ export default function UserDataTable<TData extends User>({
     const { rowSelection, sorting, columnVisibility } = useAppSelector(
         (state: RootState) => state.userDataTable
     );
-    const showToast = useShowToast();
+    // const showToast = useShowToast();
 
-    const queryClient = useQueryClient();
-    const { params } = useAppSelector(state => state.userDataTable);
+    // const queryClient = useQueryClient();
+    // const { params } = useAppSelector(state => state.userDataTable);
     // const { removeUser } = useUserService();
 
-    const mutation = useMutation({
-        mutationFn: (selectedRows: User[]) => removeUser(selectedRows),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["/user/index", params]});
-        },
-        onError: (error) => {
-            console.log(error);
-            showToast("Error", "Failed to delete user", "error");
-        }
-    });
+    // const mutation = useMutation({
+    //     mutationFn: (selectedRows: UserViewModel[]) => removeUser(selectedRows),
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries({ queryKey: ["/user/index", params]});
+    //     },
+    //     onError: (error) => {
+    //         console.log(error);
+    //         showToast("Error", "Failed to delete user", "error");
+    //     }
+    // });
 
 
     const table = useReactTable({
@@ -104,16 +104,16 @@ export default function UserDataTable<TData extends User>({
 
 
     const onSelectRow = (row: Row<TData>) => {
-        const user = new User(row.original as User);
+        const user = new UserViewModel(row.original as UserViewModel);
 
-        router.visit(`/user/${user.id}`);
+        router.visit(`/user/${user.UUID}`);
     };
 
 
-    const handleRemove = () => {
-        const selectedRows = table.getSelectedRowModel() .rows.map(row => new User(row.original as User));
-        mutation.mutate(selectedRows);
-    }
+    // const handleRemove = () => {
+    //     const selectedRows = table.getSelectedRowModel() .rows.map(row => new UserViewModel(row.original as UserViewModel));
+    //     mutation.mutate(selectedRows);
+    // }
 
 
     return (
@@ -122,7 +122,7 @@ export default function UserDataTable<TData extends User>({
                 <div className="w-full">
                     <TopActionBar
                         createAction={{ to: "/user/create" }}
-                        deleteAction={{ action: handleRemove }}
+                        deleteAction={{ action: () => "deleteUser" }}
                         refreshAction={{ action: onRefresh }}
                         table={table}
                     />

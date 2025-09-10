@@ -1,7 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RowSelectionState, SortingState, VisibilityState } from "@tanstack/react-table";
-import type { UserModel } from "@/pages/user/data/models/UserModel";
-import type { MainItem } from "@/types";
 
 
 export interface UserDataTableState {
@@ -9,11 +7,11 @@ export interface UserDataTableState {
     rowSelection: RowSelectionState;
     sorting: SortingState;
     params: {
-        per_page: number,
         order: "asc" | "desc",
-        sort: string
+        sort: string,
+        offset: number,
+        limit: number
     };
-    data: MainItem<UserModel> | null;
 }
 
 
@@ -22,11 +20,11 @@ const initialState: UserDataTableState = {
     rowSelection: {},
     sorting: [],
     params: {
-        per_page: 20,
         order: "desc",
-        sort: "createdAtFormat"
+        sort: "createdAtFormat",
+        offset: 0,
+        limit: 20,
     },
-    data: null,
 }
 
 
@@ -46,9 +44,6 @@ const userDataTableState = createSlice({
         setParams: (state, action: PayloadAction<UserDataTableState["params"]>) => {
             state.params = {...state.params, ...action.payload};
         },
-        setIndexData: (state, action: PayloadAction<MainItem<UserModel>>) => {
-            state.data = action.payload;
-        },
         resetTable: () => initialState,
     }
 });
@@ -59,7 +54,6 @@ export const {
     setRowSelection,
     setSorting,
     setParams,
-    setIndexData,
     resetTable,
 } = userDataTableState.actions;
 

@@ -1,14 +1,14 @@
 import z from "zod"
 
-import UserFormField from "@/pages/user/presentation/form/UserFormField";
+import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
 
 
 export const userSchema = z.object({
-    fullName: z.string().max(UserFormField.fields().fullName.max, { error: UserFormField.fullNameMaxError}),
-    username: z.string().max(UserFormField.fields().username.max, { error: UserFormField.usernameMaxError}),
-    email: z.string().max(UserFormField.fields().email.max, { error: UserFormField.addressMaxError }),
-    description: z.string().max(UserFormField.fields().description.max, { error: UserFormField.descriptionMaxError }).nullable(),
-    address: z.string().max(UserFormField.fields().address.max, { error: UserFormField.addressMaxError })
+    fullName: z.string().max(UserFormField.fullName.max, { error: UserFormField.fullName.maxError }),
+    username: z.string().max(UserFormField.username.max, { error: UserFormField.username.maxError }),
+    email: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }),
+    description: z.string().max(UserFormField.description.max, { error: UserFormField.description.maxError }).nullable(),
+    address: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError })
 });
 
 

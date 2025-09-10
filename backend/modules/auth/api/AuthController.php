@@ -4,6 +4,8 @@ namespace backend\modules\auth\api;
 
 use Yii;
 
+use yii\filters\auth\HttpBasicAuth;
+
 use backend\controllers\RestController;
 use backend\modules\auth\domain\entity\Auth;
 use backend\modules\auth\domain\service\AuthService;
@@ -20,10 +22,17 @@ class AuthController extends RestController {
         $this->authService = Yii::$container->get(AuthService::class);
     }
 
+
     public function behaviors()
     {
         $behaviours = parent::behaviors();
         unset($behaviours['authenticator']);
+
+        $behaviours['authenticator'] = [
+            'class' => HttpBasicAuth::class,
+            'only' => ['logout']
+        ];
+
         return $behaviours;
     }
 
@@ -55,15 +64,16 @@ class AuthController extends RestController {
             return Yii::$app->exception->throw($form->getErrors(), 422);
         }
 
-        // echo '<pre>';
-        // print_r($form->getErrors());
-        // die;
-
         $data = $form->asArray();
         $auth = $this->authService->register(new Auth($data));
 
         $auth = $auth->asArray();
 
         return $auth;
+    }
+
+
+    public function actionLogout() {
+        return $this->authService->logout();
     }
 }

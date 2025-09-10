@@ -1,11 +1,11 @@
 import { Head, router } from "@inertiajs/react";
 import { SelectValue } from "@radix-ui/react-select";
 
-import breadcrumbItems from "@/components/breadcrumb-items";
+import breadcrumbItems from "@/components/app/breadcrumb-items";
 import AppLayout from "@/layouts/app-layout";
-import UserLayout from "@/layouts/user/layout";
+import UserLayout from "@/pages/user/presentation/layouts/user-layout.tsx";
 
-import User from "@/pages/user/data/models/User";
+import UserViewModel from "@/pages/user/data/dto/UserViewModel";
 import UserForm from "@/pages/user/presentation/form/UserForm";
 import { UserModel } from "./presentation/schema/userSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -65,7 +65,7 @@ export default function UserFormView({ userData }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="User" />
+            <Head title="UserViewModel" />
             <Head title={user.name} />
 
             <UserLayout>

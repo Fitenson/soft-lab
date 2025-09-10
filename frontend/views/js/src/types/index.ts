@@ -22,8 +22,8 @@ export interface NavItem {
 
 
 export interface Params {
-    offset: string;
-    limit: string;
+    offset: number;
+    limit: number;
     sort: string;
     order: "asc" | "desc";
 }
@@ -39,4 +39,7 @@ export interface FormFieldType {
     label: string;
     name: string;
     max: number;
+    maxError: string;
+    min?: number;
+    minError?: string;
 }

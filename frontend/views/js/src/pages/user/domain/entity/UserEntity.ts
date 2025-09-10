@@ -1,183 +1,177 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity";
-import type { UserModel } from "@/pages/user/data/models/UserModel";
+import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
+import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
 
 
-export default class User extends BaseEntity<UserModel> {
-    private UUID: string;
-    private username: string;
-    private fullName: string;
-    private email: string;
-    private title: string;
-    private profileImage: string;
-    private description: string;
-    private address: string;
-    private gender: string;
-    private phoneNo: string;
-    private valid: boolean;
-    private createdAtFormat: string;
-    private createdByName: string;
-    private updatedAtFormat: string;
-    private updatedByName: string;
+export default class UserEntity extends BaseEntity<UserDTO> {
+    private _UUID: string;
+    private _username: string;
+    private _fullName: string;
+    private _email: string;
+    private _title: string;
+    private _profileImage: string;
+    private _description: string;
+    private _address: string;
+    private _gender: string;
+    private _phoneNo: string;
+    private _valid: boolean;
+    private _createdAtFormat: string;
+    private _createdByName: string;
+    private _updatedAtFormat: string;
+    private _updatedByName: string;
 
 
-    static readonly usernameMax = 100;
-    static readonly fullNameMax = 255;
-    static readonly emailMax = 255;
-    static readonly titleMax = 255;
-    static readonly descriptionMax = 500;
-    static readonly addressMax = 500;
-    static readonly genderMax = 50;
-    static readonly phoneNoMax = 100;
-
-
-    constructor(data: Partial<UserModel>) {
+    constructor(data: Partial<UserDTO>) {
         super(data);
-        this.UUID = data.UUID ?? "";
-        this.username = data.username ?? "";
-        this.fullName = data.fullName ?? "";
-        this.email = data.email ?? "";
-        this.title = data.title ?? "";
-        this.profileImage = data.profileImage ?? "";
-        this.description = data.description ?? "";
-        this.address = data.address ?? "";
-        this.gender = data.gender ?? "";
-        this.phoneNo = data.phoneNo ?? "";
-        this.valid = data.valid ?? true;
-        this.createdAtFormat = data.createdAtFormat ?? "";
-        this.createdByName = data.createdByName ?? "";
-        this.updatedAtFormat = data.updatedAtFormat ?? "";
-        this.updatedByName = data.updatedByName ?? "";
+        this._UUID = data.UUID ?? "";
+        this._username = data.username ?? "";
+        this._fullName = data.fullName ?? "";
+        this._email = data.email ?? "";
+        this._title = data.title ?? "";
+        this._profileImage = data.profileImage ?? "";
+        this._description = data.description ?? "";
+        this._address = data.address ?? "";
+        this._gender = data.gender ?? "";
+        this._phoneNo = data.phoneNo ?? "";
+        this._valid = data.valid ?? true;
+        this._createdAtFormat = data.createdAtFormat ?? "";
+        this._createdByName = data.createdByName ?? "";
+        this._updatedAtFormat = data.updatedAtFormat ?? "";
+        this._updatedByName = data.updatedByName ?? "";
     }
 
 
-    setUUID(UUID: string): void
-    {
-        this.UUID = UUID;
-    }
-
-    setUsername(username: string): void
-    {
-        this.username = username;
-    }
-
-    setFullName(fullName: string): void
-    {
-        this.fullName = fullName;
-    }
-
-    setProfileImage(profileImage: string): void
-    {
-        this.profileImage = profileImage;
-    }
-
-    setEmail(email: string): void
-    {
-        this.email = email;
-    }
-
-    setDescription(description: string): void
-    {
-        this.description = description;
-    }
-
-    setAddress(address: string): void
-    {
-        this.address = address;
-    }
-
-    setGender(gender: string): void
-    {
-        this.gender = gender;
-    }
-
-    setTitle(title: string): void
-    {
-        this.title = title;
-    }
-
-    setPhoneNo(phoneNo: string): void
-    {
-        this.phoneNo = phoneNo;
-    }
-
-    setValid(valid: boolean): void
-    {
-        this.valid = valid;
+    asViewModel(): Partial<UserViewModel> {
+        return {
+            username: this._username,
+            fullName: this._fullName,
+            email: this._email,
+            title: this._title,
+            phoneNo: this._phoneNo,
+            description: this._description,
+            address: this._address,
+            gender: this._gender,
+        };
     }
 
 
-    getUUID(): string
-    {
-        return this.UUID;
+    get UUID(): string {
+        return this._UUID;
     }
 
-    getUsername(): string
-    {
-        return this.username;
+    set UUID(value: string) {
+        this._UUID = value;
     }
 
-    getFullName(): string
-    {
-        return this.fullName;
+    get username(): string {
+        return this._username;
     }
 
-    getProfileImage(): string
-    {
-        return this.profileImage;
+    set username(value: string) {
+        this._username = value;
     }
 
-    getEmail(): string
-    {
-        return this.email;
+    get fullName(): string {
+        return this._fullName;
     }
 
-    getDescription(): string
-    {
-        return this.description;
+    set fullName(value: string) {
+        this._fullName = value;
     }
 
-    getAddress(): string
-    {
-        return this.address;
+    get email(): string {
+        return this._email;
     }
 
-    getGender(): string
-    {
-        return this.gender;
+    set email(value: string) {
+        this._email = value;
     }
 
-    getTitle(): string
-    {
-        return this.title;
+    get title(): string {
+        return this._title;
     }
 
-    getPhoneNo(): string
-    {
-        return this.phoneNo;
+    set title(value: string) {
+        this._title = value;
     }
 
-    getValid(): boolean
-    {
-        return this.valid;
+    get profileImage(): string {
+        return this._profileImage;
     }
 
-    getCreatedAtFormat(): string
-    {
-        return this.createdAtFormat;
+    set profileImage(value: string) {
+        this._profileImage = value;
     }
 
-    getCreatedByName(): string
-    {
-        return this.createdByName;
+    get description(): string {
+        return this._description;
     }
 
-    getUpdatedAtFormat(): string
-    {
-        return this.updatedAtFormat;
+    set description(value: string) {
+        this._description = value;
     }
 
-    getUpdatedByName(): string
-    {
-        return this.updatedByName;
+    get address(): string {
+        return this._address;
+    }
+
+    set address(value: string) {
+        this._address = value;
+    }
+
+    get gender(): string {
+        return this._gender;
+    }
+
+    set gender(value: string) {
+        this._gender = value;
+    }
+
+    get phoneNo(): string {
+        return this._phoneNo;
+    }
+
+    set phoneNo(value: string) {
+        this._phoneNo = value;
+    }
+
+    get valid(): boolean {
+        return this._valid;
+    }
+
+    set valid(value: boolean) {
+        this._valid = value;
+    }
+
+    get createdAtFormat(): string {
+        return this._createdAtFormat;
+    }
+
+    set createdAtFormat(value: string) {
+        this._createdAtFormat = value;
+    }
+
+    get createdByName(): string {
+        return this._createdByName;
+    }
+
+    set createdByName(value: string) {
+        this._createdByName = value;
+    }
+
+    get updatedAtFormat(): string {
+        return this._updatedAtFormat;
+    }
+
+    set updatedAtFormat(value: string) {
+        this._updatedAtFormat = value;
+    }
+
+    get updatedByName(): string {
+        return this._updatedByName;
+    }
+
+    set updatedByName(value: string) {
+        this._updatedByName = value;
     }
 }

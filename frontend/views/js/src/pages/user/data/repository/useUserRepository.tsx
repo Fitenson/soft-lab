@@ -1,6 +1,6 @@
 import { useRequest } from "@/lib/useRequest";
-import type User from "@/pages/user/domain/entity/UserEntity";
-import type {UserModel} from "@/pages/user/data/models/UserModel.ts";
+import UserEntity from "@/pages/user/domain/entity/UserEntity";
+import type {UserDTO} from "@/pages/user/data/dto/UserDTO.ts";
 import type { DataTableType, Params } from "@/types";
 
 
@@ -10,13 +10,13 @@ const useUserRepository = () => {
     const index = async (params: Params) => {
         const formData = new FormData();
 
-        formData.append("param[offset]", params.offset);
-        formData.append("param[limit]", params.limit);
+        formData.append("param[offset]", params.offset ?? "0");
+        formData.append("param[limit]", params.limit ?? "20");
         formData.append("param[sort]", params.sort);
         formData.append("param[order]", params.order);
 
 
-        return await request<DataTableType<User>>({
+        return await request<DataTableType<UserDTO>>({
             url: "/user/index",
             method: "POST",
             data: formData
@@ -24,33 +24,60 @@ const useUserRepository = () => {
     }
 
 
-    const create = async (user: User) => {
-        const userModel = user.asModel();
+    const create = async (user: UserEntity) => {
+        const userDto = user.asDto();
         const formData = new FormData();
 
-        formData.append("user[username]", userModel.username ?? "");
-        formData.append("user[fullName]", userModel.fullName ?? "");
-        formData.append("user[email]", userModel.email ?? "");
-        formData.append("user[title]", userModel.title ?? "");
+        formData.append("user[username]", userDto.username ?? "");
+        formData.append("user[fullName]", userDto.fullName ?? "");
+        formData.append("user[email]", userDto.email ?? "");
+        formData.append("user[title]", userDto.title ?? "");
         // formData.append("user[profileImage]", userModel.profileImage);
-        formData.append("user[description]", userModel.description ?? "");
-        formData.append("user[address]", userModel.address ?? "");
-        formData.append("user[gender]", userModel.gender ?? "");
-        formData.append("user[phoneNo]", userModel.phoneNo ?? "");
-        formData.append("user[valid]", userModel.valid ? "1" : "0");
+        formData.append("user[description]", userDto.description ?? "");
+        formData.append("user[address]", userDto.address ?? "");
+        formData.append("user[gender]", userDto.gender ?? "");
+        formData.append("user[phoneNo]", userDto.phoneNo ?? "");
+        formData.append("user[valid]", userDto.valid ? "1" : "0");
 
-
-        return await request<UserModel>({
+        const newUserDto = await request<UserDTO>({
             url: "/user/create",
             method: "POST",
             data: formData,
         });
+
+        return new UserEntity(newUserDto);
+    }
+
+
+    const update = async (user: UserEntity) => {
+        const userDto = user.asDto();
+        const formData = new FormData();
+
+        formData.append("user[username]", userDto.username ?? "");
+        formData.append("user[fullName]", userDto.fullName ?? "");
+        formData.append("user[email]", userDto.email ?? "");
+        formData.append("user[title]", userDto.title ?? "");
+        // formData.append("user[profileImage]", userModel.profileImage);
+        formData.append("user[description]", userDto.description ?? "");
+        formData.append("user[address]", userDto.address ?? "");
+        formData.append("user[gender]", userDto.gender ?? "");
+        formData.append("user[phoneNo]", userDto.phoneNo ?? "");
+        formData.append("user[valid]", userDto.valid ? "1" : "0");
+
+        const newUserDto = await request<UserDTO>({
+            url: `/user/update?id=${userDto.UUID}`,
+            method: "POST",
+            data: formData,
+        });
+
+        return new UserEntity(newUserDto);
     }
 
 
     return {
         index,
-        create
+        create,
+        update,
     };
 }
 

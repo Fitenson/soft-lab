@@ -1,40 +1,51 @@
 import { handleServiceCall, type ServiceCallback } from "@/core/domain/service/serviceHandler";
 import useUserRepository from "@/pages/user/data/repository/useUserRepository";
 import type { DataTableType, Params } from "@/types";
-import type User from "../entity/UserEntity";
+import type UserEntity from "../entity/UserEntity";
+import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
 
 
 const useUserService = () => {
-    const { index: indexRepo, create: createRepo } = useUserRepository();
+    const { index: indexRepo, create: createRepo, update: updateRepo } = useUserRepository();
 
     const index = async (
         params: Params, 
-        callbacks?: ServiceCallback<DataTableType<User>>
+        callbacks?: ServiceCallback<DataTableType<UserViewModel>>
     ) => {
-        // indexRepo returns DTOs from API
-        // map them to domain entities
-        return handleServiceCall<DataTableType<User>>(async () => {
-            const response = await indexRepo(params); // returns DataTableType<UserModel>
+        return handleServiceCall<DataTableType<UserViewModel>>(async () => {
+            const response = await indexRepo(params);
+            const rows = response.rows.map(dto => new UserViewModel(dto));
+
             return {
-                total: response.total,
-                rows: response.rows.map(User.fromModel) // map DTO to entity
+                ...response,
+                rows
             };
         }, callbacks);
     };
 
 
     const create = async (
-        user: User, // domain entity
-        callbacks?: ServiceCallback<User>
+        user: UserEntity,
+        callbacks?: ServiceCallback<UserEntity>
     ) => {
-        // map entity to API shape if needed
-        return handleServiceCall<User>(async () => createRepo(user.toModel()), callbacks);
+        const userEntity = await handleServiceCall<UserEntity>(async () => createRepo(user), callbacks);
+        return userEntity.asViewModel();
+    };
+
+
+    const update = async (
+        user: UserEntity,
+        callbacks?: ServiceCallback<UserEntity>
+    ) => {
+        const userEntity = await handleServiceCall<UserEntity>(async () => updateRepo(user), callbacks);
+        return userEntity.asViewModel();
     };
 
 
     return {
         index,
-        create
+        create,
+        update,
     };
 };
 

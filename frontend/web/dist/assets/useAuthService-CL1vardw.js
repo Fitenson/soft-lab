@@ -1,1 +1,0 @@
-import c from"./useAuthRepository-Bm1sinKa.js";import"./main-D5mPtQeD.js";import"./useAppSelector-c-PBPF5F.js";async function i(e,{onSuccess:t,onError:s}={}){try{const r=await e();return t?.(r),r}catch(r){throw s?.(r),r}}const l=()=>{const{login:e,register:t}=c();return{login:async(o,n)=>i(()=>e(o),n),register:async(o,n)=>i(()=>t(o),n)}};export{l as default};

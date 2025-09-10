@@ -1,14 +1,14 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import User from "@/pages/user/domain/entity/UserEntity";
 import { createColumn } from "@/core/presentation/table/ColumnConfig";
-import {} from "@/pages/presentation/form/UserFormField";
+import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
+import type UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
 
 
-export const columns: ColumnDef<User>[] = [
-    createColumn<User>({ accessorKey: UserForm.getName(), header: "Name" }),
-    createColumn<User>({ accessorKey: UserForm.getFullName(), header: "Full Name" }),
-    createColumn<User>({ accessorKey: UserForm.getEmail(), header: "Email" }),
-    createColumn<User>({ accessorKey: UserForm.getDescription(), header: "Description" }),
-    createColumn<User>({ accessorKey: UserForm.getAddress(), header: "Address" }),
-    createColumn<User>({ accessorKey: UserForm.getGender(), header: "Gender" }),
+export const columns: ColumnDef<UserViewModel>[] = [
+    createColumn<UserViewModel>({ accessorKey: UserFormField.fullName.name, header: UserFormField.fullName.label }),
+    createColumn<UserViewModel>({ accessorKey: UserFormField.username.name, header: UserFormField.username.label }),
+    createColumn<UserViewModel>({ accessorKey: UserFormField.email.name, header: UserFormField.email.label }),
+    createColumn<UserViewModel>({ accessorKey: UserFormField.description.name, header: UserFormField.description.label }),
+    createColumn<UserViewModel>({ accessorKey: UserFormField.address.name, header: UserFormField.address.label }),
+    createColumn<UserViewModel>({ accessorKey: UserFormField.gender.name, header: UserFormField.gender.label }),
 ];

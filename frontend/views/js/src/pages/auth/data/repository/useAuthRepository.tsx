@@ -1,18 +1,18 @@
 import { useRequest } from "@/lib/useRequest"
 import type Auth from "../../domain/entity/AuthEntity";
-import type { AuthModel } from "../dto/AuthDTO";
+import type { AuthDTO } from "../dto/AuthDTO";
 
 
 const useAuthRepository = () => {
     const { request } = useRequest();
 
-    const login = async (auth: Auth): Promise<AuthModel> => {
+    const login = async (auth: Auth): Promise<AuthDTO> => {
         const formData = new FormData();
 
         formData.append("username", auth.getUsername());
         formData.append("password", auth.getPassword());
 
-        return await request<AuthModel>({
+        return await request<AuthDTO>({
             url: "/auth/login",
             method: "POST",
             data: formData
@@ -28,7 +28,7 @@ const useAuthRepository = () => {
         formData.append("email", auth.getEmail());
         formData.append("password", auth.getPassword());
 
-        return await request<AuthModel>({
+        return await request<AuthDTO>({
             url: "/auth/register",
             method: "POST",
             data: formData

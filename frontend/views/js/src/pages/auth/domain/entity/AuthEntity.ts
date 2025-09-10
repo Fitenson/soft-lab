@@ -1,100 +1,86 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity";
-import type { AuthModel } from "@/pages/auth/data/dto/AuthDTO";
+import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
 
 
-export default class Auth extends BaseEntity<AuthModel> {
-    private UUID: string;
-    private username: string;
-    private fullName: string;
-    private email: string;
-    private password: string;
-    private profileImage: string;
+export default class AuthEntity extends BaseEntity<AuthDTO> {
+    private _UUID: string;
+    private _username: string;
+    private _fullName: string;
+    private _email: string;
+    private _password: string;
+    private _profileImage: string;
 
 
-    constructor(data: Partial<AuthModel>) {
+    constructor(data: Partial<AuthDTO>) {
         super(data);
-        this.UUID = data.UUID ?? "";
-        this.username = data.username ?? "";
-        this.fullName = data.fullName ?? "";
-        this.email = data.email ?? "";
-        this.password = data.password ?? "";
-        this.profileImage = data.profileImage ?? "";
+        this._UUID = data.UUID ?? "";
+        this._username = data.username ?? "";
+        this._fullName = data.fullName ?? "";
+        this._email = data.email ?? "";
+        this._password = data.password ?? "";
+        this._profileImage = data.profileImage ?? "";
     }
 
 
-    setUUID(UUID: string): void
-    {
-        this.UUID = UUID;
+    get UUID(): string {
+        return this._UUID;
     }
 
-    setUsername(username: string): void
-    {
-        this.username = username;
+    set UUID(value: string) {
+        this._UUID = value;
     }
 
-    setEmail(email: string): void
-    {
-        this.email = email;
+    get username(): string {
+        return this._username;
     }
 
-    setPassword(password: string): void
-    {
-        this.password = password;
+    set username(value: string) {
+        this._username = value;
     }
 
-    setProfileImage(profileImage: string): void
-    {
-        this.profileImage = profileImage;
+    get fullName(): string {
+        return this._fullName;
     }
 
-
-    getUsername(): string
-    {
-        return this.username;
+    set fullName(value: string) {
+        this._fullName = value;
     }
 
-    getFullName(): string
-    {
-        return this.fullName;
+    get email(): string {
+        return this._email;
     }
 
-    getEmail(): string
-    {
-        return this.email;
+    set email(value: string) {
+        this._email = value;
     }
 
-    getPassword(): string
-    {
-        return this.password;
+    get password(): string {
+        return this._password;
     }
 
-    getProfileImage(): string
-    {
-        return this.profileImage;
+    set password(value: string) {
+        this._password = value;
     }
 
+    get profileImage(): string {
+        return this._profileImage;
+    }
 
-    asJson() {
+    set profileImage(value: string) {
+        this._profileImage = value;
+    }
+
+    asDto(): Partial<AuthDTO> {
+        return super.asDto();
+    }
+
+    asViewModel(): Partial<AuthDTO> {
         return {
-            UUID: this.UUID,
-            username: this.username,
-            fullName: this.fullName,
-            email: this.email,
-            password: this.password,
-            profileImage: this.profileImage
+            username: this._username,
+            fullName: this._fullName,
+            email: this._email,
+            password: this._password,
+            profileImage: this._profileImage,
         };
-    }
-
-    
-    static fromJson(json: string): Auth
-    {
-        const data = JSON.parse(json);
-        return new Auth(data);
-    }
-
-    asDto(): Partial<AuthModel> {
-        return {
-            UUID: this.UUID,
-        }
     }
 }
