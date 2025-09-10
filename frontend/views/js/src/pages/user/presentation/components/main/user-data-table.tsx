@@ -1,22 +1,24 @@
 import {
-    ColumnDef,
-    ColumnSizingInfoState,
-    ColumnSizingState,
     getCoreRowModel,
     getFilteredRowModel,
     getSortedRowModel,
-    Row,
     useReactTable
 } from "@tanstack/react-table";
+import type {
+    ColumnDef,
+    ColumnSizingInfoState,
+    ColumnSizingState,
+    Row,
+} from "@tanstack/react-table";
 import { router } from "@inertiajs/react";
-import { UserModel } from "@/pages/user/data/models/UserModel";
-import TopActionBar from "@/components/custom/top-action-bar";
+import TopActionBar from "@/components/app/top-action-bar";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
-import { RootState } from "@/core/presentation/store";
+import type { RootState } from "@/core/presentation/store";
 import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useUserService from "../../domain/service/useUserService";
+import useUserService from "@/pages/user/domain/service/useUserService";
+import User from "@/pages/user/domain/entity/UserEntity"
 import useShowToast from "@/hooks/use-show-toast";
 import DataTable from "@/core/presentation/table/DataTable";
 import { useState } from "react";
@@ -53,7 +55,7 @@ export default function UserDataTable<TData extends User>({
 
     const queryClient = useQueryClient();
     const { params } = useAppSelector(state => state.userDataTable);
-    const { removeUser } = useUserService();
+    // const { removeUser } = useUserService();
 
     const mutation = useMutation({
         mutationFn: (selectedRows: User[]) => removeUser(selectedRows),
@@ -102,14 +104,14 @@ export default function UserDataTable<TData extends User>({
 
 
     const onSelectRow = (row: Row<TData>) => {
-        const user = new User(row.original as UserModel);
+        const user = new User(row.original as User);
 
         router.visit(`/user/${user.id}`);
     };
 
 
     const handleRemove = () => {
-        const selectedRows = table.getSelectedRowModel() .rows.map(row => new User(row.original as UserModel));
+        const selectedRows = table.getSelectedRowModel() .rows.map(row => new User(row.original as User));
         mutation.mutate(selectedRows);
     }
 

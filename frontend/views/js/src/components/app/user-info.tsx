@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Auth from '@/pages/auth/domain/entity/Auth';
+import Auth from '@/pages/auth/domain/entity/AuthEntity';
 
 
 interface UserInfoProps {

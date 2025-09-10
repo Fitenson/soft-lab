@@ -1,7 +1,7 @@
 import useAuthRepository from "@/pages/auth/data/repository/useAuthRepository";
-import type Auth from "../entity/Auth";
+import type Auth from "../entity/AuthEntity";
 import { handleServiceCall, type ServiceCallback } from "@/core/domain/service/serviceHandler";
-import type { AuthModel } from "@/pages/auth/data/model/AuthModel";
+import type { AuthModel } from "@/pages/auth/data/dto/AuthDTO";
 
 
 const useAuthService = () => {

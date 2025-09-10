@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import loadingReducer from "@/core/presentation/store/loadingSlice";
-import Auth from "@/pages/auth/domain/entity/Auth";
+import Auth from "@/pages/auth/domain/entity/AuthEntity";
 import authReducer from "@/pages/auth/presentation/redux/authSlice";
 import sidebarReducer from "@/core/presentation/store/sidebarSlice";
 import userDataTableReducer from "@/pages/user/presentation/redux/userDataTableSlice";

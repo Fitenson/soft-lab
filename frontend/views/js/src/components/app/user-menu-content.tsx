@@ -3,7 +3,7 @@ import { UserInfo } from '@/components/app/user-info';
 // import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 // import { Link, router } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
-import type Auth from '@/pages/auth/domain/entity/Auth';
+import type Auth from '@/pages/auth/domain/entity/AuthEntity';
 
 interface UserMenuContentProps {
     user: Auth | null;

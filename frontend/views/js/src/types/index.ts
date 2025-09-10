@@ -6,10 +6,12 @@ export interface BreadcrumbItem {
     href: string;
 }
 
+
 export interface NavGroup {
     title: string;
     items: NavItem[];
 }
+
 
 export interface NavItem {
     title: string;
@@ -18,7 +20,23 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export interface MainItem <T> {
+
+export interface Params {
+    offset: string;
+    limit: string;
+    sort: string;
+    order: "asc" | "desc";
+}
+
+
+export interface DataTableType<T> {
     total: string;
     rows: T[]
+}
+
+
+export interface FormFieldType {
+    label: string;
+    name: string;
+    max: number;
 }

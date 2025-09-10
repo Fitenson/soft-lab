@@ -1,5 +1,5 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity";
-import type { AuthModel } from "@/pages/auth/data/model/AuthModel";
+import type { AuthModel } from "@/pages/auth/data/dto/AuthDTO";
 
 
 export default class Auth extends BaseEntity<AuthModel> {
@@ -12,7 +12,7 @@ export default class Auth extends BaseEntity<AuthModel> {
 
 
     constructor(data: Partial<AuthModel>) {
-        super();
+        super(data);
         this.UUID = data.UUID ?? "";
         this.username = data.username ?? "";
         this.fullName = data.fullName ?? "";
@@ -90,5 +90,11 @@ export default class Auth extends BaseEntity<AuthModel> {
     {
         const data = JSON.parse(json);
         return new Auth(data);
+    }
+
+    asDto(): Partial<AuthModel> {
+        return {
+            UUID: this.UUID,
+        }
     }
 }

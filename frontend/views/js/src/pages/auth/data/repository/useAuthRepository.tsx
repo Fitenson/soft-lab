@@ -1,6 +1,6 @@
 import { useRequest } from "@/lib/useRequest"
-import type Auth from "../../domain/entity/Auth";
-import type { AuthModel } from "../model/AuthModel";
+import type Auth from "../../domain/entity/AuthEntity";
+import type { AuthModel } from "../dto/AuthDTO";
 
 
 const useAuthRepository = () => {

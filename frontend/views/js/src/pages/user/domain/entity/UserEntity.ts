@@ -20,8 +20,18 @@ export default class User extends BaseEntity<UserModel> {
     private updatedByName: string;
 
 
+    static readonly usernameMax = 100;
+    static readonly fullNameMax = 255;
+    static readonly emailMax = 255;
+    static readonly titleMax = 255;
+    static readonly descriptionMax = 500;
+    static readonly addressMax = 500;
+    static readonly genderMax = 50;
+    static readonly phoneNoMax = 100;
+
+
     constructor(data: Partial<UserModel>) {
-        super();
+        super(data);
         this.UUID = data.UUID ?? "";
         this.username = data.username ?? "";
         this.fullName = data.fullName ?? "";
@@ -38,6 +48,7 @@ export default class User extends BaseEntity<UserModel> {
         this.updatedAtFormat = data.updatedAtFormat ?? "";
         this.updatedByName = data.updatedByName ?? "";
     }
+
 
     setUUID(UUID: string): void
     {

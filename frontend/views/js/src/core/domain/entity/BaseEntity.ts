@@ -1,11 +1,12 @@
 export default abstract class BaseEntity <T> {
-    protected breadCrumb: string = '';
+    protected model: Partial<T>;
 
-
-    constructor() {
-        // Object.assign(this, data);
+    constructor(model: Partial<T>) {
+        this.model = model;
     }
 
+
+    protected breadCrumb: string = '';
 
     breadCrumbItem(): string {
         try {
@@ -15,5 +16,25 @@ export default abstract class BaseEntity <T> {
         } catch (error) {
             return '';
         }
+    }
+
+    /** Map API/DTO to entity */
+    static asEntity<M, E extends BaseEntity<M>>(model: M, EntityClass: new (model: M) => E): E {
+        return new EntityClass(model);
+    }
+
+    /** Map entity back to API/DTO */
+    asModel(): Partial<T> {
+        return this.model;
+    }
+
+    /** Optionally get raw model data */
+    getModel(): Partial<T> {
+        return this.model;
+    }
+
+    /** Generic clone */
+    clone(): this {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     }
 }
