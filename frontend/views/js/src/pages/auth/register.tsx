@@ -8,6 +8,7 @@ import Link from "@/components/ui/link";
 import Auth from "./domain/entity/AuthEntity";
 import useAuthService from "./domain/service/useAuthService";
 import useShowToast from "@/hooks/use-show-toast";
+import RegisterFormField from "@/pages/auth/presentation/form/RegisterFormField";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { LoadingButton } from "@/components/buttons/loading-button";
 
@@ -15,7 +16,7 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 export default function RegisterPage() {
     const showToast = useShowToast();
     const isLoading = useAppSelector(state => state.loading.global);
-    const { form, registerFormField, setFormError } = useRegisterForm();
+    const { form, setFormError } = useRegisterForm();
     const { register } = useAuthService();
 
 
@@ -58,10 +59,10 @@ export default function RegisterPage() {
                                 <CardContent className="space-y-6 mx-4">
                                     <FormField
                                         control={form.control}
-                                        name={registerFormField.fullName}
+                                        name={RegisterFormField.fullName.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Full Name</FormLabel>
+                                                <FormLabel className="text-xl">{RegisterFormField.fullName.label}</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Enter your full name" {...field} required />
                                                 </FormControl>
@@ -72,10 +73,10 @@ export default function RegisterPage() {
 
                                     <FormField
                                         control={form.control}
-                                        name={registerFormField.username}
+                                        name={RegisterFormField.username.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Username</FormLabel>
+                                                <FormLabel className="text-xl">{RegisterFormField.username.label}</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Enter your username" {...field} required />
                                                 </FormControl>
@@ -86,10 +87,10 @@ export default function RegisterPage() {
 
                                     <FormField
                                         control={form.control}
-                                        name={registerFormField.email}
+                                        name={RegisterFormField.email.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Email</FormLabel>
+                                                <FormLabel className="text-xl">{RegisterFormField.email.label}</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Enter your email" {...field} required />
                                                 </FormControl>
@@ -100,10 +101,10 @@ export default function RegisterPage() {
 
                                     <FormField
                                         control={form.control}
-                                        name={registerFormField.password}
+                                        name={RegisterFormField.password.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Password</FormLabel>
+                                                <FormLabel className="text-xl">{RegisterFormField.password.label}</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Enter your password" {...field} type="password" required />
                                                 </FormControl>

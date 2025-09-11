@@ -1,15 +1,13 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/app/user-info';
-// import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-// import { Link, router } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
-import type Auth from '@/pages/auth/domain/entity/AuthEntity';
+import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel";
 
 interface UserMenuContentProps {
-    user: Auth | null;
+    authViewModel: AuthViewModel | null;
 }
 
-export function UserMenuContent({ user }: UserMenuContentProps) {
+export function UserMenuContent({ authViewModel }: UserMenuContentProps) {
     // const cleanup = useMobileNavigation();
 
     // const handleLogout = () => {
@@ -21,7 +19,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
         <>
             <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <UserInfo user={user} />
+                    <UserInfo authViewModel={authViewModel} />
                 </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

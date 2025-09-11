@@ -13,13 +13,16 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 import { router } from "@inertiajs/react";
 import { useDispatch } from "react-redux";
 import { setAuth } from "./presentation/redux/authSlice";
+import LoginFormField from "@/pages/auth/presentation/form/LoginFormField";
+import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
+import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel";
 
 
 export default function LoginPage() {
     const showToast = useShowToast();
     const dispatch = useDispatch();
     const isLoading = useAppSelector(state => state.loading.global);
-    const { form, loginFormField, setFormError } = useLoginForm();
+    const { form, setFormError } = useLoginForm();
     const { login } = useAuthService();
 
 
@@ -28,9 +31,8 @@ export default function LoginPage() {
         const auth = new Auth(formValues);
 
         await login(auth, {
-            onSuccess: (data) => {
-                const auth = new Auth(data);
-                dispatch(setAuth(auth));
+            onSuccess: (authDTO: AuthDTO) => {
+                dispatch(setAuth(new AuthViewModel(authDTO)));
                 showToast("Success", "Login successfully", "success");
                 router.visit('/dashboard');
             },
@@ -72,10 +74,10 @@ export default function LoginPage() {
                                     {/* Username */}
                                     <FormField
                                         control={form.control}
-                                        name={loginFormField.username}
+                                        name={LoginFormField.username.name}
                                         render={({ field }) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Username</FormLabel>
+                                                <FormLabel className="text-xl">{LoginFormField.username.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your username"
@@ -91,10 +93,10 @@ export default function LoginPage() {
                                     {/* Password */}
                                     <FormField
                                         control={form.control}
-                                        name={loginFormField.password}
+                                        name={LoginFormField.password.name}
                                         render={({ field }) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">Password</FormLabel>
+                                                <FormLabel className="text-xl">{LoginFormField.password.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your password"

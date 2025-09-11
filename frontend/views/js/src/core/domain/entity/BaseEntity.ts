@@ -28,7 +28,7 @@ export default abstract class BaseEntity <T> {
         return this.model;
     }
 
-    abstract asViewModel(): Partial<T>;
+    abstract asViewModel(): T;
 
     /** Generic clone */
     clone(): this {

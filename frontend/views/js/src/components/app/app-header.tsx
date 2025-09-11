@@ -43,7 +43,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const auth = useAppSelector(state => state.auth.auth);
+    const authViewModel = useAppSelector(state => state.auth.authViewModel);
 
 
     return (
@@ -157,15 +157,15 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="size-10 rounded-full p-1">
                                     <Avatar className="size-8 overflow-hidden rounded-full">
-                                        <AvatarImage src={auth?.getProfileImage()} alt={auth?.getFullName()} />
+                                        <AvatarImage src={authViewModel?.profileImage} alt={authViewModel?.username} />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {auth?.getFullName()}
+                                            {authViewModel?.fullName}
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
-                                <UserMenuContent user={auth} />
+                                <UserMenuContent authViewModel={authViewModel} />
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

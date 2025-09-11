@@ -1,5 +1,6 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity";
 import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
+import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel";
 
 
 export default class AuthEntity extends BaseEntity<AuthDTO> {
@@ -74,13 +75,7 @@ export default class AuthEntity extends BaseEntity<AuthDTO> {
         return super.asDto();
     }
 
-    asViewModel(): Partial<AuthDTO> {
-        return {
-            username: this._username,
-            fullName: this._fullName,
-            email: this._email,
-            password: this._password,
-            profileImage: this._profileImage,
-        };
+    asViewModel(): AuthViewModel {
+        return new AuthViewModel(this.asDto());
     }
 }

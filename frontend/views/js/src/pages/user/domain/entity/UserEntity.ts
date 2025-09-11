@@ -39,19 +39,10 @@ export default class UserEntity extends BaseEntity<UserDTO> {
         this._updatedAtFormat = data.updatedAtFormat ?? "";
         this._updatedByName = data.updatedByName ?? "";
     }
+    
 
-
-    asViewModel(): Partial<UserViewModel> {
-        return {
-            username: this._username,
-            fullName: this._fullName,
-            email: this._email,
-            title: this._title,
-            phoneNo: this._phoneNo,
-            description: this._description,
-            address: this._address,
-            gender: this._gender,
-        };
+    asViewModel(): UserViewModel {
+        return new UserViewModel(this.asDto());
     }
 
 

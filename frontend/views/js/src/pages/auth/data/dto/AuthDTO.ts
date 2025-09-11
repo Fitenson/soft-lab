@@ -4,5 +4,5 @@ export interface AuthDTO {
     fullName: string;
     email: string;
     password: string;
-    profileImage: string;
+    profileImage: string | null;
 }

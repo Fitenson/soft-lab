@@ -1,31 +1,42 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import Auth from "@/pages/auth/domain/entity/AuthEntity";
+import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel";
+import type { AuthDTO } from "../../data/dto/AuthDTO";
 
 
 interface AuthState {
-    auth: Auth | null
+    authViewModel: AuthViewModel | null
 }
 
 const initialState: AuthState = {
-    auth: null
+    authViewModel: null
 }
 
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        setAuth(state, action: PayloadAction<Auth>) {
-            state.auth = action.payload ?? null;
+        setAuth(state, action: PayloadAction<AuthViewModel>) {
+            state.authViewModel = action.payload ?? null;
             localStorage.setItem("auth", JSON.stringify(action.payload.asJson()));
         },
         removeAuth(state) {
-            state.auth = null;
+            state.authViewModel = null;
             localStorage.removeItem("auth");
         },
         refreshAuth(state) {
-            const auth = localStorage.getItem("auth");
-            if(auth) {
-                state.auth = Auth.fromJson(auth);
+            const authString = localStorage.getItem("auth");
+        
+            if (authString) {
+                try {
+                    const authDTO: AuthDTO = JSON.parse(authString);
+                    state.authViewModel = new AuthViewModel(authDTO);
+                } catch (error) {
+                    console.error("Failed to parse auth from localStorage", error);
+                    state.authViewModel = null;
+                    localStorage.removeItem("auth");
+                }
+            } else {
+                state.authViewModel = null;
             }
         }
     }

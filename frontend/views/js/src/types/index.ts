@@ -22,8 +22,8 @@ export interface NavItem {
 
 
 export interface Params {
-    offset: number;
-    limit: number;
+    offset: string;
+    limit: string;
     sort: string;
     order: "asc" | "desc";
 }

@@ -9,8 +9,8 @@ export interface UserDataTableState {
     params: {
         order: "asc" | "desc",
         sort: string,
-        offset: number,
-        limit: number
+        offset: string,
+        limit: string
     };
 }
 
@@ -22,8 +22,8 @@ const initialState: UserDataTableState = {
     params: {
         order: "desc",
         sort: "createdAtFormat",
-        offset: 0,
-        limit: 20,
+        offset: "0",
+        limit: "20",
     },
 }
 

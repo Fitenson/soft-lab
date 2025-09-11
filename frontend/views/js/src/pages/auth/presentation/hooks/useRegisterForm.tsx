@@ -1,20 +1,10 @@
-import { passwordMaxError, usernameMaxError, fullNameMaxError, emailMaxError, passwordMinError } from '@/pages/user/presentation/error/form-message';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { registerSchema, type RegisterModel } from '@/pages/auth/presentation/schema/registerSchema';
 import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
 
-
-export const registerSchema = z.object({
-    fullName: z.string().max(100, { error: fullNameMaxError}),
-    username: z.string().max(100, { error: usernameMaxError}),
-    email: z.string().max(50, { error: emailMaxError}),
-    password: z.string().min(5, passwordMinError).max(50, passwordMaxError)
-});
-
-
-export type RegisterModel = z.infer<typeof registerSchema>;
 
 const useRegisterForm = () => {    
     const form = useForm<RegisterModel>({
@@ -53,18 +43,9 @@ const useRegisterForm = () => {
     }
 
 
-    const registerFormField = {
-        fullName: "fullName",
-        username: "username",
-        email: "email",
-        password: "password",
-    } as const;
-    
-
     return {
         form,
         setFormError,
-        registerFormField
     }
 }
 

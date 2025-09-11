@@ -1,16 +1,17 @@
 import { useRequest } from "@/lib/useRequest"
-import type Auth from "../../domain/entity/AuthEntity";
-import type { AuthDTO } from "../dto/AuthDTO";
+import type AuthEntity from "@/pages/auth/domain/entity/AuthEntity";
+import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
 
 
 const useAuthRepository = () => {
     const { request } = useRequest();
 
-    const login = async (auth: Auth): Promise<AuthDTO> => {
+    const login = async (authEntity: AuthEntity): Promise<AuthDTO> => {
+        const authDTO = authEntity.asDto();
         const formData = new FormData();
 
-        formData.append("username", auth.getUsername());
-        formData.append("password", auth.getPassword());
+        formData.append("username", authDTO.username ?? "");
+        formData.append("password", authDTO.password ?? "");
 
         return await request<AuthDTO>({
             url: "/auth/login",
@@ -20,13 +21,14 @@ const useAuthRepository = () => {
     }
 
 
-    const register = async (auth: Auth) => {
+    const register = async (authEntity: AuthEntity) => {
+        const authDTO = authEntity.asDto();
         const formData = new FormData();
 
-        formData.append("fullName", auth.getFullName());
-        formData.append("username", auth.getUsername());
-        formData.append("email", auth.getEmail());
-        formData.append("password", auth.getPassword());
+        formData.append("fullName", authDTO.fullName ?? "");
+        formData.append("username", authDTO.username ?? "");
+        formData.append("email", authDTO.email ?? "");
+        formData.append("password", authDTO.password ?? "");
 
         return await request<AuthDTO>({
             url: "/auth/register",

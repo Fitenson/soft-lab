@@ -1,18 +1,10 @@
-import { passwordMaxError, usernameMaxError } from '@/pages/user/presentation/error/form-message';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { loginSchema, type LoginModel } from "@/pages/auth/presentation/schema/loginSchema";
 import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
 
-
-export const loginSchema = z.object({
-    username: z.string().max(100, { error: usernameMaxError}),
-    password: z.string().max(50, passwordMaxError)
-});
-
-
-export type LoginModel = z.infer<typeof loginSchema>;
 
 const useLoginForm = () => {
     const form = useForm<LoginModel>({
@@ -47,18 +39,11 @@ const useLoginForm = () => {
             });
         }
     }
-
-
-    const loginFormField = {
-        username: "username",
-        password: "password"
-    } as const;
     
 
     return {
         form,
         setFormError,
-        loginFormField
     }
 }
 

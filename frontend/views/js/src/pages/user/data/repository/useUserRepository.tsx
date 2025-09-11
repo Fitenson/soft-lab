@@ -10,8 +10,8 @@ const useUserRepository = () => {
     const index = async (params: Params) => {
         const formData = new FormData();
 
-        formData.append("param[offset]", params.offset ?? "0");
-        formData.append("param[limit]", params.limit ?? "20");
+        formData.append("param[offset]", params.offset);
+        formData.append("param[limit]", params.limit);
         formData.append("param[sort]", params.sort);
         formData.append("param[order]", params.order);
 

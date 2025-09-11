@@ -26,7 +26,7 @@ const useUserService = () => {
 
 
     const create = async (
-        userDTO: UserDTO,
+        userDTO: Partial<UserDTO>,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
         let userEntity = new UserEntity(userDTO);
@@ -36,7 +36,7 @@ const useUserService = () => {
 
 
     const update = async (
-        userDTO: UserDTO,
+        userDTO: Partial<UserDTO>,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
         let userEntity = new UserEntity(userDTO);

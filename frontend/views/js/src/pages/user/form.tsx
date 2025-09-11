@@ -5,12 +5,10 @@ import breadcrumbItems from "@/components/app/breadcrumb-items";
 import AppLayout from "@/layouts/app-layout";
 import UserLayout from "@/pages/user/presentation/layouts/user-layout.tsx";
 
-import UserViewModel from "@/pages/user/data/dto/UserViewModel";
-import { UserModel } from "./presentation/schema/userSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import TopActionBar from "@/components/custom/top-action-bar";
+import TopActionBar from "@/components/app/top-action-bar";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import useShowToast from "@/hooks/use-show-toast";
@@ -27,36 +25,32 @@ type Props = {
 
 
 export default function UserFormView({ user }: Props) {
-    const userViewModel = new UserViewModel(user);
     const isLoading = useAppSelector(state => state.loading.global);
     const showToast = useShowToast();
-    const { form, setFormError } = useUserForm({ userViewModel: userViewModel });
+    const { form, setFormError, userViewModel, setUserViewModel } = useUserForm({ userDTO: user });
     const { create, update } = useUserService();
-
 
     const breadcrumbs = [
         ...breadcrumbItems,
-        { title: userViewModel.name || "Create", href: '/' }
+        { title: userViewModel?.username || "Create", href: '/' }
     ];
 
 
     const submit = async () => {
         const formValues = form.getValues();
+        const userDTO: Partial<UserDTO> = { ...formValues };
 
         try {
-            let response;
-
-            if(userViewModel.UUID) {
-                const userDTO: UserDTO = { ...formValues };
-                userViewModel = await update(userDTO);
-
+            if(userViewModel?.UUID) {
+                const newUserViewModel = await update(userDTO);
+                setUserViewModel(newUserViewModel);
                 showToast('Success', 'Update user successfully', 'success');
             } else {
-                const userDTO: UserDTO = { ...formValues };
-                userViewModel = await create(userDTO);
+                const newUserViewModel = await create(userDTO);
+                setUserViewModel(newUserViewModel);
                 showToast('Success', 'Create user successfully', 'success');
 
-                router.visit(`/user/${userViewModel.UUID}`);
+                router.visit(`/user/${userViewModel?.UUID}`);
             }
         } catch(error) {
             setFormError(error);
@@ -68,7 +62,7 @@ export default function UserFormView({ user }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="User" />
-            <Head title={userViewModel.fullName} />
+            <Head title={userViewModel?.fullName ?? "Create"} />
 
             <UserLayout>
                 <Form {...form}>
@@ -137,7 +131,7 @@ export default function UserFormView({ user }: Props) {
                                 <FormItem>
                                     <FormLabel>{UserFormField.gender.label}</FormLabel>
                                     <FormControl>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value ?? ""}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Gender" />
                                             </SelectTrigger>
@@ -164,6 +158,7 @@ export default function UserFormView({ user }: Props) {
                                     <FormControl>
                                         <Textarea
                                             {...field}
+                                            value={field.value ?? ""}
                                             disabled={isLoading}
                                             rows={4}
                                             style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '4rem' }}
@@ -182,6 +177,7 @@ export default function UserFormView({ user }: Props) {
                                     <FormControl>
                                         <Textarea
                                             {...field}
+                                            value={field.value ?? ""}
                                             disabled={isLoading}
                                             rows={4}
                                             style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '4rem' }}
