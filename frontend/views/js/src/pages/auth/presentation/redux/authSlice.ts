@@ -17,13 +17,23 @@ const authSlice = createSlice({
     reducers: {
         setAuth(state, action: PayloadAction<AuthViewModel>) {
             state.authViewModel = action.payload ?? null;
-            localStorage.setItem("auth", JSON.stringify(action.payload.asJson()));
+            
+            if(typeof window !== "undefined") {
+                localStorage.setItem("auth", JSON.stringify(action.payload.asJson()));
+            }
         },
         removeAuth(state) {
             state.authViewModel = null;
-            localStorage.removeItem("auth");
+            
+            if(typeof window !== "undefined") {
+                localStorage.removeItem("auth");
+            }
         },
         refreshAuth(state) {
+            if(typeof window === "undefined") {
+                state.authViewModel = null;
+            }
+
             const authString = localStorage.getItem("auth");
         
             if (authString) {
@@ -43,5 +53,5 @@ const authSlice = createSlice({
 });
 
 
-export const { setAuth, removeAuth } = authSlice.actions;
+export const { setAuth, removeAuth, refreshAuth } = authSlice.actions;
 export default authSlice.reducer;

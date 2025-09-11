@@ -78,8 +78,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->inertia('welcome', [
-            'isGuest' => Yii::$app->user->isGuest
-        ]);
+        return $this->inertia('welcome');
     }
 }

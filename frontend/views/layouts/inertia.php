@@ -9,7 +9,7 @@ use yii\helpers\Html;
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>My Inertia App</title>
+    <title>Soft Lab</title>
 
     <!-- Point to your Vite dev/build entry -->
 <?= \frontend\assets\Vite::asset('src/main.tsx') ?>

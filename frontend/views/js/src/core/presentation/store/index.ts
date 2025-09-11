@@ -11,13 +11,19 @@ import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
 
 function loadAuthFromStorage() {
     const jsonString = localStorage.getItem("auth");
-    const authDTO: AuthDTO = JSON.parse(jsonString ?? "");
 
-    if(authDTO) {
-        const authViewModel = new AuthViewModel(authDTO);
-        return { authViewModel: authViewModel };
+    if (!jsonString) {
+        return { authViewModel: null };
     }
-    return { authViewModel: null };
+
+    try {
+        const authDTO: AuthDTO = JSON.parse(jsonString);
+        return { authViewModel: new AuthViewModel(authDTO) };
+    } catch (error) {
+        console.error("Failed to parse auth from localStorage", error);
+        localStorage.removeItem("auth");
+        return { authViewModel: null };
+    }
 }
 
 
