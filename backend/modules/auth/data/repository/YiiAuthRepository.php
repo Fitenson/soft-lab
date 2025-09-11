@@ -13,8 +13,8 @@ use backend\modules\user\data\models\User;
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
     private string $actionUUID;
 
-    public function setActionUUID(string $actionUUID) {
-        $this->actionUUID = $actionUUID;
+    public function setActionUUID() {
+        $this->actionUUID = Yii::$app->db->createCommand('select UUID()')->queryScalar();
     }
 
 
@@ -34,11 +34,12 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
 
         $User->_actionUUID = $this->actionUUID;
         $User->generateAccessToken();
-        $User->save(false);
+        $User->saveQuietly(false);
 
         Yii::$app->user->login($User);
 
         return new Auth([
+            'UUID' => $User->UUID,
             'username' => $User->username,
             'fullName' => $User->fullName,
             'email' => $User->email,
@@ -63,6 +64,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         }
 
         return new Auth([
+            'UUID' => $User->UUID,
             'username' => $User->username,
             'fullName' => $User->fullName,
             'email' => $User->email,

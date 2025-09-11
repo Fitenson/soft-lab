@@ -5,11 +5,18 @@ namespace backend\modules\auth\domain\entity;
 use backend\components\entity\Entity;
 
 
-class Auth extends Entity {
+class AuthEntity extends Entity {
+    private string $UUID;
     private string $username;
     private string $email;
     private string $fullName;
     private string $password;
+
+
+    public function setUUID(string $UUID): void
+    {
+        $this->UUID = $UUID;
+    }
 
     public function setUsername(string $username): void
     {
@@ -31,6 +38,11 @@ class Auth extends Entity {
         $this->password = $password;
     }
 
+
+    public function getUUID(): string
+    {
+        return $this->UUID;
+    }
 
     public function getUsername(): string
     {

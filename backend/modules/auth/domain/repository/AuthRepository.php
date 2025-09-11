@@ -9,4 +9,5 @@ interface AuthRepository {
     public function login(Auth $auth);
     public function register(Auth $auth);
     public function logout();
+    public function setActionUUID();
 }
