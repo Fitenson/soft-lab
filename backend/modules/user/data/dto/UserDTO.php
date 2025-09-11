@@ -2,8 +2,10 @@
 
 namespace backend\modules\user\data\dto;
 
+use JsonSerializable;
 
-class UserDTO {
+
+class UserDTO implements JsonSerializable {
     public string $UUID;
     public string $username;
     public string $fullName;
@@ -31,9 +33,21 @@ class UserDTO {
         $this->description = $data['description'];
 
         $this->address = $data['address'];
-        $this->createdAtFormat = $data['createdAtFormat'];
-        $this->createdByName = $data['createdByName'];
-        $this->updatedAtFormat = $data['updatedAtFormat'];
-        $this->updatedByName = $data['updatedByName'];
+        // $this->createdAtFormat = $data['createdAtFormat'];
+        // $this->createdByName = $data['createdByName'];
+        // $this->updatedAtFormat = $data['updatedAtFormat'];
+        // $this->updatedByName = $data['updatedByName'];
+    }
+
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
+
+
+    public function asArray(): array
+    {
+        return $this->jsonSerialize();
     }
 }

@@ -3,9 +3,11 @@
 namespace backend\modules\user\domain\entity;
 
 use backend\components\entity\Entity;
-
+use backend\modules\user\data\dto\UserDTO;
 
 class UserEntity extends Entity {
+    protected string $DTOClassName = UserDTO::class;
+
     private string $UUID;
     private string $username;
     private string $fullName;
@@ -19,6 +21,12 @@ class UserEntity extends Entity {
     private string $createdByName;
     private string $updatedAtFormat;
     private string $updatedByName;
+
+
+    public function asArray(): array
+    {
+        return get_object_vars($this);
+    }
 
 
     public function setUUID(string $UUID): void

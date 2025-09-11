@@ -3,6 +3,7 @@
 namespace backend\modules\auth\domain\usecase;
 
 use Yii;
+use backend\modules\auth\data\dto\AuthDTO;
 use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\repository\AuthRepository;
 
@@ -16,8 +17,11 @@ class LoginUseCase {
     }
 
 
-    public function execute(AuthEntity $authEntity) {
+    public function execute(AuthEntity $authEntity): AuthDTO
+    {
         $this->authRepository->setActionUUID();
-        return $this->authRepository->login($authEntity);
+
+        $authEntity = $this->authRepository->login($authEntity);
+        return $authEntity->asDto();
     }
 }

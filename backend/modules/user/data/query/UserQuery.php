@@ -34,4 +34,24 @@ class UserQuery extends \backend\components\db\AppQuery
     {
         return parent::one($db);
     }
+
+    public function selectIndex(): self
+    {
+        return $this->select([
+            'UUID',
+            'username',
+            'fullName',
+            'gender',
+            'title',
+            'phoneNo',
+            'description',
+            'address',
+            'createdAt',
+            'updatedAt',
+            'createdAtFormat' => 'FROM_UNIXTIME(createdAt, "%Y-%m-%d %H:%i:%s")',
+            'updatedAtFormat' => 'FROM_UNIXTIME(updatedAt, "%Y-%m-%d %H:%i:%s")',
+            'createdByName' => User::find()->alias('u')->select(['fullName'])->where('u.createdBy = user.createdBy'),
+            'updatedByName' => User::find()->alias('u')->select(['fullName'])->where('u.updatedBy = user.updatedBy'),
+        ]);
+    }
 }

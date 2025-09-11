@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import type { BreadcrumbItem } from "@/types";
 import AppLayoutTemplate from "@/layouts/app-sidebar-layout";
+import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
+import {router} from "@inertiajs/react";
 
 
 interface AppLayoutProps {
@@ -10,6 +12,13 @@ interface AppLayoutProps {
 
 
 export default function AppLayout({ children, breadcrumbs, ...props }: AppLayoutProps) {
+    const authViewModel = useAppSelector(state => state.auth.authViewModel);
+
+    if(!authViewModel) {
+        router.visit("/");
+    }
+
+
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
             {children}

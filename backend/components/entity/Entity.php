@@ -3,9 +3,12 @@
 namespace backend\components\entity;
 
 use ReflectionClass;
-
+use Yii;
 
 abstract class Entity {
+    protected string $DTOClassName;
+
+
     public function __construct(?array $data = [])
     {
         foreach($data as $key => $value) {
@@ -20,16 +23,17 @@ abstract class Entity {
     }
 
 
-    public function asArray(): array
-    {
-        $data = [];
-        $reflection = new ReflectionClass($this);
+    abstract public function asArray(): array;
 
-        foreach($reflection->getProperties() as $property) {
-            $property->setAccessible(true);
-            $data[$property->getName()] = $property->getValue($this);
+
+    public function asDTO()
+    {
+        $DTOClassName = $this->DTOClassName;
+        
+        if(!class_exists($DTOClassName)) {
+            Yii::$app->exception->throw('This class name does not exists' . $DTOClassName, 500);
         }
 
-        return $data;
+        return new $DTOClassName($this->asArray());
     }
 }

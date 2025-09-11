@@ -1,8 +1,10 @@
 <?php
 
 use backend\modules\auth\di\AuthProvider;
+use backend\modules\user\DI\UserProvider;
 
 
 return [
-    AuthProvider::class
+    AuthProvider::class,
+    UserProvider::class
 ];

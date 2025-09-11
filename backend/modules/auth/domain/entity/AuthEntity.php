@@ -3,14 +3,23 @@
 namespace backend\modules\auth\domain\entity;
 
 use backend\components\entity\Entity;
+use backend\modules\auth\data\dto\AuthDTO;
 
 
 class AuthEntity extends Entity {
+    protected string $DTOClassName = AuthDTO::class;
+
     private string $UUID;
     private string $username;
     private string $email;
     private string $fullName;
     private string $password;
+
+
+    public function asArray(): array
+    {
+        return get_object_vars($this);
+    }
 
 
     public function setUUID(string $UUID): void

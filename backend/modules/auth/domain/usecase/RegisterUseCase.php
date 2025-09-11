@@ -3,6 +3,7 @@
 namespace backend\modules\auth\domain\usecase;
 
 use Yii;
+use backend\modules\auth\data\dto\AuthDTO;
 use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\repository\AuthRepository;
 
@@ -16,15 +17,15 @@ class RegisterUseCase {
     }
 
 
-    public function execute(AuthEntity $authEntity)
+    public function execute(AuthEntity $authEntity): AuthDTO
     {
         try {
             $transaction = Yii::$app->db->beginTransaction();
             $authEntity = $this->authRepository->register($authEntity);
             $transaction->commit();
 
-            return $authEntity;
-        } catch(\Exception $error) {
+            return $authEntity->asDTO();
+        } catch(\Throwable $error) {
             $transaction->rollBack();
             return Yii::$app->exception->throw($error->getMessage(), 422);
         }

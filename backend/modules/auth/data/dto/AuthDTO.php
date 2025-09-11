@@ -2,8 +2,10 @@
 
 namespace backend\modules\auth\data\dto;
 
+use JsonSerializable;
 
-class AuthDTO {
+
+class AuthDTO implements JsonSerializable {
     public string $UUID;
     public string $username;
     public string $email;
@@ -18,5 +20,17 @@ class AuthDTO {
         $this->username = $data['username'];
         $this->email = $data['email'];
         $this->password = $data['password'];
+    }
+
+    
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
+
+
+    public function asArray() : array
+    {
+        return $this->jsonSerialize();
     }
 }

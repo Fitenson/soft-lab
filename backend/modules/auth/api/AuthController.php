@@ -45,13 +45,13 @@ class AuthController extends RestController {
         $form->load($data, '');
 
         if(!$form->validate()) {
-            Yii::$app->exception->throw('Validation failed', 422);
+            Yii::$app->exception->throw($form->getErrors(), 422);
         }
 
         $data = $form->asArray();
-        $auth = $this->authService->login(new AuthEntity($data));
+        $authDTO = $this->authService->login(new AuthEntity($data));
 
-        return $auth->asArray();
+        return $authDTO->asArray();
     }
 
 
@@ -65,11 +65,9 @@ class AuthController extends RestController {
         }
 
         $data = $form->asArray();
-        $auth = $this->authService->register(new AuthEntity($data));
+        $authDTO = $this->authService->register(new AuthEntity($data));
 
-        $auth = $auth->asArray();
-
-        return $auth;
+        return $authDTO->asArray();
     }
 
 

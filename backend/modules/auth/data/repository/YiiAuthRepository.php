@@ -5,40 +5,46 @@ namespace backend\modules\auth\data\repository;
 use Yii;
 
 use backend\components\repository\BaseRepository;
-use backend\modules\auth\domain\entity\Auth;
+use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\repository\AuthRepository;
 use backend\modules\user\data\models\User;
 
 
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
-    private string $actionUUID;
+    private string $_actionUUID;
 
     public function setActionUUID() {
-        $this->actionUUID = Yii::$app->db->createCommand('select UUID()')->queryScalar();
+        $this->_actionUUID = Yii::$app->db->createCommand('select UUID()')->queryScalar();
     }
 
 
-    public function login(Auth $auth): Auth
+    public function login(AuthEntity $authEntity): AuthEntity
     {
-        $checkUser = User::find()->where(['username' => $auth->getUsername()])->exists();
+        $checkUser = User::find()->where(['username' => $authEntity->getUsername()])->exists();
 
         if(empty($checkUser)) {
-            Yii::$app->exception->throw('Incorrect username or password', 401);
+            Yii::$app->exception->throw([
+                'password' => 'Incorrect username or password'
+            ], 401);
         }
 
-        $User = User::findOne(['username' => $auth->getUsername()]);
+        $User = User::findOne(['username' => $authEntity->getUsername()]);
 
-        if (!$User || !$User->validatePassword($auth->getPassword())) {
-            Yii::$app->exception->throw('Incorrect username or password', 401);
+        if (!$User || !$User->validatePassword($authEntity->getPassword())) {
+            Yii::$app->exception->throw([
+                'password' => [
+                    'Incorrect username or password'
+                ]
+            ], 401);
         }
 
-        $User->_actionUUID = $this->actionUUID;
+        // $User->_actionUUID = $this->actionUUID;
         $User->generateAccessToken();
         $User->saveQuietly(false);
 
         Yii::$app->user->login($User);
 
-        return new Auth([
+        return new AuthEntity([
             'UUID' => $User->UUID,
             'username' => $User->username,
             'fullName' => $User->fullName,
@@ -48,9 +54,9 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
     }
 
 
-    public function register(Auth $auth): Auth
+    public function register(AuthEntity $authEntity): AuthEntity
     {
-        $data = $auth->asArray();
+        $data = $authEntity->asArray();
 
         $User = new User();
 
@@ -63,7 +69,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             Yii::$app->exception->throw($User->getErrors(), 500);
         }
 
-        return new Auth([
+        return new AuthEntity([
             'UUID' => $User->UUID,
             'username' => $User->username,
             'fullName' => $User->fullName,
