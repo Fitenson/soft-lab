@@ -39,7 +39,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         }
 
         // $User->_actionUUID = $this->actionUUID;
-        $User->generateAccessToken();
+        $token = $User->generateAccessToken();
         $User->saveQuietly(false);
 
         Yii::$app->user->login($User);
@@ -49,7 +49,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             'username' => $User->username,
             'fullName' => $User->fullName,
             'email' => $User->email,
-            'password' => $User->accessToken,            
+            'password' => $token,
         ]);
     }
 
@@ -62,7 +62,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
 
         $User->load($data, '');
         $User->passwordHash = Yii::$app->security->generatePasswordHash($data['password']);
-        $User->generateAuthKey();
+        $token = $User->generateAuthKey();
         $User->generateAccessToken();
         
         if(!$User->save(false)) {
@@ -74,7 +74,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             'username' => $User->username,
             'fullName' => $User->fullName,
             'email' => $User->email,
-            'password' => $User->accessToken,
+            'password' => $token,
         ]);
     }
 

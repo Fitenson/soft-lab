@@ -66,12 +66,14 @@ export default function UserFormView({ user }: Props) {
 
             <UserLayout>
                 <Form {...form}>
-                    <form className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
-                        <TopActionBar
-                            saveAction={{}}
-                            browseAction={{ to: "/user" }}
-                            deleteAction={{ action: () => {} }}
-                        />
+                    <form className="grid grid-cols-3 md:grid-cols-2 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
+                        <div className="col-span-3">
+                            <TopActionBar
+                                saveAction={{}}
+                                browseAction={{ to: "/user" }}
+                                deleteAction={{ action: () => {} }}
+                            />
+                        </div>
 
                         <FormField
                             control={form.control}
@@ -153,7 +155,7 @@ export default function UserFormView({ user }: Props) {
                             control={form.control}
                             name={UserFormField.description.name}
                             render={({ field }) => (
-                                <FormItem className="flex-1">
+                                <FormItem className="col-span-2">
                                     <FormLabel>{UserFormField.description.label}</FormLabel>
                                     <FormControl>
                                         <Textarea
@@ -172,7 +174,7 @@ export default function UserFormView({ user }: Props) {
                             control={form.control}
                             name={UserFormField.address.name}
                             render={({ field }) => (
-                                <FormItem className="flex-1">
+                                <FormItem className="col-span-2">
                                     <FormLabel>{UserFormField.address.label}</FormLabel>
                                     <FormControl>
                                         <Textarea

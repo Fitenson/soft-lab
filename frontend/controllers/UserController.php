@@ -25,7 +25,7 @@ class UserController extends InertiaController {
 
     public function actionCreate()
     {
-        return $this->inertia('user/create');
+        return $this->inertia('user/form');
     }
 
 

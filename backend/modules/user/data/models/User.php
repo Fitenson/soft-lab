@@ -187,7 +187,9 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
 
     public function generateAccessToken()
     {
-        $this->accessToken = Yii::$app->security->generateRandomString();
+        $token = Yii::$app->security->generateRandomString();
+        $this->accessToken = Yii::$app->security->generatePasswordHash($token);
+        return $token;
     }
 
     /**
