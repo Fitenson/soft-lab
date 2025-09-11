@@ -175,9 +175,9 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
         return $this->getAuthKey() === $authKey;
     }
 
-    public function validateAccessToken($access_token)
+    public function validateAccessToken($accessToken)
     {
-        return Yii::$app->security->validatePassword($access_token, $this->access_token);
+        return Yii::$app->security->validatePassword($accessToken, $this->accessToken);
     }
 
     public function generateAuthKey()

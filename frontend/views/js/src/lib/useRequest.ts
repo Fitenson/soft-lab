@@ -33,14 +33,23 @@ export const useRequest = (): AxiosRequestResult => {
 
     // const [data, setData] = useState<T | null>(null);
     const isLoading = useAppSelector(state => state.loading.global);
+    const authViewModel = useAppSelector(state => state.auth.authViewModel);
     const [error, setError] = useState<unknown>(null);
 
 
     const request = async <T>(options?: Options): Promise<T> => {
         const shouldShowLoading = options?.withLoading !== false;
+        let authHeader = {};
 
         if(shouldShowLoading) {
             store.dispatch(setIsLoading(true));
+        }
+
+        if(authViewModel) {
+            const credentials = `${authViewModel.username}:${authViewModel.password}`;
+            authHeader = {
+                Authorization: `Basic ${btoa(credentials)}`,
+            }
         }
 
         try {
@@ -50,7 +59,8 @@ export const useRequest = (): AxiosRequestResult => {
                 data: options?.data,
                 ...options?.config,
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    ...authHeader
                 }
             });
 

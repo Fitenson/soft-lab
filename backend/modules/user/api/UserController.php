@@ -2,11 +2,12 @@
 
 namespace backend\modules\user\api;
 
+use Yii;
 use backend\controllers\RestController;
 use backend\modules\user\domain\entity\UserEntity;
 use backend\modules\user\domain\service\UserService;
 use backend\modules\user\form\UserForm;
-use Yii;
+
 
 class UserController extends RestController {
     private UserService $userService;

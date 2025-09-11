@@ -7,7 +7,7 @@ use yii\filters\Cors;
 use yii\rest\ActiveController;
 
 use backend\modules\user\data\models\User;
-
+use Yii;
 
 class RestController extends ActiveController {
     public $modelClass = '';
@@ -22,6 +22,13 @@ class RestController extends ActiveController {
         return [];
     }
 
+
+    protected function verbs()
+    {
+        return [];
+    }
+
+
     public function behaviors()
     {
         $behaviours = parent::behaviors();
@@ -30,10 +37,10 @@ class RestController extends ActiveController {
             'class' => HttpBasicAuth::class,
             'auth' => function($username, $password) {
                 $User = User::findOne(['username' => $username]);
-                if($User && $User->validatePassword($password)) {
-                    return $User;
+                if(!$User || !$User->validateAccessToken($password)) {
+                    Yii::$app->exception->throw('Invalid credentials', 401);
                 }
-                return null;
+                return $User;
             }
         ];
 
