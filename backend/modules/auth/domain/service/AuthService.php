@@ -2,7 +2,7 @@
 
 namespace backend\modules\auth\domain\service;
 
-use backend\modules\auth\domain\entity\Auth;
+use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\usecase\LoginUseCase;
 use backend\modules\auth\domain\usecase\LogoutUseCase;
 use backend\modules\auth\domain\usecase\RegisterUseCase;
@@ -21,15 +21,15 @@ class AuthService {
     }
 
 
-    public function register(Auth $auth)
+    public function register(AuthEntity $authEntity)
     {
-        return $this->registerUseCase->execute($auth);
+        return $this->registerUseCase->execute($authEntity);
     }
 
 
-    public function login(Auth $auth): Auth
+    public function login(AuthEntity $authEntity): AuthEntity
     {
-        return $this->loginUseCase->execute($auth);
+        return $this->loginUseCase->execute($authEntity);
     }
 
 

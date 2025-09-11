@@ -7,7 +7,7 @@ use Yii;
 use yii\filters\auth\HttpBasicAuth;
 
 use backend\controllers\RestController;
-use backend\modules\auth\domain\entity\Auth;
+use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\service\AuthService;
 use backend\modules\auth\form\LoginForm;
 use backend\modules\auth\form\RegisterForm;
@@ -49,7 +49,7 @@ class AuthController extends RestController {
         }
 
         $data = $form->asArray();
-        $auth = $this->authService->login(new Auth($data));
+        $auth = $this->authService->login(new AuthEntity($data));
 
         return $auth->asArray();
     }
@@ -65,7 +65,7 @@ class AuthController extends RestController {
         }
 
         $data = $form->asArray();
-        $auth = $this->authService->register(new Auth($data));
+        $auth = $this->authService->register(new AuthEntity($data));
 
         $auth = $auth->asArray();
 

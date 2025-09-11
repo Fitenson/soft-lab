@@ -2,8 +2,8 @@
 
 namespace backend\modules\auth\domain\usecase;
 
-use backend\modules\auth\domain\entity\Auth;
 use Yii;
+use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\repository\AuthRepository;
 
 
@@ -16,14 +16,14 @@ class RegisterUseCase {
     }
 
 
-    public function execute(Auth $auth)
+    public function execute(AuthEntity $authEntity)
     {
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $auth = $this->authRepository->register($auth);
+            $authEntity = $this->authRepository->register($authEntity);
             $transaction->commit();
 
-            return $auth;
+            return $authEntity;
         } catch(\Exception $error) {
             $transaction->rollBack();
             return Yii::$app->exception->throw($error->getMessage(), 422);

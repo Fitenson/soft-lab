@@ -2,12 +2,12 @@
 
 namespace backend\modules\auth\domain\repository;
 
-use backend\modules\auth\domain\entity\Auth;
+use backend\modules\auth\domain\entity\AuthEntity;
 
 
 interface AuthRepository {
-    public function login(Auth $auth);
-    public function register(Auth $auth);
+    public function login(AuthEntity $authEntity);
+    public function register(AuthEntity $authEntity);
     public function logout();
     public function setActionUUID();
 }
