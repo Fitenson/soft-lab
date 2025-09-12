@@ -13,7 +13,7 @@ class m130524_201442_init extends DbMigration
         }
 
         // Create main user table
-        $this->createTable('{{%user}}', [
+        $this->createTable('{{%user}}', array_merge([
             'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
             'username' => $this->string(100)->notNull()->unique(),
             'fullName' => $this->string(255),
@@ -36,10 +36,11 @@ class m130524_201442_init extends DbMigration
             'updatedAt' => $this->string(50),
             'createdBy' => $this->string(50),
             'updatedBy' => $this->string(50),
-        ], $tableOptions);
+        ], $this->timestamps(), $this->systemFields()), $tableOptions);
+
 
         // Create user_history table (no foreign keys)
-        $this->createTable('{{%user_history}}', [
+        $this->createTable('{{%user_history}}', array_merge([
             'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
             'UUID' => $this->string(50),
             'username' => $this->string(100)->notNull(),
@@ -55,18 +56,7 @@ class m130524_201442_init extends DbMigration
             'passwordHash' => $this->string()->notNull(),
             'passwordResetToken' => $this->string(),
             'email' => $this->string(100)->notNull(),
-
-            'valid' => $this->boolean(),
-            '_actionUUID' => $this->string(50),
-            '_version' => $this->integer(),
-            'createdAt' => $this->string(50),
-            'updatedAt' => $this->string(50),
-            'createdBy' => $this->string(50),
-            'updatedBy' => $this->string(50),
-            'user_id' => $this->string(50),
-            'action' => $this->string(50),
-            'date_created' => $this->string(50),
-        ], $tableOptions);
+        ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
         // Add only the self-referencing foreign keys
         $this->createForeignKey()

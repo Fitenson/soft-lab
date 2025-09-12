@@ -18,20 +18,20 @@ import type { RootState } from "@/core/presentation/store";
 import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice";
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import useUserService from "@/pages/user/domain/service/useUserService";
-import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel"
+import DepartmentViewModel from "@/pages/department/presentation/view-models/DepartmentViewModel"
 // import useShowToast from "@/hooks/use-show-toast";
 import DataTable from "@/core/presentation/table/DataTable";
 import { useState } from "react";
 
 
-interface DataTableProps<TData extends UserViewModel> {
+interface DataTableProps<TData extends DepartmentViewModel> {
     columns: ColumnDef<TData>[]
     data: TData[]
     onRefresh?: () => void;
 }
 
 
-export default function UserDataTable<TData extends UserViewModel>({
+export default function UserDataTable<TData extends DepartmentViewModel>({
         columns,
         data,
         onRefresh
@@ -104,9 +104,9 @@ export default function UserDataTable<TData extends UserViewModel>({
 
 
     const onSelectRow = (row: Row<TData>) => {
-        const user = new UserViewModel(row.original as UserViewModel);
+        const department = new DepartmentViewModel(row.original as DepartmentViewModel);
 
-        router.visit(`/user/${user.UUID}`);
+        router.visit(`/department/${department.UUID}`);
     };
 
 

@@ -2,7 +2,7 @@ import { handleServiceCall, type ServiceCallback } from "@/core/domain/service/s
 import useUserRepository from "@/pages/user/data/repository/useUserRepository";
 import type { DataTableType, Params } from "@/types";
 import UserEntity from "../entity/UserEntity";
-import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
+import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel";
 import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
 
 

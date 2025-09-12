@@ -10,7 +10,7 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 // import { useDispatch } from "react-redux";
 // import { setIndexData } from "./presentation/redux/userDataTableSlice";
 import useUserService from "@/pages/user/domain/service/useUserService";
-import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
+import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel";
 
 
 export default function UserGridview() {

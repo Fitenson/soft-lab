@@ -38,8 +38,8 @@ export interface DataTableType<T> {
 export interface FormFieldType {
     label: string;
     name: string;
-    max: number;
-    maxError: string;
+    max?: number;
+    maxError?: string;
     min?: number;
     minError?: string;
 }

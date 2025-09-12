@@ -1,6 +1,6 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity";
 import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
-import UserViewModel from "@/pages/user/presentation/view_models/UserViewModel.ts";
+import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel";
 
 
 export default class UserEntity extends BaseEntity<UserDTO> {

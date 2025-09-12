@@ -3,7 +3,7 @@ import { z } from "zod"
 import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
 
 
-export const userSchema = z.object({
+export const departmentSchema = z.object({
     fullName: z.string().max(UserFormField.fullName.max, { error: UserFormField.fullName.maxError }),
     username: z.string().max(UserFormField.username.max, { error: UserFormField.username.maxError }),
     email: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }),
@@ -23,4 +23,4 @@ export const userSchema = z.object({
 });
 
 
-export type UserFormModel = z.infer<typeof userSchema>;
+export type UserFormModel = z.infer<typeof departmentSchema>;

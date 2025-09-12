@@ -17,6 +17,7 @@ import useUserService from "@/pages/user/domain/service/useUserService";
 import useUserForm from "@/pages/user/presentation/hooks/useUserForm.tsx";
 import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
 import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
+import type { Role } from "@/pages/user/presentation/types/index";
 
 
 type Props = {
@@ -33,6 +34,14 @@ export default function UserFormView({ user }: Props) {
     const breadcrumbs = [
         ...breadcrumbItems,
         { title: userViewModel?.username || "Create", href: '/' }
+    ];
+
+
+    const roles: Role[] = [
+        { value: "Admin", label: "Admin" },
+        { value: "Supervisor", label: "Supervisor" },
+        { value: "User", label: "User" },
+        { value: "Developer", label: "Developer" },
     ];
 
 
@@ -66,14 +75,33 @@ export default function UserFormView({ user }: Props) {
 
             <UserLayout>
                 <Form {...form}>
-                    <form className="grid grid-cols-3 md:grid-cols-2 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
-                        <div className="col-span-3">
+                    <form className="grid grid-cols-4 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
+                        <div className="col-span-4">
                             <TopActionBar
                                 saveAction={{}}
-                                browseAction={{ to: "/user" }}
+                                browseAction={{ to: "/user/index" }}
                                 deleteAction={{ action: () => {} }}
                             />
                         </div>
+
+                        {/* <FormField
+                            control={form.control}
+                            name={UserFormField.profileImage.name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{UserFormField.profileImage.label}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            {...field}
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        /> */}
 
                         <FormField
                             control={form.control}
@@ -126,18 +154,57 @@ export default function UserFormView({ user }: Props) {
                             )}
                         />
 
+
+                        <FormField
+                            control={form.control}
+                            name={UserFormField.title.name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{UserFormField.title.label}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            value={field.value ?? undefined}
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+
+                        <FormField
+                            control={form.control}
+                            name={UserFormField.phoneNo.name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{UserFormField.phoneNo.label}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            value={field.value ?? undefined}
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+
                         <FormField
                             control={form.control}
                             name={UserFormField.gender.name}
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="w-full">
                                     <FormLabel>{UserFormField.gender.label}</FormLabel>
-                                    <FormControl>
+                                    <FormControl className="w-full">
                                         <Select onValueChange={field.onChange} defaultValue={field.value ?? ""}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Gender" />
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder={UserFormField.gender.label} />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent className="w-full">
                                                 <SelectItem value="Male">Male</SelectItem>
                                                 <SelectItem value="Female">Female</SelectItem>
                                                 <SelectItem value="Others">Others</SelectItem>
@@ -149,8 +216,50 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
+                        
 
-                        <div className="flex flex-row col-span-full w-full gap-6 items-start">
+                        <FormField
+                            control={form.control}
+                            name={UserFormField.role.name}
+                            render={({ field }) => (
+                                <FormItem className="w-full">
+                                    <FormLabel>{UserFormField.role.label}</FormLabel>
+                                    <FormControl className="w-full">
+                                        <Select onValueChange={field.onChange} defaultValue={field.value ?? ""}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder={UserFormField.role.label} />
+                                            </SelectTrigger>
+                                            <SelectContent className="w-full">
+                                                {roles.map((role) => (
+                                                    <SelectItem value={role.value}>{role.label}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+
+                        <FormField
+                            control={form.control}
+                            name={UserFormField.department.name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{UserFormField.department.label}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            value={field.value ?? undefined}
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
                         <FormField
                             control={form.control}
                             name={UserFormField.description.name}
@@ -163,7 +272,7 @@ export default function UserFormView({ user }: Props) {
                                             value={field.value ?? ""}
                                             disabled={isLoading}
                                             rows={4}
-                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '4rem' }}
+                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '8rem', minHeight: '8rem' }}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -182,14 +291,13 @@ export default function UserFormView({ user }: Props) {
                                             value={field.value ?? ""}
                                             disabled={isLoading}
                                             rows={4}
-                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '4rem' }}
+                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '8rem', minHeight: '8rem' }}
                                         />
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
                             )}
                         />
-                        </div>
                     </form>
                 </Form>
             </UserLayout>

@@ -87,4 +87,35 @@ class DbMigration extends Migration {
             );
         }
     }
+
+
+    protected function timestamps(): array
+    {
+        return [
+            'createdAt' => $this->string(50),
+            'updatedAt' => $this->string(50),
+            'createdBy' => $this->string(50),
+            'updatedBy' => $this->string(50),
+        ];
+    }
+
+
+    protected function systemFields(): array
+    {
+        return [
+            'valid' => $this->boolean(),
+            '_actionUUID' => $this->string(50),
+            '_version' => $this->integer(),
+        ];
+    }
+
+
+    protected function historyFields(): array
+    {
+        return [
+            'user_id' => $this->string(50),
+            'action' => $this->string(50),
+            'date_created' => $this->string(50),
+        ];
+    }
 }
