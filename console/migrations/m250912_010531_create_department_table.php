@@ -13,21 +13,21 @@ class m250912_010531_create_department_table extends DbMigration
     public function safeUp()
     {
         $this->createTable('{{%department}}', array_merge([
-            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
+            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
             'departmentID' => $this->string(100)->notNull(),
             'departmentName' => $this->string(100)->notNull(),
-            'head' => $this->string(50)->null(),
-            'description' => $this->string(500)->null(),
+            'head' => $this->char(50)->null(),
+            'description' => $this->string(1000)->null(),
         ], $this->timestamps(), $this->systemFields()));
 
 
         $this->createTable('{{%department_history}}', array_merge([
-            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
+            'UUID' => $this->char(50)->notNull(),
             'departmentID' => $this->string(100)->notNull(),
             'departmentName' => $this->string(100)->notNull(),
-            'head' => $this->string(50)->null(),
-            'description' => $this->string(500)->null(),
-        ], $this->timestamps(), $this->systemFields()));
+            'head' => $this->char(50)->null(),
+            'description' => $this->string(1000)->null(),
+        ], $this->timestamps(), $this->systemFields(), $this->historyFields()));
 
 
         $this->createForeignKey()
@@ -39,6 +39,7 @@ class m250912_010531_create_department_table extends DbMigration
         ->build();
 
         $this->addColumn('{{%user}}', 'department', $this->char(50)->null());
+        $this->addColumn('{{%user_history}}', 'department', $this->char(50)->null());
 
         $this->createForeignKey()
         ->table('user')

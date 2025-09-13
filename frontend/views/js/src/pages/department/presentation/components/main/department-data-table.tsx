@@ -15,7 +15,7 @@ import TopActionBar from "@/components/app/top-action-bar";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import type { RootState } from "@/core/presentation/store";
-import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice";
+import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice.ts";
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import useUserService from "@/pages/user/domain/service/useUserService";
 import DepartmentViewModel from "@/pages/department/presentation/view-models/DepartmentViewModel"
@@ -31,7 +31,7 @@ interface DataTableProps<TData extends DepartmentViewModel> {
 }
 
 
-export default function UserDataTable<TData extends DepartmentViewModel>({
+export default function DepartmentDataTable<TData extends DepartmentViewModel>({
         columns,
         data,
         onRefresh

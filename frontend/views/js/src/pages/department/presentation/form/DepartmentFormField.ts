@@ -1,18 +1,18 @@
 import { createFormField } from "@/lib/utils.ts";
+import { CommonDataTableField } from "@/core/presentation/table/CommonField.tsx";
 
 
-const UserFormField = {
-    username: createFormField({ name: "username", label: "Username", max: 100 }),
-    // profileImage: createFormField({ name: "profileImage", label: "Profile Image", max: 255 }),
-    fullName: createFormField({ name: "fullName", label: "Full name", max: 255 }),
-    email: createFormField({ name: "email", label: "Email", max: 100 }),
-    role: createFormField({ name: "role", label: "Role", max: 50 }),
-    address: createFormField({ name: "address", label: "Address", max: 500 }),
-    description: createFormField({ name: "description", label: "Description", max: 500 }),
-    department: createFormField({ name: "department", label: "Department", max: 500 }),
-    title: createFormField({ name: "title", label: "Title", max: 50 }),
-    gender: createFormField({ name: "gender", label: "Gender", max: 50 }),
-    phoneNo: createFormField({ name: "phoneNo", label: "Phone No", max: 50 }),
+const DepartmentFormField = {
+    departmentID: createFormField({ name: "departmentID", label: "Department ID", max: 100 }),
+    departmentName: createFormField({ name: "departmentName", label: "Department Name", max: 100 }),
+    head: createFormField({ name: "head", label: "" }),
+    headDepartmentName: createFormField({ name: "headDepartmentName", label: "Head Department" }),
+    description: createFormField({ name: "description", label: "Description", max: 1000 }),
+    createdAtFormat: createFormField({ name: CommonDataTableField.createdAtFormat.name, label: CommonDataTableField.createdAtFormat.label }),
+    createdByName: createFormField({ name: CommonDataTableField.createdByName.name, label: CommonDataTableField.createdByName.label }),
+    updatedAtFormat: createFormField({ name: CommonDataTableField.updatedAtFormat.name, label: CommonDataTableField.updatedAtFormat.label }),
+    updatedByName: createFormField({ name: CommonDataTableField.updatedByName.name, label: CommonDataTableField.updatedByName.label }),
 };
 
-export default UserFormField;
+
+export default DepartmentFormField;

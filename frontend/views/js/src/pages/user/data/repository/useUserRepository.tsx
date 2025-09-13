@@ -15,7 +15,6 @@ const useUserRepository = () => {
         formData.append("param[sort]", params.sort);
         formData.append("param[order]", params.order);
 
-
         return await request<DataTableType<UserDTO>>({
             url: "/user/index",
             method: "POST",

@@ -29,7 +29,7 @@ const initialState: UserDataTableState = {
 
 
 const userDataTableState = createSlice({
-    name: "user-data-table",
+    name: "department-data-table",
     initialState,
     reducers: {
         setColumnVisibility: (state, action: PayloadAction<VisibilityState>) => {

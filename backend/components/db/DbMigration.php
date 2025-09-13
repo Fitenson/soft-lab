@@ -113,7 +113,8 @@ class DbMigration extends Migration {
     protected function historyFields(): array
     {
         return [
-            'user_id' => $this->string(50),
+            'historyUUID' => $this->char(50)->append('PRIMARY KEY')->unique(),
+            'user_id' => $this->char(50)->notNull(),
             'action' => $this->string(50),
             'date_created' => $this->string(50),
         ];

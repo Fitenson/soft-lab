@@ -1,26 +1,21 @@
 import { z } from "zod"
 
-import UserFormField from "@/pages/user/presentation/form/UserFormField.ts";
+import DepartmentFormField from "@/pages/department/presentation/form/DepartmentFormField.ts";
 
 
 export const departmentSchema = z.object({
-    fullName: z.string().max(UserFormField.fullName.max, { error: UserFormField.fullName.maxError }),
-    username: z.string().max(UserFormField.username.max, { error: UserFormField.username.maxError }),
-    email: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }),
-    description: z.string().max(UserFormField.description.max, { error: UserFormField.description.maxError }).nullable(),
-    address: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }).nullable(),
-    gender: z.string().max(UserFormField.gender.max, { error: UserFormField.gender.maxError }).nullable(),
-    title: z.string().max(UserFormField.title.max, { error: UserFormField.title.maxError }).nullable(),
-    role: z.string().max(UserFormField.role.max, { error: UserFormField.role.maxError }).nullable(),
-    phoneNo: z.string().max(UserFormField.phoneNo.max, { error: UserFormField.phoneNo.maxError }).nullable(),
-    department: z.string().max(UserFormField.department.max, { error: UserFormField.department.maxError }).nullable(),
+    departmentID: z.string().max(DepartmentFormField.departmentID.max, { error: DepartmentFormField.departmentID.maxError }),
+    departmentName: z.string().max(DepartmentFormField.departmentName.max, { error: DepartmentFormField.departmentName.maxError }),
+    description: z.string().max(DepartmentFormField.description.max, { error: DepartmentFormField.description.maxError }).nullable(),
+    head: z.string().nullable(),
+    headDepartmentName: z.string().nullable(),
 
     // profileImage: z
     // .any()
-    // .refine((file) => file instanceof File, { error: UserFormField.profileImage.maxError })
-    // .refine((file) => !file || file.size <= 10 * 1024 * 1024, { error: UserFormField.profileImage.maxError })
+    // .refine((file) => file instanceof File, { error: DepartmentFormField.profileImage.maxError })
+    // .refine((file) => !file || file.size <= 10 * 1024 * 1024, { error: DepartmentFormField.profileImage.maxError })
     // .nullable(),
 });
 
 
-export type UserFormModel = z.infer<typeof departmentSchema>;
+export type DepartmentFormModel = z.infer<typeof departmentSchema>;

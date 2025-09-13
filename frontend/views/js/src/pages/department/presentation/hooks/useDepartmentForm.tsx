@@ -1,32 +1,29 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel";
-import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form/SetFormError";
-import {AxiosError} from "axios";
-import { userSchema, type UserFormModel } from "@/pages/user/presentation/schema/userSchema";
-import type { UserDTO } from "@/pages/user/data/dto/UserDTO";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AxiosError } from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form/SetFormError";
+import type {DepartmentDTO} from "@/pages/department/data/dto/DepartmentDTO.ts";
+import DepartmentViewModel from "@/pages/department/presentation/view-models/DepartmentViewModel.ts";
+import {type DepartmentFormModel, departmentSchema} from "@/pages/department/presentation/schema/departmentSchema.tsx";
 
 
-const useUserForm = ({ userDTO }: { userDTO: UserDTO | null }) => {
-    const [userViewModel, setUserViewModel] = useState<UserViewModel>();
+const useDepartmentForm = ({ departmentDTO }: { departmentDTO: DepartmentDTO | null }) => {
+    const [departmentViewModel, setDepartmentViewModel] = useState<DepartmentViewModel>();
 
-    if(userDTO) {
-        setUserViewModel(new UserViewModel(userDTO));
+    if(departmentDTO) {
+        setDepartmentViewModel(new DepartmentViewModel(departmentDTO));
     }
     
 
-    const form = useForm<UserFormModel>({
-        resolver: zodResolver(userSchema),
+    const form = useForm<DepartmentFormModel>({
+        resolver: zodResolver(departmentSchema),
         defaultValues: {
-            username: userViewModel?.username ?? "",
-            fullName: userViewModel?.fullName ?? "",
-            email: userViewModel?.email ?? "",
-            address: userViewModel?.address ?? undefined,
-            description: userViewModel?.description ?? undefined,
-            phoneNo: userViewModel?.phoneNo ?? undefined,
-            title: userViewModel?.title ?? undefined,
-            gender: userViewModel?.gender ?? undefined,
+            departmentID: departmentViewModel?.departmentID ?? "",
+            departmentName: departmentViewModel?.departmentName ?? "",
+            description: departmentViewModel?.description ?? "",
+            head: departmentViewModel?.head ?? null,
+            headDepartmentName: departmentViewModel?.headDepartmentName ?? null
         }
     });
 
@@ -43,7 +40,7 @@ const useUserForm = ({ userDTO }: { userDTO: UserDTO | null }) => {
             setToastError?.(errors);
         } else if (errors && Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
-                const normalizedField = field.replace(/^user\./, "") as keyof UserFormModel;
+                const normalizedField = field.replace(/^department\./, "") as keyof DepartmentFormModel;
 
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
@@ -59,10 +56,10 @@ const useUserForm = ({ userDTO }: { userDTO: UserDTO | null }) => {
     return {
         form,
         setFormError,
-        userViewModel,
-        setUserViewModel
+        departmentViewModel,
+        setDepartmentViewModel
     }
 }
 
 
-export default useUserForm;
+export default useDepartmentForm;
