@@ -44,3 +44,6 @@ export interface FormFieldType {
     min?: number;
     minError?: string;
 }
+
+
+export type ApiErrors = Record<string, string | string[]>;

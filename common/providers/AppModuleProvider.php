@@ -6,5 +6,8 @@ return [
     ],
     'user' => [
         'class' => 'backend\modules\user\UserModule'
+    ],
+    'department' => [
+        'class' => 'backend\modules\department\DepartmentModule'
     ]
 ];

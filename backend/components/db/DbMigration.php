@@ -119,4 +119,7 @@ class DbMigration extends Migration {
             'date_created' => $this->string(50),
         ];
     }
+
+
+    protected $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
 }

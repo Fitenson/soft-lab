@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { registerSchema, type RegisterModel } from '@/pages/auth/presentation/schema/registerSchema';
 import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
+import type {ApiErrors} from "@/types";
 
 
 const useRegisterForm = () => {    
@@ -23,7 +24,7 @@ const useRegisterForm = () => {
         options?: SetFormErrorOptions
     ) => {
         const { setToastError } = options || {};
-        const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
+        const axiosError = error as AxiosError<{ errors?: ApiErrors }>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
         if (typeof errors === "string") {
@@ -31,11 +32,15 @@ const useRegisterForm = () => {
         } else if (errors && Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
                 const normalizedField = field.replace(/^user\./, "") as keyof RegisterModel;
+                const errorValue = errors[field];
+
+                const message =
+                    Array.isArray(errorValue) ? errorValue[0] : errorValue || "Invalid value";
             
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
                         type: "server",
-                        message: errors[field][0] ?? "Invalid value",
+                        message,
                     });
                 }
             });

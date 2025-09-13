@@ -21,10 +21,10 @@ class RegisterUseCase {
     {
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $authEntity = $this->authRepository->register($authEntity);
+            $newAuthEntity = $this->authRepository->register($authEntity);
             $transaction->commit();
 
-            return $authEntity->asDTO();
+            return $newAuthEntity->asDTO();
         } catch(\Throwable $error) {
             $transaction->rollBack();
             return Yii::$app->exception->throw($error->getMessage(), 422);

@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { loginSchema, type LoginModel } from "@/pages/auth/presentation/schema/loginSchema";
 import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
+import type { ApiErrors } from "@/types";
 
 
 const useLoginForm = () => {
@@ -21,7 +22,7 @@ const useLoginForm = () => {
         options?: SetFormErrorOptions
     ) => {
         const { setToastError } = options || {};
-        const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
+        const axiosError = error as AxiosError<{ errors?: ApiErrors }>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
         if (typeof errors === "string") {
@@ -29,16 +30,23 @@ const useLoginForm = () => {
         } else if (errors && Object.keys(errors).length > 0) {
             Object.keys(errors).forEach((field) => {
                 const normalizedField = field.replace(/^user\./, "") as keyof LoginModel;
-            
+                const errorValue = errors[field];
+
+                const message =
+                    Array.isArray(errorValue) ? errorValue[0] : errorValue || "Invalid value";
+
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
                         type: "server",
-                        message: errors[field][0] ?? "Invalid value",
+                        message,
                     });
+                } else {
+                    // fallback for unmapped fields → show toast
+                    setToastError?.(message);
                 }
             });
         }
-    }
+    };
     
 
     return {

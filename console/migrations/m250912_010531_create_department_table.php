@@ -12,13 +12,15 @@ class m250912_010531_create_department_table extends DbMigration
      */
     public function safeUp()
     {
+        $tableOptions = $this->tableOptions;
+
         $this->createTable('{{%department}}', array_merge([
             'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
             'departmentID' => $this->string(100)->notNull(),
             'departmentName' => $this->string(100)->notNull(),
             'head' => $this->char(50)->null(),
             'description' => $this->string(1000)->null(),
-        ], $this->timestamps(), $this->systemFields()));
+        ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
         $this->createTable('{{%department_history}}', array_merge([
@@ -27,8 +29,23 @@ class m250912_010531_create_department_table extends DbMigration
             'departmentName' => $this->string(100)->notNull(),
             'head' => $this->char(50)->null(),
             'description' => $this->string(1000)->null(),
-        ], $this->timestamps(), $this->systemFields(), $this->historyFields()));
+        ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
+        $this->createForeignKey()
+        ->table('department')
+        ->column('createdBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
+
+        $this->createForeignKey()
+        ->table('department')
+        ->column('updatedBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
 
         $this->createForeignKey()
         ->table('department')

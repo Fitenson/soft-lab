@@ -10,18 +10,11 @@ class DepartmentEntity extends Entity {
     protected string $DTOClassName = DepartmentDTO::class;
 
     private string $UUID;
-    private string $username;
-    private string $fullName;
-    private string $email;
-    private string $gender;
-    private string $title;
-    private string $phoneNo;
+    private string $departmentID;
+    private string $departmentName;
+    private string $head;
+    private string $headDepartmentName;
     private string $description;
-    private string $address;
-    private string $createdAtFormat;
-    private string $createdByName;
-    private string $updatedAtFormat;
-    private string $updatedByName;
 
 
     public function asArray(): array
@@ -35,44 +28,29 @@ class DepartmentEntity extends Entity {
         $this->UUID = $UUID;
     }
 
-    public function setUsername(string $username): void
+    public function setDepartmentID(string $departmentID): void
     {
-        $this->username = $username;
+        $this->departmentID = $departmentID;
     }
 
-    public function setFullName(string $fullName): void
+    public function setDepartmentName(string $departmentName): void
     {
-        $this->fullName = $fullName;
+        $this->departmentName = $departmentName;
     }
     
-    public function setEmail(string $email): void
+    public function setHead(string $head): void
     {
-        $this->email = $email;
+        $this->head = $head;
     }
 
-    public function setGender(string $gender): void
+    public function setHeadDepartmentName(string $headDepartmentName): void
     {
-        $this->gender = $gender;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function setPhoneNo(string $phoneNo): void
-    {
-        $this->phoneNo = $phoneNo;
+        $this->headDepartmentName = $headDepartmentName;
     }
 
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    public function setAddress(string $address): void
-    {
-        $this->address = $address;
     }
 
 
@@ -81,63 +59,28 @@ class DepartmentEntity extends Entity {
         return $this->UUID;
     }
 
-    public function getUsername(): string
+    public function getDepartmentID(): string
     {
-        return $this->username;
+        return $this->departmentID;
     }
 
-    public function getFullName(): string
+    public function getDepartmentName(): string
     {
-        return $this->fullName;
+        return $this->departmentName;
     }
 
-    public function getEmail(): string
+    public function getHead(): string
     {
-        return $this->email;
+        return $this->head;
     }
 
-    public function getGender(): string
+    public function getHeadDepartmentName(): string
     {
-        return $this->gender;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getPhoneNo(): string
-    {
-        return $this->phoneNo;
+        return $this->headDepartmentName;
     }
 
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function getAddress(): string
-    {
-        return $this->address;
-    }
-
-    public function getCreatedAtFormat(): string
-    {
-        return $this->createdAtFormat;
-    }
-
-    public function getCreatedByName(): string
-    {
-        return $this->createdByName;
-    }
-
-    public function getUpdatedAtFormat(): string
-    {
-        return $this->updatedAtFormat;
-    }
-
-    public function getUpdatedByName(): string
-    {
-        return $this->updatedByName;
     }
 }

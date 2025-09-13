@@ -4,8 +4,8 @@ namespace backend\modules\department\data\repository;
 
 use Yii;
 use backend\components\repository\BaseRepository;
-use backend\modules\user\data\models\User;
-use backend\modules\user\domain\entity\UserEntity;
+use backend\modules\department\data\models\Department;
+use backend\modules\department\domain\entity\DepartmentEntity;
 use backend\modules\department\domain\repository\DepartmentRepository;
 
 
@@ -27,14 +27,14 @@ class YiiDepartmentRepository extends BaseRepository implements DepartmentReposi
         $likeFilterFields = $params['likeFilterFields'];
         $compareFields = $params['compareFields'];
 
-        $query =User::find()->selectIndex()
+        $query = Department::find()->selectIndex()
         ->where($valid)
         ->andWhere($compareFields)
         ->having($likeFilterFields);
 
         $total = $query->count();
 
-        $Users = $query
+        $Departments = $query
         ->orderBy($sort)
         ->offset($offset)
         ->limit($limit)
@@ -44,57 +44,54 @@ class YiiDepartmentRepository extends BaseRepository implements DepartmentReposi
         
         return [
             'total' => $total,
-            'rows' => $Users
+            'rows' => $Departments
         ];
     }
 
 
-    public function create(UserEntity $userEntity): UserEntity
+    public function create(DepartmentEntity $departmentEntity): DepartmentEntity
     {
         $actionUUID = $this->_actionUUID;
 
-        $userData = $userEntity->asArray();
-        $userData['password'] = '88888888';
-        $User = new User();
-        $User->load($userData, '');
-        $User->passwordHash = Yii::$app->security->generatePasswordHash($userData['password']);
-        $User->generateAuthKey();
-        $User->_actionUUID = $actionUUID;
+        $departmentData = $departmentEntity->asArray();
+        $Department = new Department();
+        $Department->load($departmentData, '');
+        $Department->_actionUUID = $actionUUID;
 
-        if(!$User->save(false)) {
-            Yii::$app->exception->throw('Failed to save user data', 500);
+        if(!$Department->save(false)) {
+            Yii::$app->exception->throw('Failed to save Department data', 500);
         }
         
-        return new UserEntity($User->attributes());
+        return new DepartmentEntity($Department->attributes());
     }
 
 
-    public function update(UserEntity $userEntity): UserEntity
+    public function update(DepartmentEntity $departmentEntity): DepartmentEntity
     {
         $actionUUID = $this->_actionUUID;
-        $userData = $userEntity->asArray();
-        $User = User::findOne($userData['UUID']);
+        $departmentData = $departmentEntity->asArray();
+        $Department = Department::findOne($departmentData['UUID']);
 
-        $User->load($userData, '');
-        $User->_actionUUID = $actionUUID;
+        $Department->load($departmentData, '');
+        $Department->_actionUUID = $actionUUID;
 
-        if(!$User->save(false)) {
-            Yii::$app->exception->throw('Failed to save user data', 500);
+        if(!$Department->save(false)) {
+            Yii::$app->exception->throw('Failed to save Department data', 500);
         }
 
-        return new UserEntity($User->attributes());
+        return new DepartmentEntity($Department->attributes());
     }
 
 
-    public function view(string $id): UserEntity
+    public function view(string $id): DepartmentEntity
     {
-        $User = User::find()
+        $Department = Department::find()
         ->selectIndex()
         ->where(['UUID' => $id])
         ->asArray()
         ->one();
 
-        return new UserEntity($User);
+        return new DepartmentEntity($Department);
     }
 
 

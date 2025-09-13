@@ -7,10 +7,10 @@ class m130524_201442_init extends DbMigration
 {
     public function up()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
+        $tableOptions = $this->tableOptions;
+        // if ($this->db->driverName === 'mysql') {
+        //     $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        // }
 
         // Create main user table
         $this->createTable('{{%user}}', array_merge([
@@ -34,7 +34,7 @@ class m130524_201442_init extends DbMigration
         // Create user_history table (no foreign keys)
         $this->createTable('{{%user_history}}', array_merge([
             'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
-            'UUID' => $this->string(50),
+            'UUID' => $this->char(50)->notNull(),
             'username' => $this->string(100)->notNull(),
             'fullName' => $this->string(255),
             'profileImage' => $this->string(255)->null(),
