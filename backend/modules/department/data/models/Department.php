@@ -2,6 +2,7 @@
 
 namespace backend\modules\department\data\models;
 
+use backend\modules\department\data\query\DepartmentQuery;
 use Yii;
 use backend\modules\user\data\models\User;
 
@@ -28,8 +29,6 @@ use backend\modules\user\data\models\User;
  */
 class Department extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -116,5 +115,10 @@ class Department extends \backend\components\db\AppModel
     public function getUsers()
     {
         return $this->hasMany(User::class, ['department' => 'UUID']);
+    }
+
+    public static function find()
+    {
+        return new DepartmentQuery(get_called_class());
     }
 }

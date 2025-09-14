@@ -1,5 +1,6 @@
 import type { UserDTO } from "../../data/dto/UserDTO";
 
+
 export default class UserViewModel {
     private readonly _UUID: string;
     private readonly _username: string;

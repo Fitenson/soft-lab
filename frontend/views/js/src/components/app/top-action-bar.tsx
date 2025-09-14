@@ -17,7 +17,7 @@ interface ActionButton {
 interface TopActionBarProps<TData> {
     table?: Table<TData>;
     createAction?: ActionButton;
-    saveAction?: ActionButton;
+    saveAction?: boolean;
     browseAction?: ActionButton;
     deleteAction?: ActionButton;
     refreshAction?: ActionButton;
@@ -27,7 +27,7 @@ interface TopActionBarProps<TData> {
 export default function TopActionBar <TData> ({
     table,
     createAction,
-    saveAction,
+    saveAction = false,
     browseAction,
     deleteAction,
     refreshAction,

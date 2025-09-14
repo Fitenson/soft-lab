@@ -5,22 +5,23 @@ namespace backend\modules\user\domain\entity;
 use backend\components\entity\Entity;
 use backend\modules\user\data\dto\UserDTO;
 
+
 class UserEntity extends Entity {
     protected string $DTOClassName = UserDTO::class;
 
     private string $UUID;
     private string $username;
-    private string $fullName;
+    private ?string $fullName;
     private string $email;
-    private string $gender;
-    private string $title;
-    private string $phoneNo;
-    private string $description;
-    private string $address;
-    private string $createdAtFormat;
-    private string $createdByName;
-    private string $updatedAtFormat;
-    private string $updatedByName;
+    private ?string $gender;
+    private ?string $title;
+    private ?string $phoneNo;
+    private ?string $description;
+    private ?string $address;
+    private ?string $createdAtFormat;
+    private ?string $createdByName;
+    private ?string $updatedAtFormat;
+    private ?string $updatedByName;
 
 
     public function asArray(): array
@@ -49,27 +50,27 @@ class UserEntity extends Entity {
         $this->email = $email;
     }
 
-    public function setGender(string $gender): void
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    public function setPhoneNo(string $phoneNo): void
+    public function setPhoneNo(?string $phoneNo): void
     {
         $this->phoneNo = $phoneNo;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    public function setAddress(string $address): void
+    public function setAddress(?string $address): void
     {
         $this->address = $address;
     }

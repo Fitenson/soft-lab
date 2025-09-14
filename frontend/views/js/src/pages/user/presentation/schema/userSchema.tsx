@@ -7,13 +7,13 @@ export const userSchema = z.object({
     fullName: z.string().max(UserFormField.fullName.max, { error: UserFormField.fullName.maxError }),
     username: z.string().max(UserFormField.username.max, { error: UserFormField.username.maxError }),
     email: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }),
-    description: z.string().max(UserFormField.description.max, { error: UserFormField.description.maxError }).nullable(),
-    address: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }).nullable(),
-    gender: z.string().max(UserFormField.gender.max, { error: UserFormField.gender.maxError }).nullable(),
-    title: z.string().max(UserFormField.title.max, { error: UserFormField.title.maxError }).nullable(),
-    role: z.string().max(UserFormField.role.max, { error: UserFormField.role.maxError }).nullable(),
-    phoneNo: z.string().max(UserFormField.phoneNo.max, { error: UserFormField.phoneNo.maxError }).nullable(),
-    department: z.string().max(UserFormField.department.max, { error: UserFormField.department.maxError }).nullable(),
+    description: z.string().max(UserFormField.description.max, { error: UserFormField.description.maxError }).optional(),
+    address: z.string().max(UserFormField.address.max, { error: UserFormField.address.maxError }).optional(),
+    gender: z.string().max(UserFormField.gender.max, { error: UserFormField.gender.maxError }).optional(),
+    title: z.string().max(UserFormField.title.max, { error: UserFormField.title.maxError }).optional(),
+    role: z.string().max(UserFormField.role.max, { error: UserFormField.role.maxError }).optional(),
+    phoneNo: z.string().max(UserFormField.phoneNo.max, { error: UserFormField.phoneNo.maxError }).optional(),
+    department: z.string().max(UserFormField.department.max, { error: UserFormField.department.maxError }).optional(),
 
     // profileImage: z
     // .any()

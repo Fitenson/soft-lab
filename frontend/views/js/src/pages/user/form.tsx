@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { SelectValue } from "@radix-ui/react-select";
 
 import breadcrumbItems from "@/components/app/breadcrumb-items";
@@ -25,17 +25,17 @@ type Props = {
 }
 
 
-export default function UserFormView({ user }: Props) {
+export default function UserFormView() {
+    const { user } = usePage<Props>().props;
     const isLoading = useAppSelector(state => state.loading.global);
     const showToast = useShowToast();
     const { form, setFormError, userViewModel, setUserViewModel } = useUserForm({ userDTO: user });
     const { create, update } = useUserService();
 
     const breadcrumbs = [
-        ...breadcrumbItems,
-        { title: userViewModel?.username || "Create", href: '/' }
+        ...(breadcrumbItems ?? []),
+        { title: userViewModel?.username ?? "Create", href: '/' }
     ];
-
 
     const roles: Role[] = [
         { value: "Admin", label: "Admin" },
@@ -47,7 +47,11 @@ export default function UserFormView({ user }: Props) {
 
     const submit = async () => {
         const formValues = form.getValues();
-        const userDTO: Partial<UserDTO> = { ...formValues };
+        const userDTO: Partial<UserDTO> = {
+            ...formValues,
+            ...(userViewModel?.UUID ? { UUID: userViewModel?.UUID } : {}),
+        };
+
 
         try {
             if(userViewModel?.UUID) {
@@ -70,7 +74,6 @@ export default function UserFormView({ user }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="User" />
             <Head title={userViewModel?.fullName ?? "Create"} />
 
             <UserLayout>
@@ -78,12 +81,12 @@ export default function UserFormView({ user }: Props) {
                     <form className="grid grid-cols-4 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
                         <div className="col-span-4">
                             <TopActionBar
-                                saveAction={{}}
+                                saveAction
                                 browseAction={{ to: "/user/index" }}
                                 deleteAction={{ action: () => {} }}
                             />
                         </div>
-
+                
                         {/* <FormField
                             control={form.control}
                             name={UserFormField.profileImage.name}
@@ -102,7 +105,7 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         /> */}
-
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.username.name}
@@ -119,7 +122,7 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.fullName.name}
@@ -136,7 +139,7 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.email.name}
@@ -153,8 +156,8 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
-
+                
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.title.name}
@@ -172,8 +175,8 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
-
+                
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.phoneNo.name}
@@ -191,8 +194,8 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
-
+                
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.gender.name}
@@ -216,8 +219,8 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-                        
 
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.role.name}
@@ -240,26 +243,26 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
-
-                        <FormField
-                            control={form.control}
-                            name={UserFormField.department.name}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{UserFormField.department.label}</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            value={field.value ?? undefined}
-                                            disabled={isLoading}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
+                
+                
+                        {/*<FormField*/}
+                        {/*    control={form.control}*/}
+                        {/*    name={UserFormField.department.name}*/}
+                        {/*    render={({ field }) => (*/}
+                        {/*        <FormItem>*/}
+                        {/*            <FormLabel>{UserFormField.department.label}</FormLabel>*/}
+                        {/*            <FormControl>*/}
+                        {/*                <Input*/}
+                        {/*                    {...field}*/}
+                        {/*                    value={field.value ?? undefined}*/}
+                        {/*                    disabled={isLoading}*/}
+                        {/*                />*/}
+                        {/*            </FormControl>*/}
+                        {/*            <FormMessage/>*/}
+                        {/*        </FormItem>*/}
+                        {/*    )}*/}
+                        {/*/>*/}
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.description.name}
@@ -278,7 +281,7 @@ export default function UserFormView({ user }: Props) {
                                 </FormItem>
                             )}
                         />
-
+                
                         <FormField
                             control={form.control}
                             name={UserFormField.address.name}

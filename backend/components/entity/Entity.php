@@ -2,8 +2,8 @@
 
 namespace backend\components\entity;
 
-use ReflectionClass;
 use Yii;
+
 
 abstract class Entity {
     protected string $DTOClassName;
@@ -34,6 +34,8 @@ abstract class Entity {
             Yii::$app->exception->throw('This class name does not exists' . $DTOClassName, 500);
         }
 
-        return new $DTOClassName($this->asArray());
+        $DTO = new $DTOClassName();
+        $DTO->load($this->asArray(), '');
+        return $DTO;
     }
 }

@@ -58,5 +58,8 @@ abstract class Form extends Model {
     }
 
 
-    abstract public function asArray();
+    public function asArray(): array
+    {
+        return $this->attributes();
+    }
 }

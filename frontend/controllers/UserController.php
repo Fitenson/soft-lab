@@ -29,18 +29,12 @@ class UserController extends InertiaController {
     }
 
 
-    public function actionUpdate(string $id)
-    {
-        return $this->inertia('user/form', []);
-    }
-
-
     public  function actionView(string $id) 
     {
         $userDTO = $this->userService->viewUser($id);
 
-        return $this->inertia(['user/form', [
+        return $this->inertia('user/form', [
             'user' => $userDTO->asArray()
-        ]]);
+        ]);
     }
 }

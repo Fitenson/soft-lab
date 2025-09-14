@@ -20,7 +20,7 @@ import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/p
 // import useUserService from "@/pages/user/domain/service/useUserService";
 import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel"
 // import useShowToast from "@/hooks/use-show-toast";
-import DataTable from "@/core/presentation/table/DataTable";
+import DataTable from "@/components/app/data-table.tsx";
 import { useState } from "react";
 
 
@@ -106,7 +106,7 @@ export default function UserDataTable<TData extends UserViewModel>({
     const onSelectRow = (row: Row<TData>) => {
         const user = new UserViewModel(row.original as UserViewModel);
 
-        router.visit(`/user/${user.UUID}`);
+        router.visit(`/user/view?id=${user.UUID}`);
     };
 
 

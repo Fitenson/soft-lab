@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import AppLayout from "@/layouts/app-layout.tsx";
 import UserLayout from "@/pages/user/presentation/layouts/user-layout.tsx";
 import HeadingSmall from "@/components/app/heading-small.tsx";
-import { columns } from "@/pages/department/presentation/components/main/columns.tsx";
+import { departmentMainColumns } from "@/pages/department/presentation/components/main/departmentMainColumns.tsx";
 import breadcrumbItems from "@/components/app/breadcrumb-items.tsx";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 // import { useDispatch } from "react-redux";
@@ -40,7 +40,7 @@ export default function DepartmentGridview() {
                     <HeadingSmall title="Departments" />
                     <DepartmentDataTable<DepartmentViewModel>
                         data={data?.rows ?? []}
-                        columns={columns}
+                        columns={departmentMainColumns}
                         onRefresh={refetch}
                     />
                 </section>

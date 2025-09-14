@@ -15,4 +15,4 @@ export const CommonDataTableField = {
         name: "updatedByName",
         label: "Updated By"
     }
-};
+} as const;

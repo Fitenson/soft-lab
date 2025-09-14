@@ -20,7 +20,7 @@ import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/p
 // import useUserService from "@/pages/user/domain/service/useUserService";
 import DepartmentViewModel from "@/pages/department/presentation/view-models/DepartmentViewModel"
 // import useShowToast from "@/hooks/use-show-toast";
-import DataTable from "@/core/presentation/table/DataTable";
+import DataTable from "@/components/app/data-table.tsx";
 import { useState } from "react";
 
 
@@ -121,8 +121,8 @@ export default function DepartmentDataTable<TData extends DepartmentViewModel>({
             <div className="overflow-hidden rounded-md border">
                 <div className="w-full">
                     <TopActionBar
-                        createAction={{ to: "/user/create" }}
-                        deleteAction={{ action: () => "deleteUser" }}
+                        createAction={{ to: "/department/create" }}
+                        deleteAction={{ action: () => "deleteDepartment" }}
                         refreshAction={{ action: onRefresh }}
                         table={table}
                     />

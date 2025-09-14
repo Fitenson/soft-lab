@@ -9,11 +9,9 @@ import { useState } from "react";
 
 
 const useUserForm = ({ userDTO }: { userDTO: UserDTO | null }) => {
-    const [userViewModel, setUserViewModel] = useState<UserViewModel>();
-
-    if(userDTO) {
-        setUserViewModel(new UserViewModel(userDTO));
-    }
+    const [userViewModel, setUserViewModel] = useState<UserViewModel | undefined>(
+        () => (userDTO ? new UserViewModel(userDTO) : undefined),
+    );
     
 
     const form = useForm<UserFormModel>({

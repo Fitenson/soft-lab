@@ -4,7 +4,7 @@ import AppLayout from "@/layouts/app-layout";
 import UserLayout from "@/pages/user/presentation/layouts/user-layout.tsx";
 import HeadingSmall from "@/components/app/heading-small";
 import UserDataTable from "@/pages/user/presentation/components/main/user-data-table.tsx";
-import { columns } from "@/pages/user/presentation/components/main/columns";
+import { userMainColumns } from "@/pages/user/presentation/components/main/userMainColumns.tsx";
 import breadcrumbItems from "@/components/app/breadcrumb-items";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 // import { useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ export default function UserGridview() {
                     <HeadingSmall title="Users" />
                     <UserDataTable<UserViewModel>
                         data={data?.rows ?? []}
-                        columns={columns}
+                        columns={userMainColumns}
                         onRefresh={refetch}
                     />
                 </section>

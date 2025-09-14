@@ -19,6 +19,7 @@ const useDepartmentRepository = () => {
         return await request<DataTableType<DepartmentDTO>>({
             url: "/department/index",
             method: "POST",
+            data: formData
         });
     }
 
