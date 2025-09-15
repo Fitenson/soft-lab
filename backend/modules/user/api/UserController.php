@@ -45,7 +45,7 @@ class UserController extends RestController {
     }
 
 
-    public function actionUpdate() {
+    public function actionUpdate($id) {
         $data = Yii::$app->request->post();
 
         $userForm = new UserForm();
@@ -56,6 +56,7 @@ class UserController extends RestController {
         }
 
         $userData = $userForm->attributes();
+        $userData['UUID'] = $id;
         $userDTO = $this->userService->updateUser(new UserEntity($userData));
 
         return [

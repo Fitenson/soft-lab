@@ -2,6 +2,8 @@
 
 namespace backend\components\repository;
 
+use Yii;
+
 
 abstract class BaseRepository {
     protected function getParams(array $params): array
@@ -50,5 +52,12 @@ abstract class BaseRepository {
             'likeFilterFields' => $likeFilterFields,
             'compareFields' => $compareFields
         ];
+    }
+
+
+    protected function getActionUUID(): string
+    {
+        $_actionUUID = Yii::$app->params['_actionUUID'];
+        return $_actionUUID;
     }
 }

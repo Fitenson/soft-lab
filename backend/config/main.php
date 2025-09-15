@@ -1,6 +1,8 @@
 <?php
 
 use yii\filters\Cors;
+use backend\components\behavior\ActionUUIDBehavior;
+
 
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',

@@ -2,20 +2,14 @@
 
 namespace backend\modules\user\data\repository;
 
+use Yii;
 use backend\components\repository\BaseRepository;
 use backend\modules\user\data\models\User;
 use backend\modules\user\domain\entity\UserEntity;
 use backend\modules\user\domain\repository\UserRepository;
-use Yii;
+
 
 class YiiUserRepository extends BaseRepository implements UserRepository {
-    private string $_actionUUID;
-
-    public function setActionUUID(): void
-    {
-        $this->_actionUUID = Yii::$app->db->createCommand('select UUID()')->queryScalar();
-    }
-
     public function index(array $params)
     {
         $params = $this->getParams($params);
@@ -50,7 +44,7 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
 
     public function create(UserEntity $userEntity): UserEntity
     {
-        $actionUUID = $this->_actionUUID;
+        $_actionUUID = $this->getActionUUID();
 
         $userData = $userEntity->asArray();
         $userData['password'] = '88888888';
@@ -58,7 +52,7 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
         $User->load($userData, '');
         $User->passwordHash = Yii::$app->security->generatePasswordHash($userData['password']);
         $User->generateAuthKey();
-        $User->_actionUUID = $actionUUID;
+        $User->_actionUUID = $_actionUUID;
 
         if(!$User->save(false)) {
             Yii::$app->exception->throw('Failed to save user data', 500);
@@ -70,12 +64,12 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
 
     public function update(UserEntity $userEntity): UserEntity
     {
-        $actionUUID = $this->_actionUUID;
+        $_actionUUID = $this->getActionUUID();
         $userData = $userEntity->asArray();
         $User = User::findOne($userData['UUID']);
 
         $User->load($userData, '');
-        $User->_actionUUID = $actionUUID;
+        $User->_actionUUID = $_actionUUID;
 
         if(!$User->save(false)) {
             Yii::$app->exception->throw('Failed to save user data', 500);

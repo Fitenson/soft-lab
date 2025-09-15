@@ -67,7 +67,7 @@ export default function UserFormView() {
             }
         } catch(error) {
             setFormError(error);
-            showToast("Error", "Error on create", "error");
+            showToast("Error", "Server error", "error");
         }
     }
 

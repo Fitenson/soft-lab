@@ -1,13 +1,15 @@
 <?php
 
 namespace backend\controllers;
+use Yii;
 
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 
+use common\behavior\ActionUUIDBehavior;
 use backend\modules\user\data\models\User;
-use Yii;
+
 
 class RestController extends ActiveController {
     public $modelClass = '';
@@ -45,5 +47,12 @@ class RestController extends ActiveController {
         ];
 
         return $behaviours;
+    }
+
+
+    public function beforeAction($action)
+    {
+        Yii::$app->params['_actionUUID'] = Yii::$app->db->createCommand('SELECT UUID()')->queryScalar();
+        return parent::beforeAction($action);
     }
 }
