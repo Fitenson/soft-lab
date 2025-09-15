@@ -4,7 +4,6 @@ namespace backend\modules\user\domain\usecase;
 
 use backend\modules\user\domain\entity\UserEntity;
 use backend\modules\user\domain\repository\UserRepository;
-use backend\modules\user\data\dto\UserDTO;
 
 
 class CreateUserUseCase {
@@ -16,9 +15,8 @@ class CreateUserUseCase {
     }
 
 
-    public function execute(UserEntity $userEntity): UserDTO
+    public function execute(UserEntity $userEntity): UserEntity
     {
-        $newUserEntity = $this->userRepository->create($userEntity);
-        return $newUserEntity->asDTO();
+        return $this->userRepository->create($userEntity);
     }
 }

@@ -41,8 +41,10 @@ class UserQuery extends \backend\components\db\AppQuery
             'UUID',
             'username',
             'fullName',
+            'email',
             'gender',
             'title',
+            'role',
             'phoneNo',
             'description',
             'address',
@@ -50,8 +52,8 @@ class UserQuery extends \backend\components\db\AppQuery
             'updatedAt',
             'createdAtFormat' => 'FROM_UNIXTIME(createdAt, "%Y-%m-%d %H:%i:%s")',
             'updatedAtFormat' => 'FROM_UNIXTIME(updatedAt, "%Y-%m-%d %H:%i:%s")',
-            'createdByName' => User::find()->alias('u')->select(['fullName'])->where('u.createdBy = user.UUID'),
-            'updatedByName' => User::find()->alias('u')->select(['fullName'])->where('u.updatedBy = user.UUID'),
+            'createdByName' => User::find()->alias('u')->select(['fullName'])->where('u.UUID = user.createdBy'),
+            'updatedByName' => User::find()->alias('u')->select(['fullName'])->where('u.UUID = user.updatedBy'),
         ]);
     }
 }

@@ -20,7 +20,8 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
 
     public function login(AuthEntity $authEntity): AuthEntity
     {
-        $checkUser = User::find()->where(['username' => $authEntity->getUsername()])->exists();
+        $authDTO = $authEntity->asDTO();
+        $checkUser = User::find()->where(['username' => $authDTO->username])->exists();
 
         if(empty($checkUser)) {
             Yii::$app->exception->throw([
@@ -28,9 +29,9 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
             ], 401);
         }
 
-        $User = User::findOne(['username' => $authEntity->getUsername()]);
+        $User = User::findOne(['username' => $authDTO->username]);
 
-        if (!$User || !$User->validatePassword($authEntity->getPassword())) {
+        if (!$User || !$User->validatePassword($authDTO->password)) {
             Yii::$app->exception->throw([
                 'password' => [
                     'Incorrect username or password'

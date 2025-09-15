@@ -36,7 +36,7 @@ class UserController extends RestController {
             Yii::$app->exception->throw($userForm->getErrors(), 422);
         }
 
-        $userData = $userForm->attributes();
+        $userData = $userForm->getAttributes();
         $userDTO = $this->userService->createUser(new UserEntity($userData));
 
         return [
@@ -50,13 +50,13 @@ class UserController extends RestController {
 
         $userForm = new UserForm();
         $userForm->load($data['user'], '');
+        $userForm->UUID = $id;
 
         if(!$userForm->validate()) {
             Yii::$app->exception->throw($userForm->getErrors(), 422);
         }
 
-        $userData = $userForm->attributes();
-        $userData['UUID'] = $id;
+        $userData = $userForm->getAttributes();
         $userDTO = $this->userService->updateUser(new UserEntity($userData));
 
         return [

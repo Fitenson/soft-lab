@@ -6,28 +6,30 @@ use JsonSerializable;
 use yii\base\Model;
 
 
-class UserDTO extends Model implements JsonSerializable {
-    public ?string $UUID;
-    public ?string $username;
-    public ?string $fullName;
-    public ?string $email;
-    public ?string $gender;
-    public ?string $title;
-    public ?string $phoneNo;
-    public ?string $description;
-    public ?string $address;
-    public ?string $createdAtFormat;
-    public ?string $createdByName;
-    public ?string $updatedAtFormat;
-    public ?string $updatedByName;
+class UserDTO extends Model {
+    public ?string $UUID = null;
+    public ?string $username = null;
+    public ?string $fullName = null;
+    public ?string $email = null;
+    public ?string $role = null;
+    public ?string $gender = null;
+    public ?string $title = null;
+    public ?string $phoneNo = null;
+    public ?string $description = null;
+    public ?string $address = null;
+    public ?string $createdAtFormat = null;
+    public ?string $createdByName = null;
+    public ?string $updatedAtFormat = null;
+    public ?string $updatedByName = null;
 
 
     public function rules()
     {
         return [[
-            [
-                'UUID', 'username', 'fullName', 'email', 'gender', 'title', 'phoneNo', 'description', 'address',
-                'createdAtFormat', 'createdByName', 'updatedAtFormat', 'updatedByName'
+            ['UUID', 'username', 'fullName', 'email', 'gender', 
+            'title', 'phoneNo', 'description', 'address', 'role',
+            'createdAtFormat', 
+            'createdByName', 'updatedAtFormat', 'updatedByName'
             ],
             'safe'
         ]];

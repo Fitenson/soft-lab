@@ -11,6 +11,7 @@ class UserForm extends Form {
     public ?string $username = null;
     public ?string $fullName = null;
     public ?string $gender = null;
+    public ?string $role = null;
     public ?string $title = null;
     public ?string $email = null;
     public ?string $phoneNo = null;
@@ -22,10 +23,29 @@ class UserForm extends Form {
     public function rules()
     {
         return [
-            [['fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'valid'], 'default', 'value' => null],
+            [['fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'role', 'valid'], 'default', 'value' => null],
             [['username', 'email'], 'required'],
+            ['email', 'email'],
+            ['username', 'unique', 
+                'targetClass' => User::class, 
+                'targetAttribute' => 'username',
+                'filter' => function($query) {
+                    if ($this->UUID) {
+                        $query->andWhere(['<>', 'UUID', $this->UUID]);
+                    }
+                }
+            ],
+            ['email', 'unique', 
+                'targetClass' => User::class, 
+                'targetAttribute' => 'email',
+                'filter' => function($query) {
+                    if ($this->UUID) {
+                        $query->andWhere(['<>', 'UUID', $this->UUID]);
+                    }
+                }
+            ],
             [['valid'], 'integer'],
-            [['gender', 'title'], 'string', 'max' => 50],
+            [['gender', 'title', 'role'], 'string', 'max' => 50],
             [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
             [['fullName'], 'string', 'max' => 255],
             [['description', 'address'], 'string', 'max' => 500],

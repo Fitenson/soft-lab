@@ -60,6 +60,6 @@ abstract class Form extends Model {
 
     public function asArray(): array
     {
-        return $this->attributes();
+        return $this->getAttributes();
     }
 }

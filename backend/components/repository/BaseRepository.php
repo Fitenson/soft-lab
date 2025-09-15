@@ -14,9 +14,9 @@ abstract class BaseRepository {
         $likeFilterFields = []; 
         $sort = []; 
 
-        $limit = isset($Params['limit']) ? $Params['limit'] : 1; 
-        $offset = isset($Params['offset']) ? $Params['offset'] : 0; 
-        $compare = isset($Params['compare']) ? json_decode($Params['compare'], true) : []; 
+        $limit = isset($params['limit']) ? $params['limit'] : 1; 
+        $offset = isset($params['offset']) ? $params['offset'] : 0; 
+        $compare = isset($params['compare']) ? json_decode($params['compare'], true) : []; 
         
         $compareFields = []; 
 
@@ -26,9 +26,9 @@ abstract class BaseRepository {
             $compareFields[] = $oneCompare; 
         } 
         
-        if (isset($Params['sort'])) { 
-            $Params['sort'] = (str_contains($Params['sort'], 'Format')) ? str_replace('Format', '', $Params['sort']) : $Params['sort']; 
-            $sort = [$Params['sort'] => ($Params['order'] == "desc") ? 3 : 4]; 
+        if (isset($params['sort'])) { 
+            $params['sort'] = (str_contains($params['sort'], 'Format')) ? str_replace('Format', '', $params['sort']) : $params['sort']; 
+            $sort = [$params['sort'] => ($params['order'] == "desc") ? 3 : 4]; 
         } 
 
         foreach ($filterFields as $fieldName => $filterString) { 

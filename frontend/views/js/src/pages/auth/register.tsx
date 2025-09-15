@@ -11,11 +11,16 @@ import useShowToast from "@/hooks/use-show-toast";
 import RegisterFormField from "@/pages/auth/presentation/form/RegisterFormField";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { LoadingButton } from "@/components/buttons/loading-button";
+import { setAuth } from "@/pages/auth/presentation/redux/authSlice.ts";
+import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel.ts";
+import { router } from "@inertiajs/react";
+import {useDispatch} from "react-redux";
 
 
 export default function RegisterPage() {
     const showToast = useShowToast();
     const isLoading = useAppSelector(state => state.loading.global);
+    const dispatch = useDispatch();
     const { form, setFormError } = useRegisterForm();
     const { register } = useAuthService();
 
@@ -26,8 +31,9 @@ export default function RegisterPage() {
 
         await register(auth, {
             onSuccess: (data) => {
-                console.log(data);
+                dispatch(setAuth(new AuthViewModel(data)));
                 showToast("Success", "Registration success", "success");
+                router.visit("/dashboard");
             },
             onError: (error) => {
                 setFormError(error, {
@@ -64,7 +70,12 @@ export default function RegisterPage() {
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">{RegisterFormField.fullName.label}</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your full name" {...field} required />
+                                                    <Input
+                                                        placeholder="Enter your full name"
+                                                        {...field}
+                                                        required
+                                                        disabled={isLoading}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -78,7 +89,12 @@ export default function RegisterPage() {
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">{RegisterFormField.username.label}</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your username" {...field} required />
+                                                    <Input
+                                                        placeholder="Enter your username"
+                                                        {...field}
+                                                        required
+                                                        disabled={isLoading}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -92,7 +108,12 @@ export default function RegisterPage() {
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">{RegisterFormField.email.label}</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your email" {...field} required />
+                                                    <Input
+                                                        placeholder="Enter your email"
+                                                        {...field}
+                                                        required
+                                                        disabled={isLoading}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -106,7 +127,13 @@ export default function RegisterPage() {
                                             <FormItem className="space-y-1">
                                                 <FormLabel className="text-xl">{RegisterFormField.password.label}</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter your password" {...field} type="password" required />
+                                                    <Input
+                                                        placeholder="Enter your password"
+                                                        {...field}
+                                                        type="password"
+                                                        required
+                                                        disabled={isLoading}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>

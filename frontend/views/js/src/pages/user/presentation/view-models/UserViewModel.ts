@@ -7,6 +7,7 @@ export default class UserViewModel {
     private readonly _email: string;
     private readonly _fullName: string;
     private readonly _phoneNo: string;
+    private readonly _role: string;
     private readonly _profileImage: string;
     private readonly _title: string;
     private readonly _gender: string;
@@ -25,6 +26,7 @@ export default class UserViewModel {
         this._email = data.email ?? "";
         this._fullName = data.fullName ?? "";
         this._phoneNo = data.phoneNo ?? "";
+        this._role = data.role ?? "";
         this._profileImage = data.profileImage ?? "";
         this._title = data.title ?? "";
         this._gender = data.gender ?? "";
@@ -56,6 +58,10 @@ export default class UserViewModel {
 
     get phoneNo(): string {
         return this._phoneNo;
+    }
+
+    get role(): string {
+        return this._role;
     }
 
     get profileImage(): string {

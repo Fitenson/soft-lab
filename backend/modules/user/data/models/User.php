@@ -7,13 +7,17 @@ use yii\base\UserException;
 use yii\web\IdentityInterface;
 
 use backend\modules\user\data\query\UserQuery;
+use backend\modules\department\data\models\Department;
 
 /**
  * This is the model class for table "user".
  *
  * @property string $UUID
  * @property string $username
+ * @property string $email
  * @property string|null $fullName
+ * @property string|null $role
+ * @property string|null $profileImage
  * @property string|null $gender
  * @property string|null $title
  * @property string|null $phoneNo
@@ -23,23 +27,29 @@ use backend\modules\user\data\query\UserQuery;
  * @property string $authKey
  * @property string $passwordHash
  * @property string|null $passwordResetToken
- * @property string $email
- * @property int|null $valid
- * @property string|null $_actionUUID
- * @property int|null $_version
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
  * @property string|null $updatedBy
+ * @property int|null $valid
+ * @property string|null $_actionUUID
+ * @property int|null $_version
  * @property string|null $verification_token
+ * @property string|null $department
  *
  * @property User $createdBy0
+ * @property Department $department0
+ * @property Department[] $departments
+ * @property Department[] $departments0
+ * @property Department[] $departments1
  * @property User $updatedBy0
  * @property User[] $users
  * @property User[] $users0
  */
 class User extends \backend\components\db\AppModel implements IdentityInterface
 {
+
+
     /**
      * {@inheritdoc}
      */
@@ -54,12 +64,12 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
     public function rules()
     {
         return [
-            [['fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'valid', '_actionUUID', '_version', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'verification_token'], 'default', 'value' => null],
-            [['UUID', 'username', 'authKey', 'passwordHash', 'email'], 'required'],
+            [['fullName', 'role', 'profileImage', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'verification_token', 'department'], 'default', 'value' => null],
+            [['UUID', 'username', 'email', 'authKey', 'passwordHash'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['UUID', 'gender', 'title', '_actionUUID', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 50],
-            [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
-            [['fullName', 'passwordHash', 'passwordResetToken', 'verification_token'], 'string', 'max' => 255],
+            [['UUID', 'role', 'gender', 'title', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', '_actionUUID', 'department'], 'string', 'max' => 50],
+            [['username', 'email', 'phoneNo'], 'string', 'max' => 100],
+            [['fullName', 'profileImage', 'passwordHash', 'passwordResetToken', 'verification_token'], 'string', 'max' => 255],
             [['description', 'address', 'accessToken'], 'string', 'max' => 500],
             [['authKey'], 'string', 'max' => 32],
             [['username'], 'unique'],
@@ -67,6 +77,7 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
             [['passwordResetToken'], 'unique'],
             [['UUID'], 'unique'],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
+            [['department'], 'exist', 'skipOnError' => true, 'targetClass' => Department::class, 'targetAttribute' => ['department' => 'UUID']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updatedBy' => 'UUID']],
         ];
     }
@@ -79,7 +90,10 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
         return [
             'UUID' => 'Uuid',
             'username' => 'Username',
+            'email' => 'Email',
             'fullName' => 'Full Name',
+            'role' => 'Role',
+            'profileImage' => 'Profile Image',
             'gender' => 'Gender',
             'title' => 'Title',
             'phoneNo' => 'Phone No',
@@ -89,22 +103,22 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
             'authKey' => 'Auth Key',
             'passwordHash' => 'Password Hash',
             'passwordResetToken' => 'Password Reset Token',
-            'email' => 'Email',
-            'valid' => 'Valid',
-            '_actionUUID' => 'Action Uuid',
-            '_version' => 'Version',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'valid' => 'Valid',
+            '_actionUUID' => 'Action Uuid',
+            '_version' => 'Version',
             'verification_token' => 'Verification Token',
+            'department' => 'Department',
         ];
     }
 
     /**
      * Gets query for [[CreatedBy0]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCreatedBy0()
     {
@@ -112,9 +126,49 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
     }
 
     /**
+     * Gets query for [[Department0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartment0()
+    {
+        return $this->hasOne(Department::class, ['UUID' => 'department']);
+    }
+
+    /**
+     * Gets query for [[Departments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartments()
+    {
+        return $this->hasMany(Department::class, ['createdBy' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[Departments0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartments0()
+    {
+        return $this->hasMany(Department::class, ['head' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[Departments1]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartments1()
+    {
+        return $this->hasMany(Department::class, ['updatedBy' => 'UUID']);
+    }
+
+    /**
      * Gets query for [[UpdatedBy0]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUpdatedBy0()
     {
@@ -124,7 +178,7 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
     /**
      * Gets query for [[Users]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUsers()
     {
@@ -134,7 +188,7 @@ class User extends \backend\components\db\AppModel implements IdentityInterface
     /**
      * Gets query for [[Users0]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUsers0()
     {

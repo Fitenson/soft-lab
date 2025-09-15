@@ -83,6 +83,7 @@ export default function LoginPage() {
                                                         placeholder="Enter your username"
                                                         {...field}
                                                         required
+                                                        disabled={isLoading}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -103,6 +104,7 @@ export default function LoginPage() {
                                                         {...field}
                                                         type="password"
                                                         required
+                                                        disabled={isLoading}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />

@@ -17,13 +17,8 @@ class UpdateUserUseCase {
     }
 
 
-    public function execute(UserEntity $userEntity)
+    public function execute(UserEntity $userEntity): UserEntity
     {
-        try {
-            $newUserEntity = $this->userRepository->update($userEntity);
-            return $newUserEntity->asDTO();
-        } catch(Throwable $error) {
-            Yii::$app->exception->throw($error->getMessage(), 422);
-        }
+        return $this->userRepository->update($userEntity);
     }
 }

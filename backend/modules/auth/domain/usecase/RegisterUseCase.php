@@ -19,15 +19,7 @@ class RegisterUseCase {
 
     public function execute(AuthEntity $authEntity): AuthDTO
     {
-        try {
-            $transaction = Yii::$app->db->beginTransaction();
-            $newAuthEntity = $this->authRepository->register($authEntity);
-            $transaction->commit();
-
-            return $newAuthEntity->asDTO();
-        } catch(\Throwable $error) {
-            $transaction->rollBack();
-            return Yii::$app->exception->throw($error->getMessage(), 422);
-        }
+        $newAuthEntity = $this->authRepository->register($authEntity);
+        return $newAuthEntity->asDTO();
     }
 }

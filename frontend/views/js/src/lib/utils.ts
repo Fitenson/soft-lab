@@ -7,10 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 
 export function createFormField<Name extends string>(options: {
-  name: Name,
-  label: string,
-  max?: number,
-  min?: number,
+    name: Name,
+    label: string,
+    max?: number,
+    min?: number,
+    emailFormatError?: string,
 }) {
     const max = options.max ?? 255;
     const min = options.min ?? 0;
@@ -21,5 +22,6 @@ export function createFormField<Name extends string>(options: {
         min,
         maxError: options.max ? `${options.label} cannot exceed ${options.max} characters` : undefined,
         minError: options.min ? `${options.label} must be at least ${options.min} characters` : undefined,
+        emailFormatError: options.emailFormatError ? options.emailFormatError : undefined,
     };
 }

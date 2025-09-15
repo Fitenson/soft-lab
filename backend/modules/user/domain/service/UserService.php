@@ -1,19 +1,19 @@
 <?php
 
 namespace backend\modules\user\domain\service;
+
 use Yii;
+use backend\components\exception\ApiException;
 
 use backend\modules\user\domain\entity\UserEntity;
 use backend\modules\user\domain\usecase\CreateUserUseCase;
 use backend\modules\user\domain\usecase\IndexUserUseCase;
 use backend\modules\user\domain\usecase\UpdateUserUseCase;
 use backend\modules\user\data\dto\UserDTO;
-use backend\modules\user\domain\repository\UserRepository;
 use backend\modules\user\domain\usecase\ViewUserUseCase;
 
+
 class UserService {
-    private UserRepository $userRepository;
-    
     private IndexUserUseCase $indexUserUseCase;
     private CreateUserUseCase $createUserUseCase;
     private UpdateUserUseCase $updateUserUseCase;
@@ -21,8 +21,6 @@ class UserService {
 
 
     public function __construct(
-        UserRepository $userRepository,
-
         IndexUserUseCase $indexUserUseCase,
         CreateUserUseCase $createUserUseCase,
         UpdateUserUseCase $updateUserUseCase,
@@ -43,13 +41,31 @@ class UserService {
 
     public function createUser(UserEntity $userEntity): UserDTO
     {
-        return $this->createUserUseCase->execute($userEntity);
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $userEntity = $this->createUserUseCase->execute($userEntity);
+            $transaction->commit();
+            return $userEntity->asDTO();
+        } catch(ApiException $error) {
+            $transaction->rollBack();
+            throw $error;
+            return new UserDTO();
+        }
     }
 
 
     public function updateUser(UserEntity $userEntity): UserDTO
     {
-        return $this->updateUserUseCase->execute($userEntity);
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $userEntity = $this->updateUserUseCase->execute($userEntity);
+            $transaction->commit();
+            return $userEntity->asDTO();
+        } catch(ApiException $error) {
+            $transaction->rollBack();
+            throw $error;
+            return new UserDTO();
+        }
     }
 
     

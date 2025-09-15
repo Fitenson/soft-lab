@@ -1,9 +1,12 @@
-import axios from "axios";
+import axios, {type AxiosError} from "axios";
 import type { AxiosInstance, AxiosRequestConfig, Method } from "axios";
 import { useMemo, useState } from "react";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { setIsLoading } from "@/core/presentation/store/loadingSlice";
 import { store } from "@/core/presentation/store";
+import {useDispatch} from "react-redux";
+import {removeAuth} from "@/pages/auth/presentation/redux/authSlice.ts";
+import {router} from "@inertiajs/react";
 
 
 export type AxiosRequestResult = {
@@ -34,6 +37,7 @@ export const useRequest = (): AxiosRequestResult => {
     // const [data, setData] = useState<T | null>(null);
     const isLoading = useAppSelector(state => state.loading.global);
     const authViewModel = useAppSelector(state => state.auth.authViewModel);
+    const dispatch = useDispatch();
     const [error, setError] = useState<unknown>(null);
 
 
@@ -64,9 +68,15 @@ export const useRequest = (): AxiosRequestResult => {
                 }
             });
 
-            // setData(response.data as T);
             return response.data as T;
         } catch(error) {
+            const axiosError = error as AxiosError;
+
+            if(axiosError.response && axiosError.response.status === 401) {
+                dispatch(removeAuth());
+                router.visit("/login");
+            }
+
             setError(error);
             throw error;
         }

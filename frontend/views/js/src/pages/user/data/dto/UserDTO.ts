@@ -4,6 +4,7 @@ export interface UserDTO {
     fullName: string;
     profileImage: string | null;
     email: string;
+    role: string | null;
     description: string | null;
     address: string | null;
     gender: string | null;

@@ -18,13 +18,4 @@ class LoginForm extends Form {
             ['password', 'string', 'min' => 5, 'max' => 50]
         ];
     }
-
-
-    public function asArray()
-    {
-        return [
-            'username' => $this->username,
-            'password' => $this->password,
-        ];
-    }
 }

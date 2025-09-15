@@ -46,36 +46,36 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
     {
         $_actionUUID = $this->getActionUUID();
 
-        $userData = $userEntity->asArray();
-        $userData['password'] = '88888888';
+        $userDTO = $userEntity->asDTO();
+        $password = '88888888';
         $User = new User();
-        $User->load($userData, '');
-        $User->passwordHash = Yii::$app->security->generatePasswordHash($userData['password']);
+        $User->load($userDTO->getAttributes(), '');
+        $User->passwordHash = Yii::$app->security->generatePasswordHash($password);
         $User->generateAuthKey();
         $User->_actionUUID = $_actionUUID;
 
         if(!$User->save(false)) {
-            Yii::$app->exception->throw('Failed to save user data', 500);
+            Yii::$app->exception->throw($User->getErrors(), 500);
         }
         
-        return new UserEntity($User->attributes());
+        return new UserEntity($User->getAttributes());
     }
 
 
     public function update(UserEntity $userEntity): UserEntity
     {
         $_actionUUID = $this->getActionUUID();
-        $userData = $userEntity->asArray();
-        $User = User::findOne($userData['UUID']);
+        $userDTO = $userEntity->asDTO();
+        $User = User::findOne($userDTO->UUID);
 
-        $User->load($userData, '');
+        $User->load($userDTO->getAttributes(), '');
         $User->_actionUUID = $_actionUUID;
 
         if(!$User->save(false)) {
             Yii::$app->exception->throw('Failed to save user data', 500);
         }
 
-        return new UserEntity($User->attributes());
+        return new UserEntity($User->getAttributes());
     }
 
 

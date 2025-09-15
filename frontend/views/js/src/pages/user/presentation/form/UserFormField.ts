@@ -5,7 +5,7 @@ const UserFormField = {
     username: createFormField({ name: "username", label: "Username", max: 100 }),
     // profileImage: createFormField({ name: "profileImage", label: "Profile Image", max: 255 }),
     fullName: createFormField({ name: "fullName", label: "Full name", max: 255 }),
-    email: createFormField({ name: "email", label: "Email", max: 100 }),
+    email: createFormField({ name: "email", label: "Email", max: 100, emailFormatError: "Invalid email address" }),
     role: createFormField({ name: "role", label: "Role", max: 50 }),
     address: createFormField({ name: "address", label: "Address", max: 500 }),
     description: createFormField({ name: "description", label: "Description", max: 500 }),

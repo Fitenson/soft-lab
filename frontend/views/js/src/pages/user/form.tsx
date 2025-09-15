@@ -60,10 +60,9 @@ export default function UserFormView() {
                 showToast('Success', 'Update user successfully', 'success');
             } else {
                 const newUserViewModel = await create(userDTO);
-                setUserViewModel(newUserViewModel);
                 showToast('Success', 'Create user successfully', 'success');
 
-                router.visit(`/user/${userViewModel?.UUID}`);
+                router.visit(`/user/view?id=${newUserViewModel.UUID}`);
             }
         } catch(error) {
             setFormError(error);
@@ -115,6 +114,7 @@ export default function UserFormView() {
                                     <FormControl>
                                         <Input
                                             {...field}
+                                            required
                                             disabled={isLoading}
                                         />
                                     </FormControl>
@@ -149,6 +149,7 @@ export default function UserFormView() {
                                     <FormControl>
                                         <Input
                                             {...field}
+                                            required
                                             disabled={isLoading}
                                         />
                                     </FormControl>

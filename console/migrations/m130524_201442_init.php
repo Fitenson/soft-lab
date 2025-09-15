@@ -16,7 +16,9 @@ class m130524_201442_init extends DbMigration
         $this->createTable('{{%user}}', array_merge([
             'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
             'username' => $this->string(100)->notNull()->unique(),
+            'email' => $this->string(100)->notNull()->unique(),
             'fullName' => $this->string(255),
+            'role' => $this->string(50)->null(),
             'profileImage' => $this->string(255)->null(),
             'gender' => $this->string(50),
             'title' => $this->string(50),
@@ -27,7 +29,6 @@ class m130524_201442_init extends DbMigration
             'authKey' => $this->string(32)->notNull(),
             'passwordHash' => $this->string()->notNull(),
             'passwordResetToken' => $this->string()->unique(),
-            'email' => $this->string(100)->notNull()->unique(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 

@@ -8,9 +8,10 @@ use Yii;
  * This is the model class for table "user_history".
  *
  * @property string $historyUUID
- * @property string|null $UUID
+ * @property string $UUID
  * @property string $username
  * @property string|null $fullName
+ * @property string|null $profileImage
  * @property string|null $gender
  * @property string|null $title
  * @property string|null $phoneNo
@@ -21,18 +22,19 @@ use Yii;
  * @property string $passwordHash
  * @property string|null $passwordResetToken
  * @property string $email
- * @property int|null $valid
- * @property string|null $_actionUUID
- * @property int|null $_version
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
  * @property string|null $updatedBy
- * @property string|null $user_id
+ * @property int|null $valid
+ * @property string|null $_actionUUID
+ * @property int|null $_version
+ * @property string $user_id
  * @property string|null $action
  * @property string|null $date_created
+ * @property string|null $department
  */
-class UserHistory extends \yii\db\ActiveRecord
+class UserHistory extends \backend\components\db\AppModel
 {
 
 
@@ -50,17 +52,14 @@ class UserHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['UUID', 'fullName', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'valid', '_actionUUID', '_version', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'user_id', 'action', 'date_created'], 'default', 'value' => null],
-            [['historyUUID', 'username', 'authKey', 'passwordHash', 'email'], 'required'],
+            [['fullName', 'profileImage', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created', 'department'], 'default', 'value' => null],
+            [['historyUUID', 'UUID', 'username', 'authKey', 'passwordHash', 'email', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['historyUUID', 'UUID', 'gender', 'title', '_actionUUID', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'user_id', 'action', 'date_created'], 'string', 'max' => 50],
+            [['historyUUID', 'UUID', 'gender', 'title', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', '_actionUUID', 'user_id', 'action', 'date_created', 'department'], 'string', 'max' => 50],
             [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
-            [['fullName', 'passwordHash', 'passwordResetToken'], 'string', 'max' => 255],
+            [['fullName', 'profileImage', 'passwordHash', 'passwordResetToken'], 'string', 'max' => 255],
             [['description', 'address', 'accessToken'], 'string', 'max' => 500],
             [['authKey'], 'string', 'max' => 32],
-            [['username'], 'unique'],
-            [['email'], 'unique'],
-            [['passwordResetToken'], 'unique'],
             [['historyUUID'], 'unique'],
         ];
     }
@@ -75,6 +74,7 @@ class UserHistory extends \yii\db\ActiveRecord
             'UUID' => 'Uuid',
             'username' => 'Username',
             'fullName' => 'Full Name',
+            'profileImage' => 'Profile Image',
             'gender' => 'Gender',
             'title' => 'Title',
             'phoneNo' => 'Phone No',
@@ -85,17 +85,27 @@ class UserHistory extends \yii\db\ActiveRecord
             'passwordHash' => 'Password Hash',
             'passwordResetToken' => 'Password Reset Token',
             'email' => 'Email',
-            'valid' => 'Valid',
-            '_actionUUID' => 'Action Uuid',
-            '_version' => 'Version',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
             'updatedBy' => 'Updated By',
+            'valid' => 'Valid',
+            '_actionUUID' => 'Action Uuid',
+            '_version' => 'Version',
             'user_id' => 'User ID',
             'action' => 'Action',
             'date_created' => 'Date Created',
+            'department' => 'Department',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \backend\modules\user\data\query\UserHistoryQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \backend\modules\user\data\query\UserHistoryQuery(get_called_class());
     }
 
 }

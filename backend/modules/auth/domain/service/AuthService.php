@@ -2,11 +2,13 @@
 
 namespace backend\modules\auth\domain\service;
 
-use backend\modules\auth\data\dto\AuthDTO;
+use Yii;
+use backend\components\exception\ApiException;
 use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\usecase\LoginUseCase;
 use backend\modules\auth\domain\usecase\LogoutUseCase;
 use backend\modules\auth\domain\usecase\RegisterUseCase;
+
 
 class AuthService {
     private RegisterUseCase $registerUseCase;
@@ -22,15 +24,31 @@ class AuthService {
     }
 
 
-    public function register(AuthEntity $authEntity): AuthDTO
+    public function register(AuthEntity $authEntity)
     {
-        return $this->registerUseCase->execute($authEntity);
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $authDTO = $this->registerUseCase->execute($authEntity);
+            $transaction->commit();
+            return $authDTO;
+        } catch(ApiException $error) {
+            $transaction->rollBack();
+            throw $error;
+        }
     }
 
 
-    public function login(AuthEntity $authEntity): AuthDTO
+    public function login(AuthEntity $authEntity)
     {
-        return $this->loginUseCase->execute($authEntity);
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $authDTO = $this->loginUseCase->execute($authEntity);
+            $transaction->commit();
+            return $authDTO;
+        } catch(ApiException $error) {
+            $transaction->rollBack();
+            throw $error;
+        }
     }
 
 

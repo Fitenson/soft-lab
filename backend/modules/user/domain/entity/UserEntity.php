@@ -7,13 +7,16 @@ use backend\modules\user\data\dto\UserDTO;
 
 
 class UserEntity extends Entity {
+    const ROLE_USER = 'User';
+
     protected string $DTOClassName = UserDTO::class;
 
-    private string $UUID;
+    private ?string $UUID;
     private string $username;
     private ?string $fullName;
     private string $email;
     private ?string $gender;
+    private ?string $role;
     private ?string $title;
     private ?string $phoneNo;
     private ?string $description;
@@ -30,7 +33,7 @@ class UserEntity extends Entity {
     }
 
 
-    public function setUUID(string $UUID): void
+    public function setUUID(?string $UUID = null): void
     {
         $this->UUID = $UUID;
     }
@@ -58,6 +61,11 @@ class UserEntity extends Entity {
     public function setTitle(?string $title): void
     {
         $this->title = $title;
+    }
+
+    public function setRole(?string $role): void
+    {
+        $this->role = !empty($role) ? $role : self::ROLE_USER;
     }
 
     public function setPhoneNo(?string $phoneNo): void
@@ -94,6 +102,11 @@ class UserEntity extends Entity {
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getRole(?string $role): ?string
+    {
+        return $this->role;
     }
 
     public function getGender(): string

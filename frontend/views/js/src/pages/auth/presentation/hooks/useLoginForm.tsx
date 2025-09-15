@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { loginSchema, type LoginModel } from "@/pages/auth/presentation/schema/loginSchema";
 import type { SetFormError, SetFormErrorOptions } from '@/core/presentation/form/SetFormError';
-import type { ApiErrors } from "@/types";
+import type { ApiErrorResponse } from "@/types";
+import { AxiosError } from "axios";
 
 
 const useLoginForm = () => {
@@ -22,18 +22,23 @@ const useLoginForm = () => {
         options?: SetFormErrorOptions
     ) => {
         const { setToastError } = options || {};
-        const axiosError = error as AxiosError<{ errors?: ApiErrors }>;
-        const errors = axiosError?.response?.data?.errors ?? {};
+        const axiosError = error as AxiosError<{ errors?: ApiErrorResponse }>;
+        const errors = axiosError.response?.data.errors as ApiErrorResponse;
 
         if (typeof errors === "string") {
             setToastError?.(errors);
-        } else if (errors && Object.keys(errors).length > 0) {
-            Object.keys(errors).forEach((field) => {
+        } else if (Object.keys(errors).length > 0) {
+            Object.entries(errors).forEach(([field, errorValue]) => {
                 const normalizedField = field.replace(/^user\./, "") as keyof LoginModel;
-                const errorValue = errors[field];
 
-                const message =
-                    Array.isArray(errorValue) ? errorValue[0] : errorValue || "Invalid value";
+                let message: string;
+                if (Array.isArray(errorValue)) {
+                    message = errorValue[0] ?? "Invalid value";
+                } else if (typeof errorValue === "string") {
+                    message = errorValue;
+                } else {
+                    message = "Invalid value";
+                }
 
                 if (normalizedField in form.getValues()) {
                     form.setError(normalizedField, {
@@ -41,12 +46,14 @@ const useLoginForm = () => {
                         message,
                     });
                 } else {
-                    // fallback for unmapped fields → show toast
                     setToastError?.(message);
                 }
             });
+        } else {
+            setToastError?.("Something went wrong. Please try again.");
         }
     };
+
     
 
     return {

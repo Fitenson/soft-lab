@@ -46,4 +46,8 @@ export interface FormFieldType {
 }
 
 
-export type ApiErrors = Record<string, string | string[]>;
+export type ApiFieldErrors = Record<string, string | string[]>;
+
+export type ApiErrorResponse =
+    | { message: string }
+    | { errors: ApiFieldErrors };
