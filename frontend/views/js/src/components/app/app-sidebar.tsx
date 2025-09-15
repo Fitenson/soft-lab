@@ -7,7 +7,7 @@ import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, UserRound, BookOpenCheckIcon } from 'lucide-react';
 import AppLogo from './app-logo';
-import { FcDepartment } from "react-icons/fc";
+
 
 const mainNavItems: NavItem[] = [
     {
@@ -20,11 +20,6 @@ const mainNavItems: NavItem[] = [
         href: '/user',
         icon: UserRound,
     },
-    {
-        title: "Department",
-        href: '/department',
-        icon: FcDepartment,
-    }
 ];
 
 const footerNavItems: NavItem[] = [

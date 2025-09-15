@@ -16,12 +16,12 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import type { RootState } from "@/core/presentation/store";
 import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/user/presentation/redux/userDataTableSlice.ts";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import useUserService from "@/pages/user/domain/service/useUserService";
 import UserViewModel from "@/pages/user/presentation/view-models/UserViewModel"
-// import useShowToast from "@/hooks/use-show-toast";
+import useShowToast from "@/hooks/use-show-toast";
 import DataTable from "@/components/app/data-table.tsx";
 import { useState } from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import useUserService from "@/pages/user/domain/service/useUserService.tsx";
 
 
 interface DataTableProps<TData extends UserViewModel> {
@@ -51,22 +51,24 @@ export default function UserDataTable<TData extends UserViewModel>({
     const { rowSelection, sorting, columnVisibility } = useAppSelector(
         (state: RootState) => state.userDataTable
     );
-    // const showToast = useShowToast();
+    const showToast = useShowToast();
 
-    // const queryClient = useQueryClient();
-    // const { params } = useAppSelector(state => state.userDataTable);
-    // const { removeUser } = useUserService();
+    const queryClient = useQueryClient();
+    const { params } = useAppSelector(state => state.userDataTable);
+    const { removeUser } = useUserService();
 
-    // const mutation = useMutation({
-    //     mutationFn: (selectedRows: UserViewModel[]) => removeUser(selectedRows),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries({ queryKey: ["/user/index", params]});
-    //     },
-    //     onError: (error) => {
-    //         console.log(error);
-    //         showToast("Error", "Failed to delete user", "error");
-    //     }
-    // });
+    const mutation = useMutation({
+        mutationFn: (selectedRows: UserViewModel[]) => {
+            const UUIDs = selectedRows.map((row) => row.UUID);
+            return  removeUser(UUIDs);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["/user/index", params]});
+        },
+        onError: () => {
+            showToast("Error", "Failed to delete user", "error");
+        }
+    });
 
 
     const table = useReactTable({
@@ -110,10 +112,10 @@ export default function UserDataTable<TData extends UserViewModel>({
     };
 
 
-    // const handleRemove = () => {
-    //     const selectedRows = table.getSelectedRowModel() .rows.map(row => new UserViewModel(row.original as UserViewModel));
-    //     mutation.mutate(selectedRows);
-    // }
+    const handleRemoveUser = () => {
+        const selectedRows = table.getSelectedRowModel() .rows.map(row => new UserViewModel(row.original as UserViewModel));
+        mutation.mutate(selectedRows);
+    }
 
 
     return (
@@ -122,7 +124,7 @@ export default function UserDataTable<TData extends UserViewModel>({
                 <div className="w-full">
                     <TopActionBar
                         createAction={{ to: "/user/create" }}
-                        deleteAction={{ action: () => "deleteUser" }}
+                        deleteAction={{ action: handleRemoveUser }}
                         refreshAction={{ action: onRefresh }}
                         table={table}
                     />

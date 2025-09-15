@@ -23,7 +23,7 @@ const useUserRepository = () => {
     }
 
 
-    const create = async (userEntity: UserEntity) => {
+    const createUser = async (userEntity: UserEntity) => {
         const userDto = userEntity.asDto();
         const formData = new FormData();
 
@@ -49,7 +49,7 @@ const useUserRepository = () => {
     }
 
 
-    const update = async (userEntity: UserEntity) => {
+    const updateUser = async (userEntity: UserEntity) => {
         const userDto = userEntity.asDto();
         const formData = new FormData();
 
@@ -74,10 +74,26 @@ const useUserRepository = () => {
     }
 
 
+    const removeUser = async (UUIDs: string[]) => {
+        const formData = new FormData();
+
+        UUIDs.forEach((UUID) => {
+            formData.append("UUIDs[]", UUID);
+        });
+
+        return await request<{ success: UserDTO[], failed: UserDTO[] }>({
+            url: "/user/remove",
+            method: "POST",
+            data: formData,
+        });
+    }
+
+
     return {
         index,
-        create,
-        update,
+        createUser,
+        updateUser,
+        removeUser,
     };
 }
 

@@ -63,4 +63,9 @@ class UserController extends RestController {
             'user' => $userDTO->asArray()
         ];
     }
+
+
+    public function actionRemove() {
+        return $this->userService->removeUser(Yii::$app->request->post());
+    }
 }

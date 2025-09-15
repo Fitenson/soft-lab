@@ -4,10 +4,11 @@ namespace backend\modules\user\data\repository;
 
 use Yii;
 use backend\components\repository\BaseRepository;
+use backend\modules\user\data\dto\UserDTO;
 use backend\modules\user\data\models\User;
 use backend\modules\user\domain\entity\UserEntity;
 use backend\modules\user\domain\repository\UserRepository;
-
+use Throwable;
 
 class YiiUserRepository extends BaseRepository implements UserRepository {
     public function index(array $params)
@@ -91,8 +92,37 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
     }
 
 
-    public function remove(array $data)
+    public function remove(array $data): array
     {
-        
+        $_actionUUID = $this->getActionUUID();
+        $status = [
+            'success' => [],
+            'failed' => []
+        ];
+
+        $UUIDs = $data['UUIDs'];
+        $Users = User::find()->where(['UUID' => $UUIDs])->all();
+
+        foreach($Users as $User) {
+            try {
+                $transaction = Yii::$app->db->beginTransaction();
+                $User->_actionUUID = $_actionUUID;
+                $User->delete();
+                $transaction->commit();
+
+                $userDTO = new UserDTO();
+                $userDTO->load($User->getAttributes(), '');
+                $status['success'][] = $userDTO;
+            } catch(Throwable $error) {
+                $transaction->rollBack();
+
+                $userDTO = new UserDTO();
+                $userDTO->load($User->getAttributes(), '');
+                $status['failed'][] = $userDTO;
+                $status['failed']['message'] = $error->getMessage();
+            }
+        }
+
+        return $status;
     }
 }

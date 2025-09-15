@@ -7,7 +7,8 @@ import type { UserDTO } from "@/pages/user/data/dto/UserDTO.ts";
 
 
 const useUserService = () => {
-    const { index: indexRepo, create: createRepo, update: updateRepo } = useUserRepository();
+    const { index: indexRepo, createUser: createUserRepo, updateUser: updateUserRepo, removeUser: removeUserRepo } = useUserRepository();
+
 
     const index = async (
         params: Params, 
@@ -25,30 +26,39 @@ const useUserService = () => {
     };
 
 
-    const create = async (
+    const createUser = async (
         userDTO: Partial<UserDTO>,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
         let userEntity = new UserEntity(userDTO);
-        userEntity = await handleServiceCall<UserEntity>(async () => createRepo(userEntity), callbacks);
+        userEntity = await handleServiceCall<UserEntity>(async () => createUserRepo(userEntity), callbacks);
         return userEntity.asViewModel();
     };
 
 
-    const update = async (
+    const updateUser = async (
         userDTO: Partial<UserDTO>,
         callbacks?: ServiceCallback<UserEntity>
     ) => {
         let userEntity = new UserEntity(userDTO);
-        userEntity = await handleServiceCall<UserEntity>(async () => updateRepo(userEntity), callbacks);
+        userEntity = await handleServiceCall<UserEntity>(async () => updateUserRepo(userEntity), callbacks);
         return userEntity.asViewModel();
     };
+
+
+    const removeUser = async (
+        UUIDs: string[],
+        callbacks?: ServiceCallback<{ success: UserDTO[], failed: UserDTO[] }>
+    ) => {
+        return await handleServiceCall<{ success: UserDTO[], failed: UserDTO[] }>(async () => removeUserRepo(UUIDs), callbacks);
+    }
 
 
     return {
         index,
-        create,
-        update,
+        createUser,
+        updateUser,
+        removeUser,
     };
 };
 

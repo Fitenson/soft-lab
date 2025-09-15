@@ -5,4 +5,5 @@ return [
     'backend/user/view' => 'user/user/view',
     'backend/user/create' => 'user/user/create',
     'backend/user/update' => 'user/user/update',
+    'backend/user/remove' => 'user/user/remove',
 ];

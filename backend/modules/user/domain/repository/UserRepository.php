@@ -10,5 +10,5 @@ interface UserRepository {
     public function create(UserEntity $userEntity): UserEntity;
     public function update(UserEntity $userEntity): UserEntity;
     public function view(string $id): UserEntity;
-    public function remove(array $data);
+    public function remove(array $data): array;
 }

@@ -1,3 +1,11 @@
+export {};
+
 declare global {
-    function isEmpty(value?: string | null): boolean;
+  interface Window {
+    isEmpty(value?: string | null): boolean;
+  }
+
+  interface GlobalThis {
+    isEmpty(value?: string | null): boolean;
+  }
 }

@@ -30,7 +30,7 @@ export default function UserFormView() {
     const isLoading = useAppSelector(state => state.loading.global);
     const showToast = useShowToast();
     const { form, setFormError, userViewModel, setUserViewModel } = useUserForm({ userDTO: user });
-    const { create, update } = useUserService();
+    const { createUser, updateUser, removeUser } = useUserService();
 
     const breadcrumbs = [
         ...(breadcrumbItems ?? []),
@@ -55,11 +55,11 @@ export default function UserFormView() {
 
         try {
             if(userViewModel?.UUID) {
-                const newUserViewModel = await update(userDTO);
+                const newUserViewModel = await updateUser(userDTO);
                 setUserViewModel(newUserViewModel);
                 showToast('Success', 'Update user successfully', 'success');
             } else {
-                const newUserViewModel = await create(userDTO);
+                const newUserViewModel = await createUser(userDTO);
                 showToast('Success', 'Create user successfully', 'success');
 
                 router.visit(`/user/view?id=${newUserViewModel.UUID}`);
@@ -67,6 +67,26 @@ export default function UserFormView() {
         } catch(error) {
             setFormError(error);
             showToast("Error", "Server error", "error");
+        }
+    }
+
+
+    const handleRemoveUser = async () => {
+        if (userViewModel?.UUID) {
+            const UUIDs = [userViewModel.UUID];
+             await removeUser(UUIDs, {
+                 onSuccess: async (data) => {
+                     if(data?.success && data?.success.length > 0) {
+                         showToast("Success", "Successfully remove the user. Redirecting to main page", "success");
+                         router.visit("/user/index");
+                     } else {
+                         showToast("Error", "Failed to remove the user", "error");
+                     }
+                 },
+                 onError: async () => {
+                     showToast("Error", "Something wrong with the server", "error");
+                 }
+             });
         }
     }
 
@@ -82,7 +102,7 @@ export default function UserFormView() {
                             <TopActionBar
                                 saveAction
                                 browseAction={{ to: "/user/index" }}
-                                deleteAction={{ action: () => {} }}
+                                deleteAction={{ action: handleRemoveUser }}
                             />
                         </div>
                 
