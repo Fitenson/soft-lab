@@ -38,12 +38,13 @@ const useUserRepository = () => {
         formData.append("user[phoneNo]", userDto.phoneNo ?? "");
         formData.append("user[valid]", userDto.valid ? "1" : "0");
 
-        const newUserDto = await request<UserDTO>({
+        const response = await request<{ user: UserDTO}>({
             url: "/user/create",
             method: "POST",
             data: formData,
         });
 
+        const newUserDto = response.user;
         return new UserEntity(newUserDto);
     }
 
