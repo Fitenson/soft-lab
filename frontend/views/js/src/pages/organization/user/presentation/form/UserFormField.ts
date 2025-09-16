@@ -13,7 +13,6 @@ const UserFormField = {
     title: createFormField({ name: "title", label: "Title", max: 50 }),
     gender: createFormField({ name: "gender", label: "Gender", max: 50 }),
     phoneNo: createFormField({ name: "phoneNo", label: "Phone No", max: 50 }),
-    createdAtFormat: createFormField({ name: "createdAtFormat", label: "Created At" }),
 };
 
 export default UserFormField;

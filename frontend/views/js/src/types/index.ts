@@ -28,6 +28,7 @@ export interface Params {
     limit: string;
     sort: string;
     order: "asc" | "desc";
+    filter: string;
 }
 
 

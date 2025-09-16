@@ -1,4 +1,5 @@
 import {
+    type ColumnFiltersState,
     getCoreRowModel,
     getFilteredRowModel,
     getSortedRowModel,
@@ -15,7 +16,12 @@ import TopActionBar from "@/components/app/top-action-bar.tsx";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 import type { RootState } from "@/core/presentation/store";
-import { setColumnVisibility, setRowSelection, setSorting } from "@/pages/organization/user/presentation/redux/userDataTableSlice.ts";
+import {
+    setColumnVisibility,
+    setParams,
+    setRowSelection,
+    setSorting
+} from "@/pages/organization/user/presentation/redux/userDataTableSlice.ts";
 import UserViewModel from "@/pages/organization/user/presentation/view-models/UserViewModel.ts"
 import useShowToast from "@/hooks/use-show-toast.ts";
 import DataTable from "@/components/app/data-table.tsx";
@@ -37,6 +43,7 @@ export default function UserDataTable<TData extends UserViewModel>({
         onRefresh
     }: DataTableProps<TData>) {
     const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnSizingInfo, setColumnSizingInfo] = useState<ColumnSizingInfoState>({
         startOffset: null,
         startSize: null,
@@ -88,10 +95,31 @@ export default function UserDataTable<TData extends UserViewModel>({
         onSortingChange: (updater) => {
             const newValue = typeof updater === "function" ? updater(sorting) : updater;
             dispatch(setSorting(newValue));
+
+            if(newValue.length > 0) {
+                dispatch(setParams({
+                    ...params,
+                    sort: newValue[0].id,
+                    order: newValue[0].desc ? "desc" : "asc",
+                }))
+            }
         },
         onColumnVisibilityChange: (updater) => {
             const newValue = typeof updater === "function" ? updater(columnVisibility) : updater;
             dispatch(setColumnVisibility(newValue));
+        },
+        onColumnFiltersChange: (updater) => {
+            const newValue = typeof updater === "function" ? updater(columnFilters) : updater;
+            setColumnFilters(newValue);
+
+            const filterParams = Object.fromEntries(
+                newValue.map((filter) => [filter.id, filter.value])
+            );
+
+            dispatch(setParams({
+                ...params,
+                filter: JSON.stringify(filterParams)
+            }));
         },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -102,6 +130,7 @@ export default function UserDataTable<TData extends UserViewModel>({
             columnVisibility,
             columnSizing,
             columnSizingInfo,
+            columnFilters
         }
     });
 

@@ -1,8 +1,8 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { RowSelectionState, SortingState, VisibilityState } from "@tanstack/react-table";
+import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import type {RowSelectionState, SortingState, VisibilityState} from "@tanstack/react-table";
 
 
-export interface UserDataTableState {
+export interface ProjectDataTableState {
     columnVisibility: VisibilityState;
     rowSelection: RowSelectionState;
     sorting: SortingState;
@@ -10,13 +10,12 @@ export interface UserDataTableState {
         order: "asc" | "desc",
         sort: string,
         offset: string,
-        limit: string,
-        filter: string,
+        limit: string
     };
 }
 
 
-const initialState: UserDataTableState = {
+const initialState: ProjectDataTableState = {
     columnVisibility: {},
     rowSelection: {},
     sorting: [],
@@ -25,13 +24,12 @@ const initialState: UserDataTableState = {
         sort: "createdAtFormat",
         offset: "0",
         limit: "20",
-        filter: "{}",
     },
 }
 
 
-const userDataTableState = createSlice({
-    name: "department-data-table",
+const projectDataTableSlice = createSlice({
+    name: "project-data-table",
     initialState,
     reducers: {
         setColumnVisibility: (state, action: PayloadAction<VisibilityState>) => {
@@ -43,7 +41,7 @@ const userDataTableState = createSlice({
         setSorting: (state, action: PayloadAction<SortingState>) => {
             state.sorting = action.payload;
         },
-        setParams: (state, action: PayloadAction<UserDataTableState["params"]>) => {
+        setParams: (state, action: PayloadAction<ProjectDataTableState>) => {
             state.params = {...state.params, ...action.payload};
         },
         resetTable: () => initialState,
@@ -57,6 +55,6 @@ export const {
     setSorting,
     setParams,
     resetTable,
-} = userDataTableState.actions;
+} = projectDataTableSlice.actions;
 
-export default userDataTableState.reducer;
+export default projectDataTableSlice.reducer;

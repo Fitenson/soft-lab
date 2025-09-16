@@ -7,7 +7,7 @@ export interface DepartmentDataTableState {
     columnVisibility: VisibilityState;
     rowSelection: RowSelectionState;
     sorting: SortingState;
-    params: Params
+    params: Params;
 }
 
 
@@ -20,6 +20,7 @@ const initialState: DepartmentDataTableState = {
         sort: "createdAtFormat",
         offset: "0",
         limit: "20",
+        filter: "{}"
     },
 }
 

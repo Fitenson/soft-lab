@@ -9,7 +9,7 @@ abstract class BaseRepository {
     protected function getParams(array $params): array
     {
         $valid = empty($params['valid']) ? [] : ['valid' => $params['valid']]; 
-        $filterFields = isset($Params['filter']) ? json_decode($Params['filter'], true) : []; 
+        $filterFields = isset($params['filter']) ? json_decode($params['filter'], true) : []; 
         unset($filterFields["undefined"]); 
         $likeFilterFields = []; 
         $sort = []; 
