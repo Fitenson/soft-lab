@@ -6,6 +6,9 @@ import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton,
 import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, UserRound, BookOpenCheckIcon } from 'lucide-react';
+import { HiOutlineDesktopComputer } from "react-icons/hi";
+import { TbPuzzle } from "react-icons/tb";
+import { IoSettingsOutline } from "react-icons/io5";
 import AppLogo from './app-logo';
 
 
@@ -17,8 +20,25 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'User',
-        href: '/user',
+        href: '/organization/user',
         icon: UserRound,
+    },
+    {
+        title: 'Frontend',
+        href: '/frontend',
+        icon: HiOutlineDesktopComputer,
+        subNavItems: [
+            {
+                title: 'UI Components',
+                href: '/frontend/components',
+                icon: TbPuzzle
+            },
+            {
+                title: 'Utilities',
+                href: '/frontend/utilities',
+                icon: IoSettingsOutline
+            }
+        ]
     },
 ];
 

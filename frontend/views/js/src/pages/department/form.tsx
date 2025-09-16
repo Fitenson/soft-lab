@@ -38,6 +38,7 @@ export default function DepartmentFormView({ department }: Props) {
                 <Form {...form}>
                     <div className="col-span-4">
                         <TopActionBar
+                            isLoading={isLoading}
                             saveAction
                             browseAction={{ to: "/department/index" }}
                             deleteAction={{ action: () => "deleteDepartment" }}

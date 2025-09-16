@@ -8,7 +8,7 @@ const useShowToast = () => {
     const showToast = useCallback(
         (title: string, description: string, status: ToastStatus) => {
             const safeDescription =
-                description?.length >= 50
+                description?.length >= 64
                     ? "Something wrong with the server"
                     : description;
             toast[status](title, {
