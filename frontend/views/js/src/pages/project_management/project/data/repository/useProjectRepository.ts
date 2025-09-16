@@ -1,13 +1,14 @@
 import { useRequest } from "@/lib/useRequest.ts";
 import type {DataTableType, Params} from "@/types";
 import type {ProjectDTO} from "@/pages/project_management/project/data/dto/ProjectDTO.ts";
+import type {ProjectEntity} from "@/pages/project_management/project/domain/entity/ProjectEntity.ts";
 
 
 const useProjectRepository = () => {
     const { request } = useRequest();
 
 
-    const index = async (params: Params) => {
+    const indexProject = async (params: Params) => {
         const formData = new FormData();
 
         formData.append("param[offset]", params.offset);
@@ -23,8 +24,16 @@ const useProjectRepository = () => {
     }
 
 
+    const createProject = async (projectEntity: ProjectEntity) => {
+        const projectDTO: Partial<ProjectDTO> = projectEntity.asDto();
+        const formData = new FormData();
+
+        formData.append("project[projectCode]", projectDTO.projectCode ?? "");
+    }
+
+
     return {
-        index,
+        indexProject,
     }
 }
 

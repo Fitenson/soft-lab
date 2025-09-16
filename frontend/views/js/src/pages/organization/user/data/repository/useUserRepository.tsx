@@ -16,7 +16,7 @@ const useUserRepository = () => {
         formData.append("param[order]", params.order);
 
         if(params.filter !== "{}") {
-            formData.append("param[filter]", params.filter);
+            formData.append("param[filter] ", params.filter);
         }
 
         return await request<DataTableType<UserDTO>>({
