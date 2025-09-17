@@ -9,6 +9,8 @@ import { LayoutGrid, UserRound, BookOpenCheckIcon } from 'lucide-react';
 import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { TbPuzzle } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
+import { FaProjectDiagram } from "react-icons/fa";
+import { GrProjects } from "react-icons/gr";
 import AppLogo from './app-logo';
 
 
@@ -22,6 +24,18 @@ const mainNavItems: NavItem[] = [
         title: 'User',
         href: '/organization/user',
         icon: UserRound,
+    },
+    {
+        title: 'Project Management',
+        href: '/project_management',
+        icon: GrProjects,
+        subNavItems: [
+            {
+                title: 'Project',
+                href: '/project_management/project',
+                icon: FaProjectDiagram
+            }
+        ]
     },
     {
         title: 'Frontend',

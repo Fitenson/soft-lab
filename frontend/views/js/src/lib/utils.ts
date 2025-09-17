@@ -25,3 +25,23 @@ export function createFormField<Name extends string>(options: {
         emailFormatError: options.emailFormatError ? options.emailFormatError : undefined,
     };
 }
+
+
+export function buildFormData<T extends object>(
+    data: T,
+    allowedKeys: (keyof T)[],
+    formData: FormData = new FormData(),
+    parentKey?: string
+): FormData {
+    const keys = (allowedKeys ?? (Object.keys(data) as (keyof T)[]));
+
+    for(const key of keys) {
+        const value = data[key];
+        if (value === undefined || value === null) continue;
+        const formKey = parentKey ? `${parentKey}[${String(key)}]` : String(key);
+
+        formData.append(formKey, String(value));
+    }
+
+    return formData;
+};

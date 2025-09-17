@@ -1,9 +1,9 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity.ts";
-import type {ProjectDTO} from "@/pages/project_management/project/data/dto/ProjectDTO.ts";
-import type ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel.ts";
+import type { ProjectDTO } from "@/pages/project_management/project/data/dto/ProjectDTO.ts";
+import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel.ts";
 
 
-export declare class ProjectEntity extends BaseEntity<ProjectDTO>{
+export default class ProjectEntity extends BaseEntity<ProjectDTO>{
     private _UUID: string;
     private _projectName: string;
     private _projectCode: string;

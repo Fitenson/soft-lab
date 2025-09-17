@@ -1,3 +1,6 @@
+import { buildFormData } from "@/lib/utils";
+
+
 export interface ProjectDTO {
     UUID: string;
     projectName: string;
@@ -10,4 +13,20 @@ export interface ProjectDTO {
     createdByName: string | null;
     updatedAtFormat: string | null;
     updatedByName: string | null;
+}
+
+
+const projectDTOKeys: (keyof ProjectDTO)[] = [
+    "UUID",
+    "projectName",
+    "projectCode",
+    "description",
+    "secondDescription",
+    "moreDescription",
+    "valid",
+];
+
+
+export function projectFormData(projectDTO: Partial<ProjectDTO>, formData: FormData): FormData {
+    return buildFormData(projectDTO, projectDTOKeys, formData, 'project');
 }

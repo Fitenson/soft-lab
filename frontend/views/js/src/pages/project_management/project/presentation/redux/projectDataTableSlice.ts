@@ -10,7 +10,8 @@ export interface ProjectDataTableState {
         order: "asc" | "desc",
         sort: string,
         offset: string,
-        limit: string
+        limit: string,
+        filter: string
     };
 }
 
@@ -24,6 +25,7 @@ const initialState: ProjectDataTableState = {
         sort: "createdAtFormat",
         offset: "0",
         limit: "20",
+        filter: "{}"
     },
 }
 

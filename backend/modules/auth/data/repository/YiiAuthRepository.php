@@ -8,6 +8,7 @@ use backend\components\repository\BaseRepository;
 use backend\modules\auth\domain\entity\AuthEntity;
 use backend\modules\auth\domain\repository\AuthRepository;
 use backend\modules\user\data\models\User;
+use backend\modules\user\domain\entity\UserEntity;
 
 
 class YiiAuthRepository extends BaseRepository implements AuthRepository {
@@ -62,6 +63,7 @@ class YiiAuthRepository extends BaseRepository implements AuthRepository {
         $User = new User();
 
         $User->load($data, '');
+        $User->role = UserEntity::ROLE_USER;
         $User->passwordHash = Yii::$app->security->generatePasswordHash($data['password']);
         $User->generateAuthKey();
         $token = $User->generateAccessToken();

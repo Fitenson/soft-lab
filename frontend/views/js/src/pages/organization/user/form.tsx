@@ -52,7 +52,6 @@ export default function UserFormView() {
             ...(userViewModel?.UUID ? { UUID: userViewModel?.UUID } : {}),
         };
 
-
         try {
             if(userViewModel?.UUID) {
                 const newUserViewModel = await updateUser(userDTO);

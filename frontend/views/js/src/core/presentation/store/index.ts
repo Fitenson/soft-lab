@@ -6,6 +6,7 @@ import authReducer from "@/pages/auth/presentation/redux/authSlice";
 import sidebarReducer from "@/core/presentation/store/sidebarSlice";
 import userDataTableReducer from "@/pages/organization/user/presentation/redux/userDataTableSlice.ts";
 import departmentDataTableReducer from "@/pages/department/presentation/redux/departmentDataTableSlice.ts";
+import projectDataTableReducer from "@/pages/project_management/project/presentation/redux/projectDataTableSlice";
 import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
 
 
@@ -33,7 +34,8 @@ export const store = configureStore({
         auth: authReducer,
         sidebar: sidebarReducer,
         userDataTable: userDataTableReducer,
-        departmentDataTable: departmentDataTableReducer
+        departmentDataTable: departmentDataTableReducer,
+        projectDataTable: projectDataTableReducer
     },
     preloadedState: {
         auth: loadAuthFromStorage()

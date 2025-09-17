@@ -1,3 +1,5 @@
+import { buildFormData } from "@/lib/utils";
+
 export interface UserDTO {
     UUID: string;
     username: string;
@@ -15,4 +17,25 @@ export interface UserDTO {
     createdByName: string | null;
     updatedAtFormat: string | null;
     updatedByName: string | null;
+}
+
+
+const userDTOKeys: (keyof UserDTO)[] = [
+    "UUID",
+    "username",
+    "fullName",
+    "profileImage",
+    "email",
+    "role",
+    "description",
+    "address",
+    "gender",
+    "title",
+    "phoneNo",
+    "valid",
+];
+
+
+export function userFormData(userDTO: Partial<UserDTO>, formData: FormData): FormData {
+    return buildFormData(userDTO, userDTOKeys, formData, 'user');
 }

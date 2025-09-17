@@ -25,9 +25,10 @@ import {
 import UserViewModel from "@/pages/organization/user/presentation/view-models/UserViewModel.ts"
 import useShowToast from "@/hooks/use-show-toast.ts";
 import DataTable from "@/components/app/data-table.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import useUserService from "@/pages/organization/user/domain/service/useUserService.tsx";
+import useDebounce from "@/hooks/use-debounce";
 
 
 interface DataTableProps<TData extends UserViewModel> {
@@ -38,21 +39,23 @@ interface DataTableProps<TData extends UserViewModel> {
 
 
 export default function UserDataTable<TData extends UserViewModel>({
-        columns,
-        data,
-        onRefresh
-    }: DataTableProps<TData>) {
+    columns,
+    data,
+    onRefresh
+}: DataTableProps<TData>) {
+    const [filterParams, setFilterParams] = useState<Record<string, unknown>>({});
+    const debouncedFilterParams = useDebounce(filterParams, 1000);
+    
     const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnSizingInfo, setColumnSizingInfo] = useState<ColumnSizingInfoState>({
-        startOffset: null,
-        startSize: null,
-        deltaOffset: null,
-        deltaPercentage: null,
-        isResizingColumn: false,
-        columnSizingStart: []
-    });
-
+    startOffset: null,
+    startSize: null,
+    deltaOffset: null,
+    deltaPercentage: null,
+    isResizingColumn: false,
+    columnSizingStart: []
+});
     const dispatch = useDispatch();
     const isLoading = useAppSelector(state => state.loading.global);
     const { rowSelection, sorting, columnVisibility } = useAppSelector(
@@ -112,14 +115,12 @@ export default function UserDataTable<TData extends UserViewModel>({
             const newValue = typeof updater === "function" ? updater(columnFilters) : updater;
             setColumnFilters(newValue);
 
-            const filterParams = Object.fromEntries(
-                newValue.map((filter) => [filter.id, filter.value])
-            );
-
-            dispatch(setParams({
-                ...params,
-                filter: JSON.stringify(filterParams)
-            }));
+        const newFilterParams = Object.fromEntries(
+            newValue.map((filter) => [
+                filter.id,
+                typeof filter.value === "object" ? JSON.stringify(filter.value) : String(filter.value ?? "")
+            ]));
+            setFilterParams(newFilterParams);
         },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -133,6 +134,14 @@ export default function UserDataTable<TData extends UserViewModel>({
             columnFilters
         }
     });
+
+
+    useEffect(() => {
+        dispatch(setParams({
+            ...params,
+            filter: JSON.stringify(debouncedFilterParams)
+        }));
+    },[debouncedFilterParams, dispatch]);
 
 
     const onSelectRow = (row: Row<TData>) => {
