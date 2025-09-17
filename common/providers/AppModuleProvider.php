@@ -9,5 +9,8 @@ return [
     ],
     'department' => [
         'class' => 'backend\modules\department\DepartmentModule'
-    ]
+    ],
+    'project' => [
+        'class' => 'backend\modules\project\ProjectModule'
+    ],
 ];

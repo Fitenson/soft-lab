@@ -52,8 +52,9 @@ const useProjectForm = ({ projectDTO }: { projectDTO: ProjectDTO | null }) => {
 
     return {
         form,
+        setFormError,
+        projectViewModel,
         setProjectViewModel,
-        setFormError
     };
 };
 
