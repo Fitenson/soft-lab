@@ -9,3 +9,6 @@ export const projectSchema = z.object({
     secondDescription: z.string().max(ProjectFormField.secondDescription.max, { error: ProjectFormField.secondDescription.maxError }),
     moreDescription: z.string().max(ProjectFormField.moreDescription.max, { error: ProjectFormField.moreDescription.maxError }),
 });
+
+
+export type ProjectFormModel = z.infer<typeof projectSchema>;

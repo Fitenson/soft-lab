@@ -25,9 +25,10 @@ import {
 import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel"
 import useShowToast from "@/hooks/use-show-toast.ts";
 import DataTable from "@/components/app/data-table.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useProjectService from "@/pages/project_management/project/domain/service/useProjectService";
+import useDebounce from "@/hooks/use-debounce";
 
 
 interface DataTableProps<TData extends ProjectViewModel> {
@@ -38,10 +39,13 @@ interface DataTableProps<TData extends ProjectViewModel> {
 
 
 export default function ProjectDataTable<TData extends ProjectViewModel>({
-        columns,
-        data,
-        onRefresh
-    }: DataTableProps<TData>) {
+    columns,
+    data,
+    onRefresh
+}: DataTableProps<TData>) {
+    const [filterParams, setFilterParams] = useState<Record<string, unknown>>({});
+    const debouncedFilterParams = useDebounce(filterParams, 100);
+
     const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnSizingInfo, setColumnSizingInfo] = useState<ColumnSizingInfoState>({
@@ -112,14 +116,12 @@ export default function ProjectDataTable<TData extends ProjectViewModel>({
             const newValue = typeof updater === "function" ? updater(columnFilters) : updater;
             setColumnFilters(newValue);
 
-            const filterParams = Object.fromEntries(
-                newValue.map((filter) => [filter.id, filter.value])
-            );
-
-            dispatch(setParams({
-                ...params,
-                filter: JSON.stringify(filterParams)
-            }));
+            const newFilterParams = Object.fromEntries(
+                newValue.map((filter) => [
+                filter.id,
+                typeof filter.value === "object" ? JSON.stringify(filter.value) : String(filter.value ?? "")
+            ]));
+            setFilterParams(newFilterParams);
         },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -133,6 +135,14 @@ export default function ProjectDataTable<TData extends ProjectViewModel>({
             columnFilters
         }
     });
+
+
+    useEffect(() => {
+        dispatch(setParams({
+            ...params,
+            filter: JSON.stringify(debouncedFilterParams)
+        }));
+    }, [debouncedFilterParams, dispatch]);
 
 
     const onSelectRow = (row: Row<TData>) => {
