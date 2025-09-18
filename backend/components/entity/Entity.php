@@ -40,13 +40,11 @@ abstract class Entity {
     }
 
 
-    public static function generateAutoNumber2($className, $columnName, $preference)
+    public static function generateAutoNumber($className, $columnName, $prefix)
     {
         $model = new $className;
-        $User = Yii::$app->user->identity;
 
-        $nextNumber = $preference['nextNumber'];
-        $prefix = $preference['prefix'];
+        $nextNumber = 1;
         $newRunningNumber = (int) $nextNumber - 1;
 
         $fullYear = date("Y");
@@ -59,7 +57,7 @@ abstract class Entity {
             $newRunningNumber += 1;
 
             if (!empty($prefix)) {
-                // Step 1: Replace cc, yyyy, mm in the prefix
+                // Step 1: Replace yyyy, mm in the prefix
                 $newAutoNumber = $prefix;
                 // $newAutoNumber = str_replace("cc", $century, $newAutoNumber);
                 $newAutoNumber = str_replace("yyyy", $fullYear, $newAutoNumber);

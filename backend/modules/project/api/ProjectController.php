@@ -60,7 +60,7 @@ class ProjectController extends RestController {
         $projectDTO = $this->projectService->updateProject(new ProjectEntity($projectData));
 
         return [
-            'Project' => $projectDTO->asArray()
+            'project' => $projectDTO->asArray()
         ];
     }
 

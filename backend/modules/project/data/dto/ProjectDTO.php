@@ -21,8 +21,8 @@ class ProjectDTO extends Model {
     public function rules()
     {
         return [[
-            ['UUID', 'projectCode', 'projectName', 'secondDescription', 'moreDescription', 
-            'createdAtFormat', 'createdByName', 'updatedAtFormat', 'updatedByName'
+            ['UUID', 'projectCode', 'projectName', 'description', 'secondDescription',
+            'moreDescription', 'createdAtFormat', 'createdByName', 'updatedAtFormat', 'updatedByName'
             ],
             'safe'
         ]];

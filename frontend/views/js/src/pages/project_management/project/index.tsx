@@ -8,6 +8,7 @@ import ProjectLayout from "./presentation/layouts/project-layout";
 import HeadingSmall from "@/components/app/heading-small";
 import ProjectDataTable from "@/pages/project_management/project/presentation/components/main/project-data-table";
 import { projectMainColumns } from "@/pages/project_management/project/presentation/components/main/projectMainColumns";
+import type {BreadcrumbItem} from "@/types";
 
 
 export default function ProjectGridview() {
@@ -20,9 +21,14 @@ export default function ProjectGridview() {
         enabled: true
     });
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        ...(breadcrumbItems ?? []),
+        { title: "Project", href: "/project_management/project" },
+    ];
+
 
     return (
-        <AppLayout breadcrumbs={breadcrumbItems}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Project" />
 
             <ProjectLayout>

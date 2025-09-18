@@ -4,7 +4,7 @@ namespace backend\modules\project\domain\entity;
 
 use backend\components\entity\Entity;
 use backend\modules\project\data\dto\ProjectDTO;
-
+use backend\modules\project\data\models\Project;
 
 class ProjectEntity extends Entity {
     protected string $DTOClassName = ProjectDTO::class;
@@ -34,7 +34,7 @@ class ProjectEntity extends Entity {
 
     public function setProjectCode(?string $projectCode = null): void
     {
-        $this->projectCode = $projectCode;
+        $this->projectCode = !empty($projectCode) ? $projectCode : $this->generateAutoNumber(Project::class, 'projectCode', 'PRJmmdd????');
     }
 
     public function setProjectName(string $projectName): void
@@ -58,32 +58,32 @@ class ProjectEntity extends Entity {
     }
 
 
-    public function getUUID(?string $UUID = null): ?string
+    public function getUUID(): ?string
     {
         return $this->UUID;
     }
 
-    public function getProjectCode(?string $projectCode): ?string
+    public function getProjectCode(): ?string
     {
         return $this->projectCode;
     }
 
-    public function getProjectName(string $projectName): ?string
+    public function getProjectName(): string
     {
         return $this->projectName;
     }
 
-    public function getDescription(?string $description): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function getSecondDescription(?string $secondDescription): ?string
+    public function getSecondDescription(): ?string
     {
         return $this->secondDescription;
     }
 
-    public function getMoreDescription(?string $moreDescription): ?string
+    public function getMoreDescription(): ?string
     {
         return $this->moreDescription;
     }

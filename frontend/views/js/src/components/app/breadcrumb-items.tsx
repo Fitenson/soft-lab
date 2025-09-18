@@ -6,10 +6,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
     },
-    {
-        title: 'User',
-        href: '/user',
-    },
 ];
 
 

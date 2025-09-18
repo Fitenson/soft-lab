@@ -11,6 +11,7 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 // import { setIndexData } from "./presentation/redux/userDataTableSlice";
 import useUserService from "@/pages/organization/user/domain/service/useUserService.tsx";
 import UserViewModel from "@/pages/organization/user/presentation/view-models/UserViewModel.ts";
+import type {BreadcrumbItem} from "@/types";
 
 
 export default function UserGridview() {
@@ -24,6 +25,10 @@ export default function UserGridview() {
         enabled: true,
     });
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        ...(breadcrumbItems ?? []),
+        { title: "User", href: "/organization/user" },
+    ];
 
     // useEffect(() => {
     //     if(data) {
@@ -33,7 +38,7 @@ export default function UserGridview() {
 
 
     return (
-        <AppLayout breadcrumbs={breadcrumbItems}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="User" />
 
             <UserLayout>
