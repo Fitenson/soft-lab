@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import TopActionBar from "@/components/app/top-action-bar.tsx";
 import ProjectFormField from "@/pages/project_management/project/presentation/form/ProjectFormField.ts";
 import { Input } from "@/components/ui/input.tsx";
+import { Textarea } from "@/components/ui/textarea";
 
 
 type Props = {
@@ -82,7 +83,7 @@ export default function ProjectFormView() {
 
             <ProjectLayout>
                 <Form {...form}>
-                    <form className="grid grid-cols-4 gap-6 w-full items-start" onSubmit={form.handleSubmit(submit)}>
+                    <form className="grid grid-cols-4 gap-6 space-y-2 w-full items-start" onSubmit={form.handleSubmit(submit)}>
                         <div className="col-span-4">
                             <TopActionBar
                                 isLoading={isLoading}
@@ -117,6 +118,7 @@ export default function ProjectFormView() {
                                     <FormControl>
                                         <Input
                                             {...field}
+                                            required
                                             disabled={isLoading}
                                         />
                                     </FormControl>
@@ -124,16 +126,21 @@ export default function ProjectFormView() {
                             )}
                         />
 
+                        <div className="col-span-2"></div>
+
                         <FormField
                             control={form.control}
                             name={ProjectFormField.description.name}
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="col-span-2">
                                     <FormLabel>{ProjectFormField.description.label}</FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             {...field}
+                                            value={field.value ?? ""}
                                             disabled={isLoading}
+                                            rows={4}
+                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '8rem', minHeight: '8rem' }}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -144,12 +151,15 @@ export default function ProjectFormView() {
                             control={form.control}
                             name={ProjectFormField.secondDescription.name}
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="col-span-2">
                                     <FormLabel>{ProjectFormField.secondDescription.label}</FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             {...field}
+                                            value={field.value ?? ""}
                                             disabled={isLoading}
+                                            rows={4}
+                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '8rem', minHeight: '8rem' }}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -160,12 +170,15 @@ export default function ProjectFormView() {
                             control={form.control}
                             name={ProjectFormField.moreDescription.name}
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="col-span-4">
                                     <FormLabel>{ProjectFormField.moreDescription.label}</FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             {...field}
+                                            value={field.value ?? ""}
                                             disabled={isLoading}
+                                            rows={4}
+                                            style={{  resize: 'vertical', overflowY: 'auto', maxHeight: '8rem', minHeight: '8rem' }}
                                         />
                                     </FormControl>
                                 </FormItem>
