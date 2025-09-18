@@ -21,7 +21,6 @@ class ProjectForm extends Form {
         return [
             [['projectCode', 'description', 'secondDescription', 'moreDescription'], 'default', 'value' => null],
             [['projectName'], 'required'],
-            ['email', 'email'],
             ['projectCode', 'unique',
                 'targetClass' => Project::class, 
                 'targetAttribute' => 'projectCode',

@@ -30,17 +30,17 @@ class ProjectController extends RestController {
         $data = Yii::$app->request->post();
 
         $ProjectForm = new ProjectForm();
-        $ProjectForm->load($data['Project'], '');
+        $ProjectForm->load($data['project'], '');
 
         if(!$ProjectForm->validate()) {
             Yii::$app->exception->throw($ProjectForm->getErrors(), 422);
         }
 
-        $ProjectData = $ProjectForm->getAttributes();
-        $projectDTO = $this->projectService->createProject(new ProjectEntity($ProjectData));
+        $projectData = $ProjectForm->getAttributes();
+        $projectDTO = $this->projectService->createProject(new ProjectEntity($projectData));
 
         return [
-            'Project' => $projectDTO->asArray()
+            'project' => $projectDTO->asArray()
         ];
     }
 
@@ -49,15 +49,15 @@ class ProjectController extends RestController {
         $data = Yii::$app->request->post();
 
         $ProjectForm = new ProjectForm();
-        $ProjectForm->load($data['Project'], '');
+        $ProjectForm->load($data['project'], '');
         $ProjectForm->UUID = $id;
 
         if(!$ProjectForm->validate()) {
             Yii::$app->exception->throw($ProjectForm->getErrors(), 422);
         }
 
-        $ProjectData = $ProjectForm->getAttributes();
-        $projectDTO = $this->projectService->updateProject(new ProjectEntity($ProjectData));
+        $projectData = $ProjectForm->getAttributes();
+        $projectDTO = $this->projectService->updateProject(new ProjectEntity($projectData));
 
         return [
             'Project' => $projectDTO->asArray()
