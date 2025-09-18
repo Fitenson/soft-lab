@@ -21,7 +21,7 @@ class YiiUserRepository extends BaseRepository implements UserRepository {
         $likeFilterFields = $params['likeFilterFields'];
         $compareFields = $params['compareFields'];
 
-        $query =User::find()->selectIndex()
+        $query = User::find()->selectIndex()
         ->where($valid)
         ->andWhere($compareFields)
         ->having($likeFilterFields);
