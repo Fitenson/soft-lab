@@ -1,6 +1,6 @@
 import BaseEntity from "@/core/domain/entity/BaseEntity.ts";
 import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
-import ClientDatabaseViewModel from "@/pages/backend/client_database/view_models/ClientDatabaseViewModel.ts";
+import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
 
 export default class ClientDatabaseEntity extends BaseEntity<ClientDatabaseDTO> {
     private _UUID: string;

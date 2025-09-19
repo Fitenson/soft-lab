@@ -1,13 +1,14 @@
 import breadcrumbItems from "@/components/app/breadcrumb-items";
 import AppLayout from "@/layouts/app-layout";
-import type { BreadcrumbItem, DataTableType } from "@/types";
+import type { BreadcrumbItem } from "@/types";
 import { Head } from "@inertiajs/react";
 import ClientDatabaseLayout from "./presentation/layouts/client-database-layout";
-import DatabaseCard from "./presentation/components/main/database-card";
-// import type ClientDatabaseViewModel from "@/pages/backend/client_database/view_models/ClientDatabaseViewModel";
-import type { ClientDatabaseDTO } from "./data/dto/ClientDatabaseDTO";
-// import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService";
-// import { useQuery } from "@tanstack/react-query";
+import DatabaseCard from "./presentation/components/database-card.tsx";
+import { useQuery } from "@tanstack/react-query";
+import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel";
+import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService";
+import {Card, CardContent} from "@/components/ui/card.tsx";
+import {FaPlus} from "react-icons/fa";
 
 
 export default function ClientDatabaseIndex() {
@@ -16,30 +17,14 @@ export default function ClientDatabaseIndex() {
         { title: "Database", href: "/backend/client-database"}
     ];
 
-    const data: DataTableType<ClientDatabaseDTO> = {
-        total: "3",
-        rows: [
-            {
-                UUID: "12618726172",
-                databaseName: "Shin Yang",
-                databaseSchema: "1ofis2",
-                host: "192",
-                port: "3306",
-                username: "root",
-                password: "12345678",
-                refreshToken: "12178635123",
-                valid: true
-            }
-        ]
-    };
 
-    // const { indexClientDatabase } = useClientDatabaseService();
+    const { indexClientDatabase } = useClientDatabaseService();
 
-    // const { data } = useQuery({
-    //     queryKey: ["/backend/client-database"],
-    //     queryFn: async () => indexClientDatabase(),
-    //     enabled: false
-    // });
+    const { data } = useQuery({
+        queryKey: ["/backend/client-database"],
+        queryFn: async () => indexClientDatabase(),
+        enabled: false
+    });
 
 
     return (
@@ -48,10 +33,12 @@ export default function ClientDatabaseIndex() {
 
             <ClientDatabaseLayout>
                 <section>
-                    {data.rows.map((clientDatabase) => {
-                        return <DatabaseCard/>
-                    })}
-                    
+                    <Card>
+                        <CardContent><FaPlus size={24} /></CardContent>
+                    </Card>
+                    {data?.rows.map((clientDatabaseViewModel: ClientDatabaseViewModel) => (
+                        <DatabaseCard clientDatabaseViewModel={clientDatabaseViewModel} />
+                    ))}
                 </section>
             </ClientDatabaseLayout>
         </AppLayout>
