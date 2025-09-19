@@ -13,4 +13,7 @@ return [
     'project' => [
         'class' => 'backend\modules\project\ProjectModule'
     ],
+    'client_database' => [
+        'class' => 'backend\modules\client_database\ClientDatabaseModule'
+    ]
 ];
