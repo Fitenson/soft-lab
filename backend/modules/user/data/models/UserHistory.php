@@ -55,11 +55,13 @@ class UserHistory extends \backend\components\db\AppModel
             [['fullName', 'profileImage', 'gender', 'title', 'phoneNo', 'description', 'address', 'accessToken', 'passwordResetToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created', 'department'], 'default', 'value' => null],
             [['historyUUID', 'UUID', 'username', 'authKey', 'passwordHash', 'email', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['historyUUID', 'UUID', 'gender', 'title', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', '_actionUUID', 'user_id', 'action', 'date_created', 'department'], 'string', 'max' => 50],
-            [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
+            [['historyUUID', 'gender', 'title', 'user_id', 'action'], 'string', 'max' => 50],
+            [['UUID', '_actionUUID', 'department'], 'string', 'max' => 40],
+            [['username', 'phoneNo', 'email', 'date_created'], 'string', 'max' => 100],
             [['fullName', 'profileImage', 'passwordHash', 'passwordResetToken'], 'string', 'max' => 255],
             [['description', 'address', 'accessToken'], 'string', 'max' => 500],
             [['authKey'], 'string', 'max' => 32],
+            [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['historyUUID'], 'unique'],
         ];
     }

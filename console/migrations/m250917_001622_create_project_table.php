@@ -15,7 +15,7 @@ class m250917_001622_create_project_table extends DbMigration
         $tableOptions = $this->tableOptions;
 
         $this->createTable('{{%project}}', array_merge([
-            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
+            'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'projectCode' => $this->string(100)->notNull(),
             'projectName' => $this->string(100)->null(),
             'description' => $this->string(500)->null(),
@@ -25,8 +25,8 @@ class m250917_001622_create_project_table extends DbMigration
 
 
         $this->createTable('{{%project_history}}', array_merge([
-            'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
-            'UUID' => $this->char(50)->notNull(),
+            'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
+            'UUID' => $this->char(40)->notNull(),
             'projectCode' => $this->string(100)->notNull(),
             'projectName' => $this->string(100)->null(),
             'description' => $this->string(500)->null(),

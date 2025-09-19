@@ -15,19 +15,19 @@ class m250912_010531_create_department_table extends DbMigration
         $tableOptions = $this->tableOptions;
 
         $this->createTable('{{%department}}', array_merge([
-            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
+            'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'departmentID' => $this->string(100)->notNull(),
             'departmentName' => $this->string(100)->notNull(),
-            'head' => $this->char(50)->null(),
+            'head' => $this->char(40)->null(),
             'description' => $this->string(1000)->null(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
         $this->createTable('{{%department_history}}', array_merge([
-            'UUID' => $this->char(50)->notNull(),
+            'UUID' => $this->char(40)->notNull(),
             'departmentID' => $this->string(100)->notNull(),
             'departmentName' => $this->string(100)->notNull(),
-            'head' => $this->char(50)->null(),
+            'head' => $this->char(40)->null(),
             'description' => $this->string(1000)->null(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
@@ -55,8 +55,8 @@ class m250912_010531_create_department_table extends DbMigration
         ->onDeleteNull()
         ->build();
 
-        $this->addColumn('{{%user}}', 'department', $this->char(50)->null());
-        $this->addColumn('{{%user_history}}', 'department', $this->char(50)->null());
+        $this->addColumn('{{%user}}', 'department', $this->char(40)->null());
+        $this->addColumn('{{%user_history}}', 'department', $this->char(40)->null());
 
         $this->createForeignKey()
         ->table('user')

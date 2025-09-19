@@ -1,11 +1,11 @@
 <?php
 
-namespace backend\modules\client_database\data\models;
+namespace backend\modules\client_database\data\query;
 
 /**
- * This is the ActiveQuery class for [[ClientDatabase]].
+ * This is the ActiveQuery class for [[\backend\modules\client_database\data\models\ClientDatabase]].
  *
- * @see ClientDatabase
+ * @see \backend\modules\client_database\data\models\ClientDatabase
  */
 class ClientDatabaseQuery extends \backend\components\db\AppQuery
 {
@@ -16,7 +16,7 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
 
     /**
      * {@inheritdoc}
-     * @return ClientDatabase[]|array
+     * @return \backend\modules\client_database\data\models\ClientDatabase[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
 
     /**
      * {@inheritdoc}
-     * @return ClientDatabase|array|null
+     * @return \backend\modules\client_database\data\models\ClientDatabase|array|null
      */
     public function one($db = null)
     {

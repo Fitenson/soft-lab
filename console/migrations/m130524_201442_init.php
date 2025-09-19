@@ -14,15 +14,15 @@ class m130524_201442_init extends DbMigration
 
         // Create main user table
         $this->createTable('{{%user}}', array_merge([
-            'UUID' => $this->char(50)->notNull()->append('PRIMARY KEY')->unique(),
+            'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'username' => $this->string(100)->notNull()->unique(),
             'email' => $this->string(100)->notNull()->unique(),
-            'fullName' => $this->string(255),
+            'fullName' => $this->string(100),
             'role' => $this->string(50)->null(),
-            'profileImage' => $this->string(255)->null(),
+            'profileImage' => $this->string(100)->null(),
             'gender' => $this->string(50),
-            'title' => $this->string(50),
-            'phoneNo' => $this->string(100),
+            'title' => $this->string(30),
+            'phoneNo' => $this->string(50),
             'description' => $this->string(500),
             'address' => $this->string(500),
             'accessToken' => $this->string(500)->null(),
@@ -34,14 +34,14 @@ class m130524_201442_init extends DbMigration
 
         // Create user_history table (no foreign keys)
         $this->createTable('{{%user_history}}', array_merge([
-            'historyUUID' => $this->char(50)->notNull()->append('PRIMARY KEY'),
-            'UUID' => $this->char(50)->notNull(),
+            'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY'),
+            'UUID' => $this->char(40)->notNull(),
             'username' => $this->string(100)->notNull(),
-            'fullName' => $this->string(255),
-            'profileImage' => $this->string(255)->null(),
+            'fullName' => $this->string(100),
+            'profileImage' => $this->string(100)->null(),
             'gender' => $this->string(50),
             'title' => $this->string(50),
-            'phoneNo' => $this->string(100),
+            'phoneNo' => $this->string(50),
             'description' => $this->string(500),
             'address' => $this->string(500),
             'accessToken' => $this->string(500)->null(),

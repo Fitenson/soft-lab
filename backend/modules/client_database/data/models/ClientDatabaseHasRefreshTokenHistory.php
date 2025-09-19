@@ -5,16 +5,14 @@ namespace backend\modules\client_database\data\models;
 use Yii;
 
 /**
- * This is the model class for table "client_database_history".
+ * This is the model class for table "client_database_has_refresh_token_history".
  *
  * @property string $historyUUID
  * @property string $UUID
- * @property string $databaseName
- * @property string $databaseSchema
- * @property string $host
- * @property string $port
- * @property string $username
- * @property string $password
+ * @property string $clientDatabase
+ * @property string $user
+ * @property string|null $refreshTokenHash
+ * @property string $expiresAt
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -26,7 +24,7 @@ use Yii;
  * @property string|null $action
  * @property string|null $date_created
  */
-class ClientDatabaseHistory extends \backend\components\db\AppModel
+class ClientDatabaseHasRefreshTokenHistory extends \backend\components\db\AppModel
 {
 
 
@@ -35,7 +33,7 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
      */
     public static function tableName()
     {
-        return 'client_database_history';
+        return 'client_database_has_refresh_token_history';
     }
 
     /**
@@ -44,12 +42,13 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'user_id'], 'required'],
+            [['refreshTokenHash', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
+            [['historyUUID', 'UUID', 'clientDatabase', 'user', 'expiresAt', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['historyUUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'user_id', 'action'], 'string', 'max' => 50],
-            [['UUID', '_actionUUID'], 'string', 'max' => 40],
-            [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
+            [['historyUUID', 'user_id', 'action'], 'string', 'max' => 50],
+            [['UUID', 'clientDatabase', 'user', '_actionUUID'], 'string', 'max' => 40],
+            [['refreshTokenHash'], 'string', 'max' => 255],
+            [['expiresAt', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['date_created'], 'string', 'max' => 100],
             [['historyUUID'], 'unique'],
         ];
@@ -63,12 +62,10 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
         return [
             'historyUUID' => 'History Uuid',
             'UUID' => 'Uuid',
-            'databaseName' => 'Database Name',
-            'databaseSchema' => 'Database Schema',
-            'host' => 'Host',
-            'port' => 'Port',
-            'username' => 'Username',
-            'password' => 'Password',
+            'clientDatabase' => 'Client Database',
+            'user' => 'User',
+            'refreshTokenHash' => 'Refresh Token Hash',
+            'expiresAt' => 'Expires At',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
@@ -84,11 +81,11 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
 
     /**
      * {@inheritdoc}
-     * @return \backend\modules\client_database\data\query\ClientDatabaseHistoryQuery the active query used by this AR class.
+     * @return \backend\modules\client_database\data\query\ClientDatabaseHasRefreshTokenHistoryQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \backend\modules\client_database\data\query\ClientDatabaseHistoryQuery(get_called_class());
+        return new \backend\modules\client_database\data\query\ClientDatabaseHasRefreshTokenHistoryQuery(get_called_class());
     }
 
 }

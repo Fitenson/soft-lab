@@ -92,10 +92,10 @@ class DbMigration extends Migration {
     protected function timestamps(): array
     {
         return [
-            'createdAt' => $this->string(100),
-            'updatedAt' => $this->string(100),
-            'createdBy' => $this->string(100),
-            'updatedBy' => $this->string(100),
+            'createdAt' => $this->string(30),
+            'updatedAt' => $this->string(30),
+            'createdBy' => $this->string(30),
+            'updatedBy' => $this->string(30),
         ];
     }
 
@@ -104,7 +104,7 @@ class DbMigration extends Migration {
     {
         return [
             'valid' => $this->boolean(),
-            '_actionUUID' => $this->string(50),
+            '_actionUUID' => $this->string(40),
             '_version' => $this->integer(),
         ];
     }

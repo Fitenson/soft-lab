@@ -14,7 +14,6 @@ use Yii;
  * @property string $port
  * @property string $username
  * @property string $password
- * @property string $refreshToken
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -42,10 +41,13 @@ class ClientDatabase extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'refreshToken'], 'required'],
+            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', '_actionUUID'], 'string', 'max' => 50],
-            [['refreshToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 100],
+            [['UUID', '_actionUUID'], 'string', 'max' => 40],
+            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'string', 'max' => 50],
+            [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
+            [['databaseName'], 'unique'],
+            [['databaseSchema'], 'unique'],
             [['UUID'], 'unique'],
         ];
     }
@@ -63,7 +65,6 @@ class ClientDatabase extends \backend\components\db\AppModel
             'port' => 'Port',
             'username' => 'Username',
             'password' => 'Password',
-            'refreshToken' => 'Refresh Token',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
@@ -76,11 +77,11 @@ class ClientDatabase extends \backend\components\db\AppModel
 
     /**
      * {@inheritdoc}
-     * @return ClientDatabaseQuery the active query used by this AR class.
+     * @return \backend\modules\client_database\data\query\ClientDatabaseQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new ClientDatabaseQuery(get_called_class());
+        return new \backend\modules\client_database\data\query\ClientDatabaseQuery(get_called_class());
     }
 
 }
