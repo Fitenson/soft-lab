@@ -11,7 +11,7 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 // import { setIndexData } from "./presentation/redux/userDataTableSlice";
 import useUserService from "@/pages/organization/user/domain/service/useUserService.tsx";
 import UserViewModel from "@/pages/organization/user/presentation/view-models/UserViewModel.ts";
-import type {BreadcrumbItem} from "@/types";
+import type { BreadcrumbItem } from "@/types";
 
 
 export default function UserGridview() {

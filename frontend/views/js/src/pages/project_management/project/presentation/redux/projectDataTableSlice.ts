@@ -1,5 +1,5 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {RowSelectionState, SortingState, VisibilityState} from "@tanstack/react-table";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { RowSelectionState, SortingState, VisibilityState } from "@tanstack/react-table";
 
 
 export interface ProjectDataTableState {
