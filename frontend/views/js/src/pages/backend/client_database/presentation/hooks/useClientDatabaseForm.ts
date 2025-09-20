@@ -11,7 +11,7 @@ import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form
 import { AxiosError } from "axios";
 
 
-const useClientDatabaseForm = ({ clientDatabaseDTO }: { clientDatabaseDTO: ClientDatabaseDTO }) => {
+const useClientDatabaseForm = ({ clientDatabaseDTO }: { clientDatabaseDTO: ClientDatabaseDTO | undefined }) => {
     const [clientDatabaseViewModel, setClientDatabaseViewModel] = useState<ClientDatabaseViewModel | undefined>(
         () => (clientDatabaseDTO ? new ClientDatabaseViewModel(clientDatabaseDTO) : undefined)
     );

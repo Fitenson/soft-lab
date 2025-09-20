@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
 import './index.css';
 import { ThemeProvider } from '@/components/ui/theme/ThemeProvider';
+import { TooltipProvider } from './components/ui/tooltip';
 
 
 const queryClient = new QueryClient();
@@ -20,14 +21,16 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
         root.render(
-            <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        <App {...props} />
-                        <Toaster/>
-                    </QueryClientProvider>
-                </Provider>
-            </ThemeProvider>
+            <TooltipProvider>
+                <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
+                    <Provider store={store}>
+                        <QueryClientProvider client={queryClient}>
+                            <App {...props} />
+                            <Toaster/>
+                        </QueryClientProvider>
+                    </Provider>
+                </ThemeProvider>
+            </TooltipProvider>
         )
     }
 });
