@@ -10,8 +10,9 @@ type SaveButtonProps = {
 const SaveButton = ({ disabled = false }: SaveButtonProps) => {
     return(
         <Button
+            variant="ghost"
             type="submit"
-            className="cursor-pointer"
+            className="cursor-pointer rounded-full"
             disabled={disabled}
         >
             <FaSave size={32} />

@@ -16,12 +16,13 @@ const CreateButton = ({ to, disabled = false }: CreateButtonProps) => {
 
     return(
         <Button
+            variant="ghost"
             type="submit"
-            className="cursor-pointer"
+            className="cursor-pointer rounded-full"
             onClick={handleGoCreatePage}
             disabled={disabled}
         >
-            <MdCreateNewFolder size={32} />
+            <MdCreateNewFolder size={40} />
         </Button>
     );
 }

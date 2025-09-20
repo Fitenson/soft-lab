@@ -5,6 +5,7 @@ import BrowseButton from "@/components/buttons/browse-button";
 import CreateButton from "@/components/buttons/create-button";
 import ColumnChooserButton from "@/components/buttons/column-chooser-button";
 import RefreshButton from "@/components/buttons/refresh-button";
+import CloseButton from "@/components/buttons/close-button.tsx";
 
 
 interface ActionButton {
@@ -21,6 +22,7 @@ interface TopActionBarProps<TData> {
     browseAction?: ActionButton;
     deleteAction?: ActionButton;
     refreshAction?: ActionButton;
+    closeButton?: boolean;
 }
 
 
@@ -32,6 +34,7 @@ export default function TopActionBar <TData> ({
     browseAction,
     deleteAction,
     refreshAction,
+    closeButton,
 }: TopActionBarProps<TData>) {
     return(
         <div className="flex items-center bg-background dark:bg-background rounded-md my-2 mx-2 mb-4 shadow-sm gap-2 col-span-full">
@@ -39,6 +42,7 @@ export default function TopActionBar <TData> ({
             {saveAction && <SaveButton disabled={isLoading} />}
             {deleteAction && deleteAction.action && <DeleteButton disabled={isLoading} onDelete={deleteAction.action} />}
             {browseAction && <BrowseButton to={browseAction.to ?? ''} disabled={isLoading} />}
+            {closeButton && <CloseButton />}
 
             <div className="flex ml-auto gap-2">
                 {refreshAction && refreshAction.action && <RefreshButton onRefresh={refreshAction.action} />}

@@ -14,8 +14,8 @@ function ColumnChooserButton <TData> ({ table }: ColumnChooserButtonProps<TData>
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button className="cursor-pointer">
-                    <HiMiniAdjustmentsVertical size={32} />
+                <Button className="cursor-pointer" variant="ghost">
+                    <HiMiniAdjustmentsVertical size={40} />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl shadow-lg">

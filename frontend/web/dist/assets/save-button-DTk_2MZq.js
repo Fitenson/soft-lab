@@ -1,0 +1,1 @@
+import{j as t}from"./main-BMKQZ1-9.js";import{a as s}from"./index-DScR2D59.js";import{B as o}from"./button-L5Bdowtk.js";const m=({disabled:r=!1})=>t.jsx(o,{variant:"ghost",type:"submit",className:"cursor-pointer rounded-full",disabled:r,children:t.jsx(s,{size:32})});export{m as S};

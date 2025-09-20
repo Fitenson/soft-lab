@@ -35,7 +35,7 @@ const useClientDatabaseForm = ({ clientDatabaseDTO }: { clientDatabaseDTO: Clien
         options?: SetFormErrorOptions
     ) => {
         const { setToastError } = options || {};
-        const axiosError = error as AxiosError<{ errors?: Record<string, string[]>}>;
+        const axiosError = error as AxiosError<{ errors?: Record<string, string[]>, message: string }>;
         const errors = axiosError?.response?.data?.errors ?? {};
 
         if (typeof errors === "string") {
@@ -51,6 +51,8 @@ const useClientDatabaseForm = ({ clientDatabaseDTO }: { clientDatabaseDTO: Clien
                     });
                 }
             });
+        } else {
+            setToastError?.(axiosError?.response?.data?.message ?? "Server error");
         }
     }
 

@@ -14,7 +14,7 @@ const DeleteButton = ({ onDelete, disabled = false }: DeleteButtonProps) => {
         <Button
             variant={"destructive"}
             type="button"
-            className="cursor-pointer bg-destructive dark:bg-destructive"
+            className="cursor-pointer rounded-full bg-destructive dark:bg-destructive"
             disabled={disabled}
             onClick={onDelete}
         >

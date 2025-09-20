@@ -19,13 +19,6 @@ class ClientDatabaseController extends RestController {
     }
 
 
-    public function actionIndex() {
-        $params = Yii::$app->request->post()['param'];
-
-        return $this->clientDatabaseService->index($params);
-    }
-
-
     public function actionCreate() {
         $data = Yii::$app->request->post();
 

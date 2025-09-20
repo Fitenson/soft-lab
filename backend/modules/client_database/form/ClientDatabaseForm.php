@@ -3,7 +3,7 @@
 namespace backend\modules\client_database\form;
 
 use backend\components\form\Form;
-use backend\modules\user\data\models\User;
+use backend\modules\client_database\data\models\ClientDatabase;
 
 
 class ClientDatabaseForm extends Form {
@@ -22,9 +22,8 @@ class ClientDatabaseForm extends Form {
             [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'required'],
             [['UUID'], 'string', 'max' => 40],
             [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'string', 'max' => 50],
-            [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['databaseName'], 'unique', 
-                'targetClass' => User::class,
+                'targetClass' => ClientDatabase::class,
                 'targetAttribute' => 'databaseName',
                 'filter' => function($query) {
                     if(!empty($this->UUID)) {
@@ -33,7 +32,7 @@ class ClientDatabaseForm extends Form {
                 }
             ],
             [['databaseSchema'], 'unique',
-                'targetClass' => User::class,
+                'targetClass' => ClientDatabase::class,
                 'targetAttribute' => 'databaseSchema',
                 'filter' => function($query) {
                     if(!empty($this->UUID)) {

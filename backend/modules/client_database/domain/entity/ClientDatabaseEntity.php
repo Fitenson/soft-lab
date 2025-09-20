@@ -3,9 +3,12 @@
 namespace backend\modules\client_database\domain\entity;
 
 use backend\components\entity\Entity;
+use backend\modules\client_database\data\dto\ClientDatabaseDTO;
 
 
 class ClientDatabaseEntity extends Entity {
+    protected string $DTOClassName = ClientDatabaseDTO::class;
+
     private ?string $UUID;
     private string $databaseName;
     private string $databaseSchema;

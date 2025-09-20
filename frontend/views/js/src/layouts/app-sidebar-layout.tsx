@@ -12,7 +12,7 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar" className="flex flex-col overflow-x-hidden overflow-y-auto h-full">
+            <AppContent variant="sidebar" className="flex flex-col overflow-x-hidden overflow-y-auto">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 <ScrollArea className="h-full w-full rounded-md border">
                     <ScrollAreaViewport>

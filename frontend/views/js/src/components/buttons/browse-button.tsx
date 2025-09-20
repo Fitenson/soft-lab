@@ -19,11 +19,11 @@ const BrowseButton = ({ to, disabled = false }: BrowseButtonProps) => {
         <Button
             className="cursor-pointer flex items-center gap-2"
             type="button"
-            // variant="outline"
+            variant="ghost"
             onClick={handleGoBack}
             disabled={disabled}
         >
-            <FaTable size={32} />
+            <FaTable size={40} />
         </Button>
     );
 }

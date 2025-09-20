@@ -6,7 +6,7 @@ use JsonSerializable;
 use yii\base\Model;
 
 
-class UserDTO extends Model {
+class UserDTO extends Model implements JsonSerializable {
     public ?string $UUID = null;
     public ?string $username = null;
     public ?string $fullName = null;

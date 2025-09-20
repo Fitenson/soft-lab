@@ -30,22 +30,45 @@ const useClientDatabaseService = () => {
 
     const createClientDatabase = async (
         clientDatabaseDTO: Partial<ClientDatabaseDTO>,
-        callbacks?: ServiceCallback<ClientDatabaseEntity>
+        callbacks?: ServiceCallback<ClientDatabaseViewModel>
     ) => {
         let clientDatabaseEntity = new ClientDatabaseEntity(clientDatabaseDTO);
-        clientDatabaseEntity = await handleServiceCall<ClientDatabaseEntity>(async () => createClientDatabaseRepo(clientDatabaseEntity), callbacks);
+
+        clientDatabaseEntity = await handleServiceCall<ClientDatabaseEntity>(
+            async () => createClientDatabaseRepo(clientDatabaseEntity),
+            {
+                ...callbacks,
+                onSuccess: (entity) => {
+                    const viewModel = entity.asViewModel();
+                    callbacks?.onSuccess?.(viewModel);
+                }
+            }
+        );
+
         return clientDatabaseEntity.asViewModel();
     }
 
 
     const updateClientDatabase = async (
         clientDatabaseDTO: Partial<ClientDatabaseDTO>,
-        callbacks?: ServiceCallback<ClientDatabaseEntity>
+        callbacks?: ServiceCallback<ClientDatabaseViewModel>
     ) => {
         let clientDatabaseEntity = new ClientDatabaseEntity(clientDatabaseDTO);
-        clientDatabaseEntity = await handleServiceCall<ClientDatabaseEntity>(async () => updateClientDatabaseRepo(clientDatabaseEntity), callbacks);
+
+        clientDatabaseEntity = await handleServiceCall<ClientDatabaseEntity>(
+            async () => updateClientDatabaseRepo(clientDatabaseEntity),
+            {
+                ...callbacks,
+                onSuccess: (entity) => {
+                    const viewModel = entity.asViewModel();
+                    callbacks?.onSuccess?.(viewModel);
+                }
+            }
+        );
+
         return clientDatabaseEntity.asViewModel();
     }
+
 
 
     const removeClientDatabase = async (
