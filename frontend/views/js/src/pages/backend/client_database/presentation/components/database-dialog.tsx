@@ -1,15 +1,20 @@
-import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {DialogContent, DialogTitle} from "@radix-ui/react-dialog";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
+import { Dialog, DialogHeader, DialogTrigger } from "@/components/ui/dialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { DialogContent, DialogTitle } from "@radix-ui/react-dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form.tsx";
 import ClientDatabaseFormField from "@/pages/backend/client_database/presentation/form/ClientDatabaseFormField.ts";
-import {Input} from "@/components/ui/input.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
 import useClientDatabaseForm from "@/pages/backend/client_database/presentation/hooks/useClientDatabaseForm.ts";
-import type ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
 
 
-export default function DatabaseDialog({ clientDatabaseViewModel }: { clientDatabaseViewModel: ClientDatabaseViewModel }) {
-    const { form, clientDatabaseViewModel } = useClientDatabaseForm();
+type DatabaseDialogProps = {
+    clientDatabaseDTO: ClientDatabaseDTO;
+}
+
+
+export default function DatabaseDialog({ clientDatabaseDTO }: DatabaseDialogProps) {
+    const { form } = useClientDatabaseForm({ clientDatabaseDTO: clientDatabaseDTO });
 
 
     return (

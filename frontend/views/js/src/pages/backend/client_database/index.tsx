@@ -1,30 +1,27 @@
 import breadcrumbItems from "@/components/app/breadcrumb-items";
 import AppLayout from "@/layouts/app-layout";
 import type { BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
+import {Head, usePage} from "@inertiajs/react";
 import ClientDatabaseLayout from "./presentation/layouts/client-database-layout";
 import DatabaseCard from "./presentation/components/database-card.tsx";
-import { useQuery } from "@tanstack/react-query";
-import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel";
-import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {FaPlus} from "react-icons/fa";
+import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
 
+
+type Props = {
+    total: string;
+    rows: ClientDatabaseDTO[]
+};
 
 export default function ClientDatabaseIndex() {
     const breadcrumbs: BreadcrumbItem[] = [
         ...(breadcrumbItems ?? []),
-        { title: "Database", href: "/backend/client-database"}
+        { title: "Backend", href: "/backend"},
+        { title: "Database", href: "/backend/client-database"},
     ];
 
-
-    const { indexClientDatabase } = useClientDatabaseService();
-
-    const { data } = useQuery({
-        queryKey: ["/backend/client-database"],
-        queryFn: async () => indexClientDatabase(),
-        enabled: false
-    });
+    const { rows } = usePage<Props>().props;
 
 
     return (
@@ -32,14 +29,12 @@ export default function ClientDatabaseIndex() {
             <Head title="Database" />
 
             <ClientDatabaseLayout>
-                <section>
-                    <Card>
-                        <CardContent><FaPlus size={24} /></CardContent>
-                    </Card>
-                    {data?.rows.map((clientDatabaseViewModel: ClientDatabaseViewModel) => (
-                        <DatabaseCard clientDatabaseViewModel={clientDatabaseViewModel} />
-                    ))}
-                </section>
+                <Card>
+                    <CardContent><FaPlus size={24} /></CardContent>
+                </Card>
+                {rows.map((clientDatabaseDTO: ClientDatabaseDTO) => (
+                    <DatabaseCard clientDatabaseDTO={clientDatabaseDTO} />
+                ))}
             </ClientDatabaseLayout>
         </AppLayout>
     );

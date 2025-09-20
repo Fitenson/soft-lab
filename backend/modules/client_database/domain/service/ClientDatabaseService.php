@@ -38,8 +38,8 @@ class ClientDatabaseService {
     }
 
 
-    public function index(array $params) {
-        return $this->indexClientDatabaseUseCase->execute($params);
+    public function index() {
+        return $this->indexClientDatabaseUseCase->execute();
     }
 
 

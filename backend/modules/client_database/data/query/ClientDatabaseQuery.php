@@ -31,4 +31,16 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
     {
         return parent::one($db);
     }
+
+
+    public function selectIndex() {
+        return $this->select([
+            'UUID',
+            'databaseName',
+            'databaseSchema',
+            'host',
+            'port',
+            'username',
+        ]);
+    }
 }

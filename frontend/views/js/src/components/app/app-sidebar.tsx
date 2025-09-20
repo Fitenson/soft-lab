@@ -5,8 +5,8 @@ import { NavUser } from "@/components/app/nav-user";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, UserRound, BookOpenCheckIcon } from 'lucide-react';
-import { HiOutlineDesktopComputer } from "react-icons/hi";
+import { LayoutGrid, UserRound, BookOpenCheckIcon, DatabaseZap } from 'lucide-react';
+import {HiOutlineDesktopComputer, HiOutlineServer} from "react-icons/hi";
 import { TbPuzzle } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaProjectDiagram } from "react-icons/fa";
@@ -54,6 +54,18 @@ const mainNavItems: NavItem[] = [
             }
         ]
     },
+    {
+        title: 'Backend',
+        href: '/backend',
+        icon: HiOutlineServer,
+        subNavItems: [
+            {
+                title: 'Database',
+                href: '/backend/client-database',
+                icon: DatabaseZap
+            }
+        ]
+    }
 ];
 
 const footerNavItems: NavItem[] = [

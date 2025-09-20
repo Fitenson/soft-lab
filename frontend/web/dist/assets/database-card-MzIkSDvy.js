@@ -1,0 +1,1 @@
+import{j as a}from"./main-Cm4p_1js.js";import{C as s,a as t,c as i}from"./card-tkO97Gh5.js";import{C as o}from"./ClientDatabaseViewModel-DsBbqFSV.js";import"./utils-BLojDQQ3.js";function l({clientDatabaseDTO:r}){const e=new o(r);return a.jsxs(s,{children:[a.jsx(t,{children:e.databaseName}),a.jsx(i,{children:e.databaseName})]})}export{l as default};

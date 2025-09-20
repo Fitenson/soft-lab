@@ -15,8 +15,8 @@ class IndexClientDatabaseUseCase {
     }
 
 
-    public function execute(array $params)
+    public function execute()
     {
-        return $this->clientDatabaseRepository->index($params);
+        return $this->clientDatabaseRepository->index();
     }
 }
