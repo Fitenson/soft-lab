@@ -35,13 +35,13 @@ export default function ClientDatabaseIndex() {
 
             <ClientDatabaseLayout>
                 <Tooltip>
-                    <TooltipTrigger>
-                        <Button 
+                    <TooltipTrigger asChild>
+                        <Button
                             variant={"outline"}
-                            className="flex items-center justify-center h-24 w-24"
+                            className="flex items-center justify-center h-32 w-32 m-2"
                             onClick={() => setIsOpenDialog("create")}
                         >
-                            <FaPlus size={24} />
+                            <FaPlus size={32} />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -54,9 +54,12 @@ export default function ClientDatabaseIndex() {
                     open={isOpenDialog === "create"}
                     onOpenChange={(open) => !open && setIsOpenDialog(null)}
                 />
-                {rows.map((clientDatabaseDTO: ClientDatabaseDTO) => (
-                    <DatabaseCard clientDatabaseDTO={clientDatabaseDTO} />
-                ))}
+
+                <div className="grid grid-cols-6 grid-rows-2 gap-4 w-full h-full border-2 border-accent dark:border-accent p-2 rounded-2xl">
+                    {rows.map((clientDatabaseDTO: ClientDatabaseDTO) => (
+                        <DatabaseCard clientDatabaseDTO={clientDatabaseDTO} />
+                    ))}
+                </div>
             </ClientDatabaseLayout>
         </AppLayout>
     );

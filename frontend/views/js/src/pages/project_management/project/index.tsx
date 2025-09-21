@@ -32,7 +32,7 @@ export default function ProjectGridview() {
             <Head title="Project" />
 
             <ProjectLayout>
-                <section>
+                <section className="w-full mx-auto">
                     <HeadingSmall title="Projects" />
                     <ProjectDataTable
                         data={data?.rows ?? []}

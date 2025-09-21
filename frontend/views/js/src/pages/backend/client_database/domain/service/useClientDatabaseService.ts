@@ -12,6 +12,7 @@ const useClientDatabaseService = () => {
         createClientDatabase: createClientDatabaseRepo,
         updateClientDatabase: updateClientDatabaseRepo,
         removeClientDatabase: removeClientDatabaseRepo,
+        connectClientDatabase: connectClientDatabaseRepo,
     } = useClientDatabaseRepository();
 
 
@@ -79,11 +80,31 @@ const useClientDatabaseService = () => {
     }
 
 
+    const connectClientDatabase = async (
+        id: string,
+        callbacks?: ServiceCallback<ClientDatabaseViewModel>
+    ) => {
+        const clientDatabaseDTO = await handleServiceCall<ClientDatabaseDTO>(
+            async () => connectClientDatabaseRepo(id),
+            {
+                ...callbacks,
+                onSuccess: (dto) => {
+                    const viewModel = new ClientDatabaseViewModel(dto);
+                    callbacks?.onSuccess?.(viewModel);
+                }
+            }
+        );
+
+        return new ClientDatabaseViewModel(clientDatabaseDTO);
+    }
+
+
     return {
         indexClientDatabase,
         createClientDatabase,
         updateClientDatabase,
-        removeClientDatabase
+        removeClientDatabase,
+        connectClientDatabase
     }
 }
 

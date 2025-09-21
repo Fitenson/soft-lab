@@ -54,9 +54,17 @@ const useClientDatabaseRepository = () => {
         });
 
         return await request<{ success: ClientDatabaseDTO[], failed: ClientDatabaseDTO[] }>({
-            url: "/user/remove",
+            url: "/client-database/remove",
             method: "POST",
             data: formData,
+        });
+    }
+
+
+    const connectClientDatabase = async (id: string) => {
+        return await request<ClientDatabaseDTO>({
+            url: `/client-database/connect?id=${id}`,
+            method: "GET",
         });
     }
 
@@ -65,7 +73,8 @@ const useClientDatabaseRepository = () => {
         indexClientDatabase,
         createClientDatabase,
         updateClientDatabase,
-        removeClientDatabase
+        removeClientDatabase,
+        connectClientDatabase,
     };
 }
 
