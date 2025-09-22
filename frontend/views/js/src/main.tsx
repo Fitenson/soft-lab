@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { Provider } from 'react-redux';
-import { store } from '@/core/presentation/store/index';
+import {persistor, store} from '@/core/presentation/store/index';
 import { resolvePageComponent } from './utils/resolvePageComponent';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/sonner';
 import './index.css';
 import { ThemeProvider } from '@/components/ui/theme/ThemeProvider';
 import { TooltipProvider } from './components/ui/tooltip';
+import {PersistGate} from "redux-persist/integration/react";
 
 
 const queryClient = new QueryClient();
@@ -24,10 +25,12 @@ createInertiaApp({
             <TooltipProvider>
                 <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
                     <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <App {...props} />
-                            <Toaster/>
-                        </QueryClientProvider>
+                        <PersistGate persistor={persistor} loading={null}>
+                            <QueryClientProvider client={queryClient}>
+                                <App {...props} />
+                                <Toaster/>
+                            </QueryClientProvider>
+                        </PersistGate>
                     </Provider>
                 </ThemeProvider>
             </TooltipProvider>

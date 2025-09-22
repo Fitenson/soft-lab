@@ -1,30 +1,8 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
+import { configureStore} from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 
-import loadingReducer from "@/core/presentation/store/loadingSlice";
-import authReducer from "@/pages/auth/presentation/redux/authSlice";
-import sidebarReducer from "@/core/presentation/store/sidebarSlice";
-import userDataTableReducer from "@/pages/organization/user/presentation/redux/userDataTableSlice.ts";
-import departmentDataTableReducer from "@/pages/department/presentation/redux/departmentDataTableSlice.ts";
-import projectDataTableReducer from "@/pages/project_management/project/presentation/redux/projectDataTableSlice";
-
-
-const rootReducer = combineReducers({
-    loading: loadingReducer,
-    auth: authReducer,
-    sidebar: sidebarReducer,
-    userDataTable: userDataTableReducer,
-    departmentDataTable: departmentDataTableReducer,
-    projectDataTable: projectDataTableReducer
-});
-
-
-const persistConfig = {
-    key: "root",
-    storage,
-    whitelist: ["authViewModel"],
-}
+import rootReducer from "@/core/presentation/store/rootReducer.ts";
+import persistConfig from "@/core/presentation/store/persistConfig.ts";
 
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -8,7 +8,7 @@ export interface ClientDatabaseDTO {
     databaseSchema: string;
     username: string;
     password: string;
-    refreshToken: string;
+    refreshToken?: string;
     valid: boolean;
 }
 
@@ -21,7 +21,6 @@ const clientDatabaseDTOKeys: (keyof ClientDatabaseDTO)[] = [
     "databaseSchema",
     "username",
     "password",
-    "refreshToken",
     "valid",
 ];
 

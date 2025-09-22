@@ -43,6 +43,15 @@ export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO:
     }
 
 
+    const handleConnectClientDatabase = async () => {
+        await connectClientDatabase(clientDatabaseDTO.UUID, {
+            onSuccess: (data)=> {
+                setOpen(false);
+            }
+        });
+    }
+
+
     return (
         <Card className="w-full h-full">
             <CardHeader>
