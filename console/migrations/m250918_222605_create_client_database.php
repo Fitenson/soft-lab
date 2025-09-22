@@ -19,7 +19,7 @@ class m250918_222605_create_client_database extends DbMigration
             'host' => $this->string(50)->notNull(),
             'port' => $this->string(50)->notNull(),
             'username'=> $this->string(50)->notNull(),
-            'password'=> $this->string(50)->notNull(),
+            'passwordHash'=> $this->string(500)->notNull(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
@@ -31,7 +31,7 @@ class m250918_222605_create_client_database extends DbMigration
             'host' => $this->string(50)->notNull(),
             'port' => $this->string(50)->notNull(),
             'username'=> $this->string(50)->notNull(),
-            'password'=> $this->string(50)->notNull(),
+            'passwordHash'=> $this->string(500)->notNull(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
     }
 

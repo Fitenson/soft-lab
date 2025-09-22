@@ -61,4 +61,9 @@ class ClientDatabaseController extends RestController {
     public function actionRemove() {
         return $this->clientDatabaseService->removeClientDatabase(Yii::$app->request->post());
     }
+
+
+    public function actionConnect($id) {
+        return $this->clientDatabaseService->connectClientDatabase($id);
+    }
 }

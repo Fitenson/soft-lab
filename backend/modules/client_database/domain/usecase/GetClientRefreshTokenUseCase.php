@@ -2,12 +2,10 @@
 
 namespace backend\modules\client_database\domain\usecase;
 
-use backend\modules\client_database\data\dto\ClientDatabaseDTO;
-use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\repository\ClientDatabaseRepository;
 
 
-class ViewClientDatabaseUseCase {
+class GetClientRefreshTokenUseCase {
     private ClientDatabaseRepository $clientDatabaseRepository;
 
 
@@ -17,9 +15,8 @@ class ViewClientDatabaseUseCase {
     }
 
 
-    public function execute(string $id): ClientDatabaseEntity
+    public function execute(string $id, ?string $token = null): string
     {
-        $clientDatabaseEntity = $this->clientDatabaseRepository->view($id);
-        return $clientDatabaseEntity;
+        return $this->clientDatabaseRepository->getClientRefreshToken($id, $token);
     }
 }

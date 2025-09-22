@@ -12,6 +12,7 @@ use backend\modules\client_database\domain\usecase\IndexClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\UpdateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\RemoveClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\ViewClientDatabaseUseCase;
+use backend\modules\client_database\domain\usecase\GetClientRefreshTokenUseCase;
 
 
 class ClientDatabaseService {
@@ -20,6 +21,7 @@ class ClientDatabaseService {
     private UpdateClientDatabaseUseCase $updateClientDatabaseUseCase;
     private ViewClientDatabaseUseCase $viewClientDatabaseUseCase;
     private RemoveClientDatabaseUseCase $removeClientDatabaseUseCase;
+    private GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase;
 
 
     public function __construct(
@@ -27,7 +29,8 @@ class ClientDatabaseService {
         CreateClientDatabaseUseCase $createClientDatabaseUseCase,
         UpdateClientDatabaseUseCase $updateClientDatabaseUseCase,
         ViewClientDatabaseUseCase $viewClientDatabaseUseCase,
-        RemoveClientDatabaseUseCase $removeClientDatabaseUseCase
+        RemoveClientDatabaseUseCase $removeClientDatabaseUseCase,
+        GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase
     )
     {
         $this->indexClientDatabaseUseCase = $indexClientDatabaseUseCase;
@@ -35,6 +38,7 @@ class ClientDatabaseService {
         $this->updateClientDatabaseUseCase = $updateClientDatabaseUseCase;
         $this->viewClientDatabaseUseCase = $viewClientDatabaseUseCase;
         $this->removeClientDatabaseUseCase = $removeClientDatabaseUseCase;
+        $this->getClientRefreshTokenUseCase = $getClientRefreshTokenUseCase;
     }
 
 
@@ -75,12 +79,24 @@ class ClientDatabaseService {
     
     public function viewClientDatabase(string $id): ClientDatabaseDTO
     {
-        return $this->viewClientDatabaseUseCase->execute($id);
+        $clientDatabaseEntity= $this->viewClientDatabaseUseCase->execute($id);
+        return $clientDatabaseEntity->asDTO();
     }
 
 
     public function removeClientDatabase(array $data): array
     {
         return $this->removeClientDatabaseUseCase->execute($data);
+    }
+
+
+    public function connectClientDatabase(string $id)
+    {
+        $token = $this->getClientRefreshTokenUseCase->execute($id);
+
+        $clientDatabaseEntity = $this->viewClientDatabaseUseCase->execute($id);
+        $clientDatabaseEntity->setPassword($token);
+
+        return $clientDatabaseEntity->asDTO();
     }
 }

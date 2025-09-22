@@ -11,4 +11,6 @@ interface ClientDatabaseRepository {
     public function update(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity;
     public function view(string $id): ClientDatabaseEntity;
     public function remove(array $data): array;
+    public function getClientRefreshToken(string $id, ?string $token = null);
+    public function connect(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity;
 }

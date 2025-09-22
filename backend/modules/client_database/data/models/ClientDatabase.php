@@ -13,7 +13,7 @@ use Yii;
  * @property string $host
  * @property string $port
  * @property string $username
- * @property string $password
+ * @property string $passwordHash
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -41,10 +41,10 @@ class ClientDatabase extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'required'],
+            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash'], 'required'],
             [['valid', '_version'], 'integer'],
             [['UUID', '_actionUUID'], 'string', 'max' => 40],
-            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'string', 'max' => 50],
+            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash'], 'string', 'max' => 50],
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['databaseName'], 'unique'],
             [['databaseSchema'], 'unique'],
@@ -64,7 +64,7 @@ class ClientDatabase extends \backend\components\db\AppModel
             'host' => 'Host',
             'port' => 'Port',
             'username' => 'Username',
-            'password' => 'Password',
+            'passwordHash' => 'Password Hash',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',

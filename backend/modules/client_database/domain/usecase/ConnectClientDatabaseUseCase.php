@@ -2,12 +2,10 @@
 
 namespace backend\modules\client_database\domain\usecase;
 
-use backend\modules\client_database\data\dto\ClientDatabaseDTO;
-use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\repository\ClientDatabaseRepository;
 
 
-class ViewClientDatabaseUseCase {
+class ConnectClientDatabaseUseCase {
     private ClientDatabaseRepository $clientDatabaseRepository;
 
 
@@ -17,9 +15,7 @@ class ViewClientDatabaseUseCase {
     }
 
 
-    public function execute(string $id): ClientDatabaseEntity
-    {
-        $clientDatabaseEntity = $this->clientDatabaseRepository->view($id);
-        return $clientDatabaseEntity;
+    public function execute() {
+        
     }
 }

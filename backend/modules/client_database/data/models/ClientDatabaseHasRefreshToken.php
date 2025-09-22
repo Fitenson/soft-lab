@@ -78,4 +78,16 @@ class ClientDatabaseHasRefreshToken extends \backend\components\db\AppModel
         return new \backend\modules\client_database\data\query\ClientDatabaseHasRefreshTokenQuery(get_called_class());
     }
 
+
+    public function validateRefreshToken($refreshToken)
+    {
+        return Yii::$app->security->validatePassword($refreshToken, $this->refreshTokenHash);
+    }
+
+    public function generateRefreshToken()
+    {
+        $token = Yii::$app->security->generateRandomString();
+        $this->refreshTokenHash = Yii::$app->security->generatePasswordHash($token);
+        return $token;
+    }
 }
