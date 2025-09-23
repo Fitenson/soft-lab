@@ -92,6 +92,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -108,6 +109,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -124,6 +126,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -140,6 +143,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -156,6 +160,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -172,6 +177,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                required
                                             />
                                         </FormControl>
                                         <FormMessage/>

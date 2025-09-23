@@ -8,7 +8,7 @@ import { useAppSelector } from '@/core/presentation/store/useAppSelector';
 
 
 export function NavUser() {
-    const authViewModel = useAppSelector(state => state.auth.authViewModel);
+    const authViewModel = useAppSelector(state => state.auth.auth);
     const { state } = useSidebar();
     const isMobile = useIsMobile();
 

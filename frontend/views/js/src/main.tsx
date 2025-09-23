@@ -21,11 +21,14 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, pages),
     setup({ el, App, props }) {
         const root = createRoot(el);
+
         root.render(
             <TooltipProvider>
                 <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
                     <Provider store={store}>
-                        <PersistGate persistor={persistor} loading={null}>
+                        <PersistGate persistor={persistor} loading={null} onBeforeLift={() => {
+                            console.log('Rehydrating state: ', store.getState());
+                        }}>
                             <QueryClientProvider client={queryClient}>
                                 <App {...props} />
                                 <Toaster/>

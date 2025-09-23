@@ -4,9 +4,9 @@ import { useMemo, useState } from "react";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { setIsLoading } from "@/core/presentation/store/loadingSlice";
 import { store } from "@/core/presentation/store";
-import {useDispatch} from "react-redux";
-import {removeAuth} from "@/pages/auth/presentation/redux/authSlice.ts";
-import {router} from "@inertiajs/react";
+import { useDispatch } from "react-redux";
+import { removeAuth } from "@/pages/auth/presentation/redux/authSlice.ts";
+import { router } from "@inertiajs/react";
 
 
 export type AxiosRequestResult = {
@@ -36,7 +36,7 @@ export const useRequest = (): AxiosRequestResult => {
 
     // const [data, setData] = useState<T | null>(null);
     const isLoading = useAppSelector(state => state.loading.global);
-    const authViewModel = useAppSelector(state => state.auth.authViewModel);
+    const authViewModel = useAppSelector(state => state.auth.auth);
     const dispatch = useDispatch();
     const [error, setError] = useState<unknown>(null);
 

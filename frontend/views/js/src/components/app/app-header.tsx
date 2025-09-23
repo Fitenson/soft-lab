@@ -43,7 +43,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const authViewModel = useAppSelector(state => state.auth.authViewModel);
+    const authViewModel = useAppSelector(state => state.auth.auth);
 
 
     return (

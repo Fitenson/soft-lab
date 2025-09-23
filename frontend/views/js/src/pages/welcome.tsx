@@ -6,7 +6,7 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 
 
 const Welcome = () => {
-    const auth = useAppSelector(state => state.auth.authViewModel);
+    const auth = useAppSelector(state => state.auth.auth);
     
 
     return (

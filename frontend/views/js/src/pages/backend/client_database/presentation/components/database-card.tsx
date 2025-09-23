@@ -13,12 +13,16 @@ import {
 import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
 import useShowToast from "@/hooks/use-show-toast.ts";
 import React from "react";
+import { setClientDatabase } from "../redux/clientDatabaseSlice";
+import { useDispatch } from "react-redux";
 
 
 export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO: ClientDatabaseDTO }) {
+    const showToast = useShowToast();
+    const dispatch = useDispatch();
+
     const [open, setOpen] = React.useState(false);
     const clientDatabaseViewModel = new ClientDatabaseViewModel(clientDatabaseDTO);
-    const showToast = useShowToast();
 
     const { removeClientDatabase, connectClientDatabase } = useClientDatabaseService();
 
@@ -46,7 +50,10 @@ export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO:
     const handleConnectClientDatabase = async () => {
         await connectClientDatabase(clientDatabaseDTO.UUID, {
             onSuccess: (data)=> {
-                setOpen(false);
+                dispatch(setClientDatabase(data));
+            },
+            onError: () => {
+                showToast("Error", "Failed to connect", "error");
             }
         });
     }
@@ -72,7 +79,7 @@ export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO:
                 </div>
             </CardContent>
             <CardFooter className="flex flex-col w-full gap-2">
-                <Button className="w-full" onClick={() => connectClientDatabase(clientDatabaseDTO.UUID)}>
+                <Button className="w-full" onClick={handleConnectClientDatabase}>
                     Connect
                 </Button>
                 <Dialog open={open} onOpenChange={setOpen}>

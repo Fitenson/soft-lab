@@ -12,7 +12,7 @@ interface AppLayoutProps {
 
 
 export default function AppLayout({ children, breadcrumbs, ...props }: AppLayoutProps) {
-    const authViewModel = useAppSelector(state => state.auth.authViewModel);
+    const authViewModel = useAppSelector(state => state.auth.auth);
 
     if(!authViewModel) {
         router.visit("/");
