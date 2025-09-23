@@ -7,6 +7,7 @@ import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, UserRound, BookOpenCheckIcon, DatabaseZap } from 'lucide-react';
 import {HiOutlineDesktopComputer, HiOutlineServer} from "react-icons/hi";
+import { PiNetworkLight } from "react-icons/pi";
 import { TbPuzzle } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaProjectDiagram } from "react-icons/fa";
@@ -62,6 +63,11 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'Database',
                 href: '/backend/client-database',
+                icon: DatabaseZap
+            },
+            {
+                title: 'API Test Case',
+                href: '/backend/api-test-case',
                 icon: DatabaseZap
             }
         ]

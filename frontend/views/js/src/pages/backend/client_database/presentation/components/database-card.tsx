@@ -1,7 +1,6 @@
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
-import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
-import {Button} from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
     Dialog, DialogClose,
     DialogContent,
@@ -15,16 +14,16 @@ import useShowToast from "@/hooks/use-show-toast.ts";
 import React from "react";
 import { setClientDatabase } from "../redux/clientDatabaseSlice";
 import { useDispatch } from "react-redux";
+import {router} from "@inertiajs/react";
 
 
-export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO: ClientDatabaseDTO }) {
+export default function DatabaseCard({ clientDatabaseViewModel }: { clientDatabaseViewModel: ClientDatabaseViewModel }) {
     const showToast = useShowToast();
     const dispatch = useDispatch();
 
     const [open, setOpen] = React.useState(false);
-    const clientDatabaseViewModel = new ClientDatabaseViewModel(clientDatabaseDTO);
-
     const { removeClientDatabase, connectClientDatabase } = useClientDatabaseService();
+
 
     const handleRemoveClientDatabase = async () => {
         const UUIDs = [
@@ -48,9 +47,10 @@ export default function DatabaseCard({ clientDatabaseDTO }: { clientDatabaseDTO:
 
 
     const handleConnectClientDatabase = async () => {
-        await connectClientDatabase(clientDatabaseDTO.UUID, {
+        await connectClientDatabase(clientDatabaseViewModel.UUID, {
             onSuccess: (data)=> {
                 dispatch(setClientDatabase(data));
+                router.visit("/backend/client-database/database-dashboard");
             },
             onError: () => {
                 showToast("Error", "Failed to connect", "error");

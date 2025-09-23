@@ -38,4 +38,10 @@ class ClientDatabaseController extends InertiaController {
             'clientDatabase' => $clientDatabaseDTO->asArray()
         ]);
     }
+
+
+    public function actionDatabaseDashboard()
+    {
+        return $this->inertia('backend/client_database/database-dashboard');
+    }
 }

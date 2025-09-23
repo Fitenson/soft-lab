@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button.tsx";
 import SaveButton from "@/components/buttons/save-button.tsx";
 import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
 import useShowToast from "@/hooks/use-show-toast.ts";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 
 
 type DatabaseDialogProps = {
@@ -22,6 +23,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
     const { form, setFormError, clientDatabaseViewModel, setClientDatabaseViewModel } = useClientDatabaseForm({ clientDatabaseDTO: clientDatabaseDTO });
     const { createClientDatabase, updateClientDatabase } = useClientDatabaseService();
     const showToast = useShowToast();
+    const isLoading = useAppSelector(state => state.loading.global);
 
 
     const submit = async () => {
@@ -92,6 +94,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
@@ -109,6 +112,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
@@ -126,6 +130,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
@@ -143,6 +148,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
@@ -160,6 +166,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
@@ -177,6 +184,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormControl>
                                             <Input
                                                 {...field}
+                                                disabled={isLoading}
                                                 required
                                             />
                                         </FormControl>
