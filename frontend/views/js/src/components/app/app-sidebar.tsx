@@ -8,7 +8,8 @@ import { Link } from '@inertiajs/react';
 import { LayoutGrid, UserRound, BookOpenCheckIcon, DatabaseZap } from 'lucide-react';
 import {HiOutlineDesktopComputer, HiOutlineServer} from "react-icons/hi";
 import { TbPuzzle } from "react-icons/tb";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline, IoExtensionPuzzleOutline } from "react-icons/io5";
+import { PiNetwork } from "react-icons/pi";
 import { FaProjectDiagram } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import AppLogo from './app-logo';
@@ -63,7 +64,17 @@ const mainNavItems: NavItem[] = [
                 title: 'Database',
                 href: '/backend/client-database',
                 icon: DatabaseZap
-            }
+            },
+            {
+                title: 'API Test Case',
+                href: '/backend/api-test-case',
+                icon: PiNetwork
+            },
+            {
+                title: 'Components',
+                href: '/backend/component',
+                icon: IoExtensionPuzzleOutline
+            },
         ]
     }
 ];
