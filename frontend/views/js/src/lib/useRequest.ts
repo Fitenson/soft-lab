@@ -52,22 +52,12 @@ export const useRequest = (): AxiosRequestResult => {
         }
 
         if(authViewModel) {
-            console.log('View Model: ', authViewModel);
-            console.log('Username: ', authViewModel?.username);
-            console.log('Password: ', authViewModel?.password);
-
             const credentials = `${authViewModel.username}:${authViewModel.password}`;
-            console.log('Credentials: ', credentials);
 
             authHeader = {
                 Authorization: `Basic ${btoa(credentials)}`,
             }
-
-            console.log('Auth header: ', authHeader);
-        } else {
-            console.log('Empty auth: ', authViewModel);
         }
-
         
 
         try {

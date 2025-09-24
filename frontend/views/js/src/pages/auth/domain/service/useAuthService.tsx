@@ -13,7 +13,7 @@ const useAuthService = () => {
         const newAuthDTO: Partial<AuthDTO> = await handleServiceCall<AuthDTO>(()  => loginRepo(authEntity), callbacks);
         const newAuthEntity: AuthEntity = new AuthEntity(newAuthDTO);
 
-        return newAuthEntity.asViewModel();
+        return newAuthEntity.asDto();
     }, [loginRepo])
 
 
@@ -22,7 +22,7 @@ const useAuthService = () => {
         const newAuthDTO: Partial<AuthDTO> = await handleServiceCall<AuthDTO>(() => registerRepo(authEntity), callbacks);;
         const newAuthEntity: AuthEntity = new AuthEntity(newAuthDTO);
         
-        return newAuthEntity.asViewModel();
+        return newAuthEntity.asDto();
     }, [registerRepo]);
 
 
