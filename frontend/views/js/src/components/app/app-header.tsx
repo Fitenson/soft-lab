@@ -13,7 +13,7 @@ import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-import { useAppSelector } from '@/core/presentation/store/useAppSelector';
+import useAuthState from '@/pages/auth/presentation/hooks/useAuthState';
 
 const mainNavItems: NavItem[] = [
     {
@@ -43,7 +43,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const authViewModel = useAppSelector(state => state.auth.auth);
+    const { authViewModel } = useAuthState();
 
 
     return (

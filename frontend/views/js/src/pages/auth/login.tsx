@@ -37,6 +37,7 @@ export default function LoginPage() {
                 router.visit('/dashboard');
             },
             onError: (error) => {
+                console.log('Error: ', error);
                 setFormError(error, {
                     setToastError(message) {
                         showToast("Failed", message, "error");

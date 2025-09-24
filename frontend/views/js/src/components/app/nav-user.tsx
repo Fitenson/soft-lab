@@ -4,11 +4,11 @@ import { UserInfo } from "@/components/app/user-info";
 import { UserMenuContent } from "@/components/app/user-menu-content";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronsUpDown } from 'lucide-react';
-import { useAppSelector } from '@/core/presentation/store/useAppSelector';
+import useAuthState from '@/pages/auth/presentation/hooks/useAuthState';
 
 
 export function NavUser() {
-    const authViewModel = useAppSelector(state => state.auth.auth);
+    const { authViewModel } = useAuthState();
     const { state } = useSidebar();
     const isMobile = useIsMobile();
 
