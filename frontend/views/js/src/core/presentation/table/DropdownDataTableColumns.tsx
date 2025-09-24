@@ -3,6 +3,8 @@ import { createColumn } from "@/core/presentation/table/ColumnConfig.tsx";
 import { CommonDataTableField } from "@/core/presentation/table/CommonField.tsx";
 import type DepartmentViewModel from "@/pages/department/presentation/view-models/DepartmentViewModel.ts";
 import DepartmentFormField from "@/pages/department/presentation/form/DepartmentFormField.ts";
+import type ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel.ts";
+import ProjectFormField from "@/pages/project_management/project/presentation/form/ProjectFormField.ts";
 
 
 export const departmentDropdownColumns: ColumnDef<DepartmentViewModel>[] = [
@@ -15,3 +17,9 @@ export const departmentDropdownColumns: ColumnDef<DepartmentViewModel>[] = [
     createColumn<DepartmentViewModel>({ accessorKey: CommonDataTableField.updatedAtFormat.name, header: CommonDataTableField.updatedAtFormat.label }),
     createColumn<DepartmentViewModel>({ accessorKey: CommonDataTableField.updatedAtFormat.name, header: CommonDataTableField.updatedAtFormat.label }),
 ];
+
+
+export const projectDropdownColumns: ColumnDef<ProjectViewModel>[] = [
+    createColumn({ header: ProjectFormField.projectCode.label, accessorKey: ProjectFormField.projectCode.name }),
+    createColumn({ header: ProjectFormField.projectName.label, accessorKey: ProjectFormField.projectName.name }),
+]

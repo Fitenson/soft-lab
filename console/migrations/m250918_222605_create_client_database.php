@@ -20,6 +20,7 @@ class m250918_222605_create_client_database extends DbMigration
             'port' => $this->string(50)->notNull(),
             'username'=> $this->string(50)->notNull(),
             'passwordHash'=> $this->string(500)->notNull(),
+            'project' => $this->char(40)->notNull(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
@@ -32,7 +33,19 @@ class m250918_222605_create_client_database extends DbMigration
             'port' => $this->string(50)->notNull(),
             'username'=> $this->string(50)->notNull(),
             'passwordHash'=> $this->string(500)->notNull(),
+            'project' => $this->char(40)->notNull(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
+
+
+        $this->createForeignKey()
+        ->table('client_database')
+        ->column('project')
+        ->refTable('project')
+        ->refColumn('UUID')
+        ->onDeleteRestrict()
+        ->build();
+
+        $this->addForeignKeys();
     }
 
     /**

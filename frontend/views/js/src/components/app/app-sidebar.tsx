@@ -7,7 +7,6 @@ import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, UserRound, BookOpenCheckIcon, DatabaseZap } from 'lucide-react';
 import {HiOutlineDesktopComputer, HiOutlineServer} from "react-icons/hi";
-import { PiNetworkLight } from "react-icons/pi";
 import { TbPuzzle } from "react-icons/tb";
 import { IoSettingsOutline, IoExtensionPuzzleOutline } from "react-icons/io5";
 import { PiNetwork } from "react-icons/pi";
@@ -68,11 +67,7 @@ const mainNavItems: NavItem[] = [
             },
             {
                 title: 'API Test Case',
-                href: '/backend/api-test-case',
-<<<<<<< HEAD
-                icon: DatabaseZap
-            }
-=======
+                href: '/backend/api-test',
                 icon: PiNetwork
             },
             {
@@ -80,7 +75,6 @@ const mainNavItems: NavItem[] = [
                 href: '/backend/component',
                 icon: IoExtensionPuzzleOutline
             },
->>>>>>> origin/main
         ]
     }
 ];

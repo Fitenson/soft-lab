@@ -10,6 +10,8 @@ import SaveButton from "@/components/buttons/save-button.tsx";
 import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
 import useShowToast from "@/hooks/use-show-toast.ts";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
+import {DropdownTable} from "@/components/ui/dropdown-table.tsx";
+import {projectDropdownColumns} from "@/core/presentation/table/DropdownDataTableColumns.tsx";
 
 
 type DatabaseDialogProps = {
@@ -68,11 +70,11 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[520px]" showCloseButton={false}>
+            <DialogContent className="sm:max-w-[720px]" showCloseButton={false}>
                 <div className="w-full">
                     <Form {...form}>
-                        <form className="grid grid-cols-2 gap-4" onSubmit={form.handleSubmit(submit)}>
-                            <DialogHeader className="mb-4 col-span-2 flex flex-row items-center justify-start">
+                        <form className="grid grid-cols-3 gap-4" onSubmit={form.handleSubmit(submit)}>
+                            <DialogHeader className="mb-4 col-span-3 flex flex-row items-center justify-start">
                                 <SaveButton />
                                 <DialogClose asChild>
                                     <Button
@@ -189,6 +191,26 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                             />
                                         </FormControl>
                                         <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                name={ClientDatabaseFormField.project.name}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{ClientDatabaseFormField.project.label}</FormLabel>
+                                        <DropdownTable
+                                            columns={projectDropdownColumns}
+                                            data={[]}
+                                            isLoading={isLoading}
+                                            onSelect={() => {}}
+                                        />
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                            />
+                                        </FormControl>
                                     </FormItem>
                                 )}
                             />
