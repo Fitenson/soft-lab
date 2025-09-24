@@ -6,5 +6,7 @@ use common\components\inertia\InertiaController;
 
 
 class ApiTestCaseController extends InertiaController {
-    public function actionIndex() {}
+    public function actionIndex() {
+        return $this->inertia('api');
+    }
 }

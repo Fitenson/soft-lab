@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { Provider } from 'react-redux';
 import {persistor, store} from '@/core/presentation/store/index';
 import { resolvePageComponent } from './utils/resolvePageComponent';
@@ -26,8 +26,10 @@ createInertiaApp({
             <TooltipProvider>
                 <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
                     <Provider store={store}>
-                        <PersistGate persistor={persistor} loading={null} onBeforeLift={() => {
-                            console.log('Rehydrating state: ', store.getState());
+                        <PersistGate persistor={persistor} loading={<div>Loading...</div>} onBeforeLift={() => {
+                            if(!store?.getState()?.auth?.auth) {
+                                router.visit("/login");
+                            }
                         }}>
                             <QueryClientProvider client={queryClient}>
                                 <App {...props} />

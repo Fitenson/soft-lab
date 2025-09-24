@@ -12,9 +12,9 @@ import RegisterFormField from "@/pages/auth/presentation/form/RegisterFormField"
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { setAuth } from "@/pages/auth/presentation/redux/authSlice.ts";
-import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel.ts";
 import { router } from "@inertiajs/react";
 import {useDispatch} from "react-redux";
+import type { AuthDTO } from "./data/dto/AuthDTO";
 
 
 export default function RegisterPage() {
@@ -30,8 +30,8 @@ export default function RegisterPage() {
         const auth = new Auth(formValues);
 
         await register(auth, {
-            onSuccess: (data) => {
-                dispatch(setAuth(new AuthViewModel(data)));
+            onSuccess: (authDTO: AuthDTO) => {
+                dispatch(setAuth(authDTO));
                 showToast("Success", "Registration success", "success");
                 router.visit("/dashboard");
             },

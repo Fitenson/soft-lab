@@ -7,6 +7,7 @@ import { store } from "@/core/presentation/store";
 import { useDispatch } from "react-redux";
 import { removeAuth } from "@/pages/auth/presentation/redux/authSlice.ts";
 import { router } from "@inertiajs/react";
+import useAuthState from "@/pages/auth/presentation/hooks/useAuthState";
 
 
 export type AxiosRequestResult = {
@@ -27,6 +28,8 @@ export interface Options {
 
 
 export const useRequest = (): AxiosRequestResult => {
+    const { authViewModel } = useAuthState();
+
     const axiosInstance = useMemo(() => {
         return axios.create({
             baseURL: 'http://softlab-backend.test/backend',
@@ -36,7 +39,6 @@ export const useRequest = (): AxiosRequestResult => {
 
     // const [data, setData] = useState<T | null>(null);
     const isLoading = useAppSelector(state => state.loading.global);
-    const authViewModel = useAppSelector(state => state.auth.auth);
     const dispatch = useDispatch();
     const [error, setError] = useState<unknown>(null);
 
@@ -51,10 +53,12 @@ export const useRequest = (): AxiosRequestResult => {
 
         if(authViewModel) {
             const credentials = `${authViewModel.username}:${authViewModel.password}`;
+
             authHeader = {
                 Authorization: `Basic ${btoa(credentials)}`,
             }
         }
+        
 
         try {
             const response = await axiosInstance.request<T>({

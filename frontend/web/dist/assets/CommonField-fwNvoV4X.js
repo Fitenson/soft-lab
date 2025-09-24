@@ -1,1 +1,0 @@
-const e={createdAtFormat:{name:"createdAtFormat",label:"Created At"},updatedAtFormat:{name:"updatedAtFormat",label:"Updated At"},createdByName:{name:"createdByName",label:"Created By"},updatedByName:{name:"updatedByName",label:"Updated By"}};export{e as C};

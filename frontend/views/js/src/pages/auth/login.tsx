@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "./presentation/redux/authSlice";
 import LoginFormField from "@/pages/auth/presentation/form/LoginFormField";
 import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
-import AuthViewModel from "@/pages/auth/presentation/view_models/AuthViewModel";
 
 
 export default function LoginPage() {
@@ -32,11 +31,12 @@ export default function LoginPage() {
 
         await login(auth, {
             onSuccess: (authDTO: AuthDTO) => {
-                dispatch(setAuth(new AuthViewModel(authDTO)));
+                dispatch(setAuth(authDTO));
                 showToast("Success", "Login successfully", "success");
                 router.visit('/dashboard');
             },
             onError: (error) => {
+                console.log('Error: ', error);
                 setFormError(error, {
                     setToastError(message) {
                         showToast("Failed", message, "error");

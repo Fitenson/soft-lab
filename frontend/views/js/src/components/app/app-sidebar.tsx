@@ -9,7 +9,8 @@ import { LayoutGrid, UserRound, BookOpenCheckIcon, DatabaseZap } from 'lucide-re
 import {HiOutlineDesktopComputer, HiOutlineServer} from "react-icons/hi";
 import { PiNetworkLight } from "react-icons/pi";
 import { TbPuzzle } from "react-icons/tb";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline, IoExtensionPuzzleOutline } from "react-icons/io5";
+import { PiNetwork } from "react-icons/pi";
 import { FaProjectDiagram } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import AppLogo from './app-logo';
@@ -68,8 +69,18 @@ const mainNavItems: NavItem[] = [
             {
                 title: 'API Test Case',
                 href: '/backend/api-test-case',
+<<<<<<< HEAD
                 icon: DatabaseZap
             }
+=======
+                icon: PiNetwork
+            },
+            {
+                title: 'Components',
+                href: '/backend/component',
+                icon: IoExtensionPuzzleOutline
+            },
+>>>>>>> origin/main
         ]
     }
 ];
