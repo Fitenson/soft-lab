@@ -205,6 +205,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                             data={[]}
                                             isLoading={isLoading}
                                             onSelect={() => {}}
+                                            label={ClientDatabaseFormField.project.label}
                                         />
                                         <FormControl>
                                             <Input

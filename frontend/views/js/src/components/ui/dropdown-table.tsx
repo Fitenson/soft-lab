@@ -1,13 +1,14 @@
-import DataTable from "@/components/app/data-table.tsx";
+import React from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 import {
     type ColumnDef,
     getCoreRowModel,
     getFilteredRowModel, getSortedRowModel,
     useReactTable
 } from "@tanstack/react-table";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import DataTable from "@/components/app/data-table.tsx";
 
 
 type DropdownTableProps<TData> = {
@@ -15,6 +16,7 @@ type DropdownTableProps<TData> = {
     data: TData[];
     isLoading: boolean;
     onSelect: () => void;
+    label: string;
     // onRefresh: () => void;
 }
 
@@ -24,6 +26,7 @@ export function DropdownTable<TData>({
     data,
     isLoading,
     onSelect,
+    label
     // onRefresh,
 }: DropdownTableProps<TData>) {
     const [open, setOpen] = React.useState(false);
@@ -48,7 +51,8 @@ export function DropdownTable<TData>({
                     role="combobox"
                     className="w-full justify-between"
                 >
-                    Dropdown
+                    {label}
+                    <FaMagnifyingGlass/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[600px] p-2">
