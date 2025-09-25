@@ -11,4 +11,5 @@ interface ProjectRepository {
     public function update(ProjectEntity $projectEntity): ProjectEntity;
     public function view(string $id): ProjectEntity;
     public function remove(array $data): array;
+    public function dropdownTable(array $params);
 }

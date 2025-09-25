@@ -120,4 +120,41 @@ class YiiProjectRepository extends BaseRepository implements ProjectRepository {
 
         return $status;        
     }
+
+
+    public function dropdownTable(array $params)
+    {
+        $params = $this->getParams($params);
+        $offset = $params['offset'];
+        $sort = $params['sort'];
+        $limit = $params['limit'];
+        $valid = $params['valid'];
+        $likeFilterFields = $params['likeFilterFields'];
+        $compareFields = $params['compareFields'];
+
+        $query = Project::find()->select([
+            'UUID',
+            'projectCode',
+            'projectName',
+            'description',
+        ])
+        ->where($valid)
+        ->andWhere($compareFields)
+        ->having($likeFilterFields);
+
+        $total = $query->count();
+
+        $Projects = $query
+        ->orderBy($sort)
+        ->offset($offset)
+        ->limit($limit)
+        ->asArray()
+        ->all();
+
+        
+        return [
+            'total' => $total,
+            'rows' => $Projects
+        ];
+    }
 }
