@@ -9,6 +9,8 @@ export const clientDatabaseSchema = z.object({
     port: z.string().max(ClientDatabaseFormField.port.max, { error: ClientDatabaseFormField.port.maxError }),
     username: z.string().max(ClientDatabaseFormField.username.max, { error: ClientDatabaseFormField.username.maxError }),
     password: z.string().max(ClientDatabaseFormField.password.max, { error: ClientDatabaseFormField.password.maxError }),
+    project: z.string(),
+    projectName: z.string(),
 });
 
 

@@ -64,7 +64,11 @@ export default function DatabaseCard({ clientDatabaseViewModel }: { clientDataba
             <CardHeader>
                 <CardTitle className="text-center font-semibold">{clientDatabaseViewModel.databaseName}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-2 text-xs">
+            <CardContent className="flex flex-col gap-2">
+                <div className="text-start text-foreground dark:text-foreground">
+                    <span className="font-medium">Project: </span>
+                    <span className="font-normal">{clientDatabaseViewModel.projectName}</span>
+                </div>
                 <div className="text-start text-foreground dark:text-foreground">
                     <span className="font-medium">Schema: </span>
                     <span className="font-normal">{clientDatabaseViewModel.databaseName}</span>

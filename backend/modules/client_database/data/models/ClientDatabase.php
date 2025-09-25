@@ -28,8 +28,6 @@ use backend\modules\project\data\models\Project;
  */
 class ClientDatabase extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */

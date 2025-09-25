@@ -26,6 +26,8 @@ const useClientDatabaseForm = ({ clientDatabaseDTO }: { clientDatabaseDTO: Clien
             port: clientDatabaseViewModel?.port ?? "",
             username: clientDatabaseViewModel?.username ?? "",
             password: clientDatabaseViewModel?.password ?? "",
+            project: clientDatabaseViewModel?.project ?? "",
+            projectName: clientDatabaseViewModel?.projectName ?? "",
         }
     });
 

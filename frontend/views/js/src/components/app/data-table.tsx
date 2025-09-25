@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 
 type DataTableProps<T> = {
+    variant?: string;
     table: Table<T>;
     isLoading: boolean;
     error?: string | null;
@@ -21,6 +22,7 @@ type DataTableProps<T> = {
 
 
 export default function DataTable <T> ({
+    variant = "data-table",
     table,
     isLoading,
     error,
@@ -70,21 +72,34 @@ export default function DataTable <T> ({
             <TableBody>
                 {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) =>  (
-                        <TableRow
-                            key = {row.id}
-                            className={`cursor-pointer p-2 border border-accent dark:border-accent ${
-                                row.getIsSelected() ? "text-foreground dark:text-foreground" : "text-foreground dark:text-foreground"
-                            }`}
-                            onClick={() => row.toggleSelected()}
-                            onDoubleClick = {() => onSelectRow(row)}
-                            data-state = {row.getIsSelected() && "selected"}
-                        >
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className="p-2.5 border-2 border-accent dark:border-accent">
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
-                        </TableRow>
+                    <TableRow
+                        key={row.id}
+                        className={`cursor-pointer p-2 border border-accent dark:border-accent ${
+                            row.getIsSelected()
+                                ? "text-foreground dark:text-foreground"
+                                : "text-foreground dark:text-foreground"
+                        }`}
+                        onClick={
+                            variant === "dropdown"
+                                ? () => onSelectRow(row)
+                                : () => row.toggleSelected()
+                        }
+                        onDoubleClick={
+                            variant === "data-table"
+                                ? () => onSelectRow(row)
+                                : undefined
+                        }
+                        data-state={row.getIsSelected() && "selected"}
+                    >
+                        {row.getVisibleCells().map((cell) => (
+                            <TableCell
+                                key={cell.id}
+                                className="p-2.5 border-2 border-accent dark:border-accent"
+                            >
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableCell>
+                        ))}
+                    </TableRow>
                     ))
                 ) : !isLoading ? ((
                     <TableRow>

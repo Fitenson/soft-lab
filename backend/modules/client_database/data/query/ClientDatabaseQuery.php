@@ -2,6 +2,8 @@
 
 namespace backend\modules\client_database\data\query;
 
+use backend\modules\project\data\models\Project;
+
 /**
  * This is the ActiveQuery class for [[\backend\modules\client_database\data\models\ClientDatabase]].
  *
@@ -41,6 +43,8 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
             'host',
             'port',
             'username',
+            'project',
+            'projectName' => Project::find()->select(['projectName'])->where('project.UUID = client_database.project'),
         ]);
     }
 }

@@ -9,6 +9,8 @@ export default class ClientDatabaseViewModel {
     private readonly _port: string;
     private readonly _username: string;
     private readonly _password: string;
+    private readonly _project: string;
+    private readonly _projectName: string;
     private readonly _valid: boolean;
 
 
@@ -21,6 +23,8 @@ export default class ClientDatabaseViewModel {
         this._port = data.port ?? "";
         this._username = data.username ?? "";
         this._password = data.password ?? "";
+        this._project = data.project ?? "";
+        this._projectName = data.projectName ?? "";
         this._valid = data.valid ?? true;
     }
 
@@ -55,6 +59,14 @@ export default class ClientDatabaseViewModel {
 
     get password(): string {
         return this._password;
+    }
+
+    get project(): string {
+        return this._project;
+    }
+
+    get projectName(): string {
+        return this._projectName;
     }
 
     get valid(): boolean {

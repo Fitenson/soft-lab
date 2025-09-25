@@ -4,6 +4,7 @@ import {
     type ColumnDef,
     getCoreRowModel,
     getFilteredRowModel, getSortedRowModel,
+    type Row,
     useReactTable
 } from "@tanstack/react-table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
@@ -15,8 +16,10 @@ type DropdownTableProps<TData> = {
     columns: ColumnDef<TData>[];
     data: TData[];
     isLoading: boolean;
-    onSelect: () => void;
+    onSelect: (row: TData) => void;
     label: string;
+    value?: string;
+    onChange?: (value: TData) => void;
     // onRefresh: () => void;
 }
 
@@ -26,7 +29,9 @@ export function DropdownTable<TData>({
     data,
     isLoading,
     onSelect,
-    label
+    label,
+    value,
+    onChange
     // onRefresh,
 }: DropdownTableProps<TData>) {
     const [open, setOpen] = React.useState(false);
@@ -43,6 +48,13 @@ export function DropdownTable<TData>({
     });
 
 
+    const handleRowSelect = (row: Row<TData>) => {
+        onChange?.(row?.original);
+        onSelect?.(row.original);
+        setOpen(false);
+    }
+
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -51,15 +63,16 @@ export function DropdownTable<TData>({
                     role="combobox"
                     className="w-full justify-between"
                 >
-                    {label}
+                    {value ? value : label}
                     <FaMagnifyingGlass/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[600px] p-2">
                 <DataTable
+                    variant="dropdown"
                     table={table}
                     isLoading={isLoading}
-                    onSelectRow={onSelect}
+                    onSelectRow={handleRowSelect}
                 />
             </PopoverContent>
         </Popover>

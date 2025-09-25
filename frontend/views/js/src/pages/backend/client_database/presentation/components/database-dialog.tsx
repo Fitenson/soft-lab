@@ -234,18 +234,28 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                             <FormField
                                 name={ClientDatabaseFormField.project.name}
                                 render={({ field }) => (
+                                    <FormItem className="hidden">
+                                        <Input {...field} />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                name={ClientDatabaseFormField.projectName.name}
+                                render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{ClientDatabaseFormField.project.label}</FormLabel>
-                                        <DropdownTable
-                                            columns={projectDropdownColumns}
-                                            data={data?.project?.rows ?? []}
-                                            isLoading={isLoading}
-                                            onSelect={() => {}}
-                                            label={ClientDatabaseFormField.project.label}
-                                        />
+                                        <FormLabel>{ClientDatabaseFormField.projectName.label}</FormLabel>
                                         <FormControl>
-                                            <Input
+                                            <DropdownTable
                                                 {...field}
+                                                columns={projectDropdownColumns}
+                                                data={data?.project?.rows ?? []}
+                                                isLoading={isLoading}
+                                                label={ClientDatabaseFormField.project.label}
+                                                onSelect={(row) => {
+                                                    field.onChange(row.projectName);
+                                                    form.setValue("project", row.UUID);
+                                                }}
                                             />
                                         </FormControl>
                                     </FormItem>

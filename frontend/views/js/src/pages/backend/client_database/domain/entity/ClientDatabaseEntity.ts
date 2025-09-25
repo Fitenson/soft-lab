@@ -11,6 +11,7 @@ export default class ClientDatabaseEntity extends BaseEntity<ClientDatabaseDTO> 
     private _port: string;
     private _username: string;
     private _password: string;
+    private _project: string;
     private _valid: boolean;
 
 
@@ -24,6 +25,7 @@ export default class ClientDatabaseEntity extends BaseEntity<ClientDatabaseDTO> 
         this._port = data.port ?? "";
         this._username = data.username ?? "";
         this._password = data.password ?? "";
+        this._project = data.project ?? "";
         this._valid = data.valid ?? true;
     }
 
@@ -94,6 +96,14 @@ export default class ClientDatabaseEntity extends BaseEntity<ClientDatabaseDTO> 
 
     set password(value: string) {
         this._password = value;
+    }
+
+    get project(): string {
+        return this._project;
+    }
+
+    set project(value: string) {
+        this._project = value;
     }
 
     get valid(): boolean {

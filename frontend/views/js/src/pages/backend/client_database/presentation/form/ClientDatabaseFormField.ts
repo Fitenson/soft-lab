@@ -9,6 +9,7 @@ const ClientDatabaseFormField = {
     username: createFormField({ name: "username", label: "Username", max: 50 }),
     password: createFormField({ name: "password", label: "Password", max: 50 }),
     project: createFormField({ name: "project", label: "Project" }),
+    projectName: createFormField({ name: "projectName", label: "Project" }),
 };
 
 
