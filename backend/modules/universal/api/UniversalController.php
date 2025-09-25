@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules;
+namespace backend\modules\universal\api;
 
 use backend\controllers\RestController;
 use backend\modules\universal\domain\service\UniversalService;

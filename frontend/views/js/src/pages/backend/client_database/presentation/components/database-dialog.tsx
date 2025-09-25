@@ -12,6 +12,11 @@ import useShowToast from "@/hooks/use-show-toast.ts";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 import {DropdownTable} from "@/components/ui/dropdown-table.tsx";
 import {projectDropdownColumns} from "@/core/presentation/table/DropdownDataTableColumns.tsx";
+import useUniversalService from "@/core/domain/service/useUniversalService";
+import { useQuery } from "@tanstack/react-query";
+import type { ProjectDTO } from "@/pages/project_management/project/data/dto/ProjectDTO";
+import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel";
+import type { Params } from "@/types";
 
 
 type DatabaseDialogProps = {
@@ -24,6 +29,31 @@ type DatabaseDialogProps = {
 export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }: DatabaseDialogProps) {
     const { form, setFormError, clientDatabaseViewModel, setClientDatabaseViewModel } = useClientDatabaseForm({ clientDatabaseDTO: clientDatabaseDTO });
     const { createClientDatabase, updateClientDatabase } = useClientDatabaseService();
+    const { dropdownTable } = useUniversalService();
+
+    const params: Params = {
+        offset: "0",
+        limit: "20",
+        sort: "createdAtFormat",
+        order: "desc",
+        filter: "{}"
+    };
+
+    const { data } = useQuery({
+        queryKey: ["/universal/dropdown-table", params],
+        queryFn: async () =>
+            await dropdownTable<
+                { project: ProjectDTO },
+                { project: typeof ProjectViewModel }
+            >(
+                params,
+                ["project"],
+                { project: ProjectViewModel }
+            ),
+        enabled: false,
+    });
+
+
     const showToast = useShowToast();
     const isLoading = useAppSelector(state => state.loading.global);
 
@@ -202,7 +232,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormLabel>{ClientDatabaseFormField.project.label}</FormLabel>
                                         <DropdownTable
                                             columns={projectDropdownColumns}
-                                            data={[]}
+                                            data={data?.project.rows ?? []}
                                             isLoading={isLoading}
                                             onSelect={() => {}}
                                             label={ClientDatabaseFormField.project.label}

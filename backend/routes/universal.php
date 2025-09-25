@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'backend/universal'    => 'universal/universal',
-    'backend/universal' => 'universal/universal',
+    'backend/universal/dropdown-table'    => 'universal/universal/dropdown-table',
 ];
