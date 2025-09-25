@@ -3,6 +3,7 @@
 namespace backend\modules\client_database\data\models;
 
 use Yii;
+use backend\modules\project\data\models\Project;
 
 /**
  * This is the model class for table "client_database".
@@ -14,6 +15,7 @@ use Yii;
  * @property string $port
  * @property string $username
  * @property string $passwordHash
+ * @property string $project
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -21,6 +23,8 @@ use Yii;
  * @property int|null $valid
  * @property string|null $_actionUUID
  * @property int|null $_version
+ *
+ * @property Project $project0
  */
 class ClientDatabase extends \backend\components\db\AppModel
 {
@@ -41,14 +45,16 @@ class ClientDatabase extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash'], 'required'],
+            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'project'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['UUID', '_actionUUID'], 'string', 'max' => 40],
-            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash'], 'string', 'max' => 50],
+            [['UUID', 'project', '_actionUUID'], 'string', 'max' => 40],
+            [['databaseName', 'databaseSchema', 'host', 'port', 'username'], 'string', 'max' => 50],
+            [['passwordHash'], 'string', 'max' => 500],
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['databaseName'], 'unique'],
             [['databaseSchema'], 'unique'],
             [['UUID'], 'unique'],
+            [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],
         ];
     }
 
@@ -65,6 +71,7 @@ class ClientDatabase extends \backend\components\db\AppModel
             'port' => 'Port',
             'username' => 'Username',
             'passwordHash' => 'Password Hash',
+            'project' => 'Project',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
@@ -76,12 +83,17 @@ class ClientDatabase extends \backend\components\db\AppModel
     }
 
     /**
-     * {@inheritdoc}
-     * @return \backend\modules\client_database\data\query\ClientDatabaseQuery the active query used by this AR class.
+     * Gets query for [[Project0]].
+     *
+     * @return \yii\db\ActiveQuery
      */
+    public function getProject0()
+    {
+        return $this->hasOne(Project::class, ['UUID' => 'project']);
+    }
+
     public static function find()
     {
         return new \backend\modules\client_database\data\query\ClientDatabaseQuery(get_called_class());
     }
-
 }

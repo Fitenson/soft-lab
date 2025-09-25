@@ -4,6 +4,7 @@ namespace backend\modules\client_database\form;
 
 use backend\components\form\Form;
 use backend\modules\client_database\data\models\ClientDatabase;
+use backend\modules\project\data\models\Project;
 
 
 class ClientDatabaseForm extends Form {
@@ -14,13 +15,14 @@ class ClientDatabaseForm extends Form {
     public ?string $port;
     public ?string $username;
     public ?string $password;
+    public ?string $project;
 
 
     public function rules()
     {
         return [
-            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'required'],
-            [['UUID'], 'string', 'max' => 40],
+            [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'project'], 'required'],
+            [['UUID', 'project'], 'string', 'max' => 40],
             [['databaseName', 'databaseSchema', 'host', 'port', 'username', 'password'], 'string', 'max' => 50],
             [['databaseName'], 'unique', 
                 'targetClass' => ClientDatabase::class,
@@ -40,6 +42,7 @@ class ClientDatabaseForm extends Form {
                     }
                 }
             ],
+            [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],
         ];
     }
 }

@@ -15,7 +15,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => require __DIR__ . './../../common/providers/AppModuleProvider.php',
+    'modules' => require __DIR__ . './../providers/AppModuleProvider.php',
     'components' => [
         'response' => [
             'format' => yii\web\Response::FORMAT_JSON,

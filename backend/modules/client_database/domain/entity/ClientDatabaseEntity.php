@@ -16,6 +16,7 @@ class ClientDatabaseEntity extends Entity {
     private string $port;
     private string $username;
     private string $password;
+    private string $project;
 
 
     public function asArray(): array
@@ -59,6 +60,11 @@ class ClientDatabaseEntity extends Entity {
         $this->password = $password;
     }
 
+    public function setProject(string $project): void
+    {
+        $this->project = $project;
+    }
+
 
     public function getUUID(): string
     {
@@ -93,5 +99,10 @@ class ClientDatabaseEntity extends Entity {
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getProject(): string
+    {
+        return $this->project;
     }
 }

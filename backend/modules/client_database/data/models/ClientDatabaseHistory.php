@@ -15,6 +15,7 @@ use Yii;
  * @property string $port
  * @property string $username
  * @property string $passwordHash
+ * @property string $project
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -28,8 +29,6 @@ use Yii;
  */
 class ClientDatabaseHistory extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -45,10 +44,11 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'user_id'], 'required'],
+            [['historyUUID', 'UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'project', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
-            [['historyUUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'user_id', 'action'], 'string', 'max' => 50],
-            [['UUID', '_actionUUID'], 'string', 'max' => 40],
+            [['historyUUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'user_id', 'action'], 'string', 'max' => 50],
+            [['UUID', 'project', '_actionUUID'], 'string', 'max' => 40],
+            [['passwordHash'], 'string', 'max' => 500],
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['date_created'], 'string', 'max' => 100],
             [['historyUUID'], 'unique'],
@@ -68,7 +68,8 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
             'host' => 'Host',
             'port' => 'Port',
             'username' => 'Username',
-            'passwordHash' => 'PasswordHash',
+            'passwordHash' => 'Password Hash',
+            'project' => 'Project',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',
@@ -82,13 +83,9 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     * @return \backend\modules\client_database\data\query\ClientDatabaseHistoryQuery the active query used by this AR class.
-     */
+
     public static function find()
     {
         return new \backend\modules\client_database\data\query\ClientDatabaseHistoryQuery(get_called_class());
     }
-
 }

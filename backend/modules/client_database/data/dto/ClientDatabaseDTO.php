@@ -14,13 +14,14 @@ class ClientDatabaseDTO extends Model implements JsonSerializable {
     public string $port;
     public string $username;
     public string $password;
+    public string $project;
 
 
     public function rules()
     {
         return [[
             ['UUID', 'username', 'password', 'host', 'port', 
-            'databaseName', 'databaseSchema'],
+            'databaseName', 'databaseSchema', 'project'],
             'safe'
         ]];
     }
