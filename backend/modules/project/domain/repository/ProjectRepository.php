@@ -12,4 +12,5 @@ interface ProjectRepository {
     public function view(string $id): ProjectEntity;
     public function remove(array $data): array;
     public function dropdownTable(array $params);
+    public function listProjects();
 }

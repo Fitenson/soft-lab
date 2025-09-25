@@ -35,6 +35,7 @@ export default function ClientDatabaseIndex() {
     const { rows } = usePage<Props>().props;
 
     useEffect(() => {
+        console.log("Rows: ", clientDatabaseViewModels);
         if(rows?.length === 0) {
             return;
         }

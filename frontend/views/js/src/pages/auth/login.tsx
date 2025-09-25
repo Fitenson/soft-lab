@@ -58,10 +58,10 @@ export default function LoginPage() {
                 >
                     <Card className="rounded-2xl shadow-md h-auto">
                         <CardHeader>
-                            <CardTitle className="text-3xl font-bold text-center">
+                            <CardTitle className="text-2xl font-bold text-center">
                                 Soft Lab
                             </CardTitle>
-                            <CardDescription className="text-center text-2xl my-2 mb-2">
+                            <CardDescription className="text-center text-xl my-2 mb-2">
                                 Welcome Back
                             </CardDescription>
                         </CardHeader>
@@ -77,7 +77,7 @@ export default function LoginPage() {
                                         name={LoginFormField.username.name}
                                         render={({ field }) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{LoginFormField.username.label}</FormLabel>
+                                                <FormLabel>{LoginFormField.username.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your username"
@@ -97,7 +97,7 @@ export default function LoginPage() {
                                         name={LoginFormField.password.name}
                                         render={({ field }) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{LoginFormField.password.label}</FormLabel>
+                                                <FormLabel>{LoginFormField.password.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your password"

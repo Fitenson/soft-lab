@@ -2,9 +2,10 @@
 
 namespace backend\modules\universal\api;
 
+use Yii;
 use backend\controllers\RestController;
 use backend\modules\universal\domain\service\UniversalService;
-use Yii;
+
 
 class UniversalController extends RestController {
     private UniversalService $universalService;

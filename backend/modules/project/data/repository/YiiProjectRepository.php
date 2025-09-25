@@ -158,4 +158,30 @@ class YiiProjectRepository extends BaseRepository implements ProjectRepository {
             'rows' => $Projects
         ];
     }
+
+
+    public function listProjects() {
+        $Projects = Project::find()->select([
+            'project.UUID',
+            'project.projectCode',
+            'project.projectName',
+            'project.description',
+        ])->joinWith(['clientDatabases' => function($a) {
+            $a->select([
+                'client_database.UUID',
+                'client_database.project',
+                'client_database.databaseName',
+                'client_database.databaseSchema',
+            ]);
+        }])
+        ->asArray()
+        ->all();
+
+        $total = count($Projects);
+
+        return [
+            'total' => (string)$total,
+            'rows' => $Projects
+        ];
+    }
 }

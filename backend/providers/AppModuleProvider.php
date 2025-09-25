@@ -16,6 +16,9 @@ return [
     'client_database' => [
         'class' => 'backend\modules\client_database\ClientDatabaseModule'
     ],
+    'api_test' => [
+        'class' => 'backend\modules\api_test\ApiTestModule'
+    ],
     'universal' => [
         'class' => 'backend\modules\universal\UniversalModule'
     ]

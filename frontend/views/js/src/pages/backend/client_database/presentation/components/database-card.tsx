@@ -12,9 +12,9 @@ import {
 import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
 import useShowToast from "@/hooks/use-show-toast.ts";
 import React from "react";
-import { setClientDatabase } from "../redux/clientDatabaseSlice";
+import { setClientDatabase, removeClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice.ts";
 import { useDispatch } from "react-redux";
-import {router} from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 
 export default function DatabaseCard({ clientDatabaseViewModel }: { clientDatabaseViewModel: ClientDatabaseViewModel }) {
@@ -22,7 +22,7 @@ export default function DatabaseCard({ clientDatabaseViewModel }: { clientDataba
     const dispatch = useDispatch();
 
     const [open, setOpen] = React.useState(false);
-    const { removeClientDatabase, connectClientDatabase } = useClientDatabaseService();
+    const { removeClientDatabase: removeClientDatabaseService, connectClientDatabase } = useClientDatabaseService();
 
 
     const handleRemoveClientDatabase = async () => {
@@ -30,9 +30,10 @@ export default function DatabaseCard({ clientDatabaseViewModel }: { clientDataba
             clientDatabaseViewModel.UUID
         ];
 
-        await removeClientDatabase(UUIDs, {
+        await removeClientDatabaseService(UUIDs, {
             onSuccess: (data)=> {
                 if (data.success && data.success.length > 0) {
+                    dispatch(removeClientDatabase(clientDatabaseViewModel.UUID));
                     showToast("Success", "Connection successfully removed", "success");
                     setOpen(false);
                 } else {

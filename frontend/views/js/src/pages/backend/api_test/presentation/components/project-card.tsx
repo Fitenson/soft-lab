@@ -1,21 +1,45 @@
+import React from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel.ts";
 import { Button } from "@/components/ui/button.tsx";
+import type ProjectListViewModel from "@/pages/backend/api_test/presentation/view_models/ProjectListViewModel.ts";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
+import type ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
 
 
-export default function ProjectCard({ projectViewModel }: { projectViewModel: ProjectViewModel }) {
+export default function ProjectCard({ projectViewModel }: { projectViewModel: ProjectListViewModel }) {
+    const [selectedDatabase, setSelectedDatabase] = React.useState<ClientDatabaseViewModel>();
+
+
     return (
         <Card className="w-full h-full flex flex-col">
             <CardHeader>
                 <CardTitle className="text-center font-semibold">{projectViewModel.projectCode}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-2 flex-1">
+            <CardContent className="flex flex-col gap-2 flex-1 mb-2">
                 <div className="text-start text-foreground dark:text-foreground">
                     <span className="font-medium">Project: </span>
                     <span className="font-normal">{projectViewModel.projectName}</span>
                 </div>
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                            {selectedDatabase ? selectedDatabase.databaseName : "Select Database"}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {projectViewModel.clientDatabases.map((database) => (
+                            <DropdownMenuItem
+                                key={database.UUID}
+                                onClick={() => setSelectedDatabase(database)}
+                            >
+                                {database.databaseName}
+                            </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </CardContent>
-            <CardFooter className="flex flex-col w-full gap-2 mt-auto">
+            <CardFooter className="flex flex-col w-full mt-auto">
                 <Button className="w-full">
                     Connect
                 </Button>

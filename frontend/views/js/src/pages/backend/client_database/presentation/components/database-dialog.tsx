@@ -18,6 +18,8 @@ import type { ProjectDTO } from "@/pages/project_management/project/data/dto/Pro
 import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel";
 import type { Params } from "@/types";
 import { useEffect } from "react";
+import {useDispatch} from "react-redux";
+import {addClientDatabase} from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice.ts";
 
 
 type DatabaseDialogProps = {
@@ -28,6 +30,7 @@ type DatabaseDialogProps = {
 
 
 export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }: DatabaseDialogProps) {
+    const dispatch = useDispatch();
     const { form, setFormError, clientDatabaseViewModel, setClientDatabaseViewModel } = useClientDatabaseForm({ clientDatabaseDTO: clientDatabaseDTO });
     const { createClientDatabase, updateClientDatabase } = useClientDatabaseService();
     const { dropdownTable } = useUniversalService();
@@ -89,6 +92,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
         } else {
             await createClientDatabase(clientDatabaseDTO, {
                 onSuccess: (newClientDatabaseViewModel) => {
+                    dispatch(addClientDatabase(newClientDatabaseViewModel));
                     setClientDatabaseViewModel(newClientDatabaseViewModel);
                     onOpenChange(false);
                 },
@@ -241,7 +245,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                             />
 
                             <FormField
-                                name={ClientDatabaseFormField.projectName.name}
+                                name={ClientDatabaseFormField.project.name}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{ClientDatabaseFormField.projectName.label}</FormLabel>
@@ -258,6 +262,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                                 }}
                                             />
                                         </FormControl>
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />

@@ -5,6 +5,7 @@ namespace backend\modules\project\data\models;
 use Yii;
 
 use backend\modules\user\data\models\User;
+use backend\modules\client_database\data\models\ClientDatabase;
 
 /**
  * This is the model class for table "project".
@@ -78,6 +79,16 @@ class Project extends \backend\components\db\AppModel
             '_actionUUID' => 'Action Uuid',
             '_version' => 'Version',
         ];
+    }
+
+    /**
+     * Gets query for [[ClientDatabases]].
+     *
+     * @return \yii\db\ActiveQuery|\backend\modules\client_database\data\query\ClientDatabaseQuery
+     */
+    public function getClientDatabases()
+    {
+        return $this->hasMany(ClientDatabase::class, ['project' => 'UUID']);
     }
 
     /**

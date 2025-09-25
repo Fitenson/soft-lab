@@ -68,7 +68,7 @@ export default function RegisterPage() {
                                         name={RegisterFormField.fullName.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{RegisterFormField.fullName.label}</FormLabel>
+                                                <FormLabel>{RegisterFormField.fullName.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your full name"
@@ -87,7 +87,7 @@ export default function RegisterPage() {
                                         name={RegisterFormField.username.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{RegisterFormField.username.label}</FormLabel>
+                                                <FormLabel>{RegisterFormField.username.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your username"
@@ -106,7 +106,7 @@ export default function RegisterPage() {
                                         name={RegisterFormField.email.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{RegisterFormField.email.label}</FormLabel>
+                                                <FormLabel>{RegisterFormField.email.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your email"
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                                         name={RegisterFormField.password.name}
                                         render={({ field}) => (
                                             <FormItem className="space-y-1">
-                                                <FormLabel className="text-xl">{RegisterFormField.password.label}</FormLabel>
+                                                <FormLabel>{RegisterFormField.password.label}</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="Enter your password"

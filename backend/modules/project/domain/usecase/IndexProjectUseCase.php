@@ -16,9 +16,12 @@ class IndexProjectUseCase {
     }
 
 
-    public function execute(array $params, $strategy = 'index')
+    public function execute(array $params = [], $strategy = 'index')
     {
         switch($strategy) {
+            case 'list':
+                return $this->projectRepository->listProjects();
+                break;
             case 'dropdownTable':
                 return $this->dropdownTable($params);
                 break;

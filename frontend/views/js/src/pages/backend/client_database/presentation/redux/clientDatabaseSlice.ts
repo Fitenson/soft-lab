@@ -5,7 +5,7 @@ import ClientDatabaseViewModel from "@/pages/backend/client_database/presentatio
 
 interface ClientDatabaseState {
     clientDatabase: ClientDatabaseViewModel | null;
-    clientDatabases: ClientDatabaseViewModel[] | [];
+    clientDatabases: ClientDatabaseViewModel[];
 }
 
 const initialState: ClientDatabaseState = {
@@ -21,12 +21,19 @@ const clientDatabaseSlice = createSlice({
         listClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel[]>) => {
             state.clientDatabases = action.payload;
         },
+        addClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
+            state.clientDatabases.push(action.payload as ClientDatabaseViewModel);
+        },
+        removeClientDatabase: (state, action: PayloadAction<string>) => {
+            state.clientDatabases = state.clientDatabases.filter(
+                (client) => client.UUID !== action.payload
+            );
+        },
         setClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
             state.clientDatabase = action.payload as ClientDatabaseViewModel;
         },
         connectClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
-            const clientDatabaseViewModel = action.payload as ClientDatabaseViewModel;
-            state.clientDatabase = clientDatabaseViewModel;
+            state.clientDatabase = action.payload as ClientDatabaseViewModel;
         },
         logoutClientDatabase: (state) => {
             state.clientDatabase = null;
@@ -34,5 +41,12 @@ const clientDatabaseSlice = createSlice({
     }
 });
 
-export const { listClientDatabase, setClientDatabase, connectClientDatabase, logoutClientDatabase } = clientDatabaseSlice.actions;
+export const {
+    listClientDatabase,
+    addClientDatabase,
+    setClientDatabase,
+    connectClientDatabase,
+    logoutClientDatabase,
+    removeClientDatabase,
+} = clientDatabaseSlice.actions;
 export default clientDatabaseSlice.reducer;
