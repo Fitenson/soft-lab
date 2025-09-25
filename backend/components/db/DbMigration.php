@@ -92,10 +92,10 @@ class DbMigration extends Migration {
     protected function timestamps(): array
     {
         return [
-            'createdAt' => $this->string(30),
-            'updatedAt' => $this->string(30),
-            'createdBy' => $this->string(30),
-            'updatedBy' => $this->string(30),
+            'createdAt' => $this->string(40)->null(),
+            'updatedAt' => $this->string(30)->null(),
+            'createdBy' => $this->string(40)->null(),
+            'updatedBy' => $this->string(30)->null(),
         ];
     }
 
@@ -113,10 +113,10 @@ class DbMigration extends Migration {
     protected function historyFields(): array
     {
         return [
-            'historyUUID' => $this->char(50)->append('PRIMARY KEY')->unique(),
-            'user_id' => $this->char(50)->notNull(),
-            'action' => $this->string(50),
-            'date_created' => $this->string(100),
+            'historyUUID' => $this->char(40)->append('PRIMARY KEY')->unique(),
+            'user_id' => $this->char(40)->notNull(),
+            'action' => $this->string(40)->notNull(),
+            'date_created' => $this->string(100)->notNull(),
         ];
     }
 

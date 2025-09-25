@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ProjectDTO } from "@/pages/project_management/project/data/dto/ProjectDTO";
 import ProjectViewModel from "@/pages/project_management/project/presentation/view_models/ProjectViewModel";
 import type { Params } from "@/types";
+import { useEffect } from "react";
 
 
 type DatabaseDialogProps = {
@@ -39,7 +40,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
         filter: "{}"
     };
 
-    const { data } = useQuery({
+    const { data, refetch } = useQuery({
         queryKey: ["/universal/dropdown-table", params],
         queryFn: async () =>
             await dropdownTable<
@@ -52,6 +53,11 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
             ),
         enabled: false,
     });
+
+
+    useEffect(() => {
+        refetch();
+    }, [refetch]);
 
 
     const showToast = useShowToast();
@@ -232,7 +238,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                                         <FormLabel>{ClientDatabaseFormField.project.label}</FormLabel>
                                         <DropdownTable
                                             columns={projectDropdownColumns}
-                                            data={data?.project.rows ?? []}
+                                            data={data?.project?.rows ?? []}
                                             isLoading={isLoading}
                                             onSelect={() => {}}
                                             label={ClientDatabaseFormField.project.label}

@@ -26,7 +26,7 @@ createInertiaApp({
             <TooltipProvider>
                 <ThemeProvider defaultTheme='dark' storageKey='softlab-theme'>
                     <Provider store={store}>
-                        <PersistGate persistor={persistor} loading={<div>Loading...</div>} onBeforeLift={() => {
+                        <PersistGate persistor={persistor} loading={null} onBeforeLift={() => {
                             if(!store?.getState()?.auth?.auth) {
                                 router.visit("/login");
                             }

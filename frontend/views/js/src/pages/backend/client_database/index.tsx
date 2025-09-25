@@ -35,7 +35,11 @@ export default function ClientDatabaseIndex() {
     const { rows } = usePage<Props>().props;
 
     useEffect(() => {
-        dispatch(listClientDatabase(rows.map((clientDatabaseDTO) => new ClientDatabaseViewModel(clientDatabaseDTO))));
+        if(rows?.length === 0) {
+            return;
+        }
+
+        dispatch(listClientDatabase(rows?.map((clientDatabaseDTO) => new ClientDatabaseViewModel(clientDatabaseDTO))));
     }, [dispatch, rows])
 
 
@@ -66,7 +70,7 @@ export default function ClientDatabaseIndex() {
                 />
 
                 <div className="grid grid-cols-6 grid-rows-2 gap-4 w-full h-full border-2 border-accent dark:border-accent p-2 rounded-2xl">
-                    {clientDatabaseViewModels.map((clientDatabaseViewModel: ClientDatabaseViewModel) => (
+                    {clientDatabaseViewModels?.length > 0  && clientDatabaseViewModels?.map((clientDatabaseViewModel: ClientDatabaseViewModel) => (
                         <DatabaseCard clientDatabaseViewModel={clientDatabaseViewModel} />
                     ))}
                 </div>

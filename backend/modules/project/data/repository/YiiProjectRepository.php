@@ -51,6 +51,7 @@ class YiiProjectRepository extends BaseRepository implements ProjectRepository {
         $projectDTO = $projectEntity->asDTO();
         $Project = new Project();
         $Project->load($projectDTO->getAttributes(), '');
+        $Project->_actionUUID = $_actionUUID;
 
         if(!$Project->save(false)) {
             Yii::$app->exception->throw($Project->getErrors(), 500);
