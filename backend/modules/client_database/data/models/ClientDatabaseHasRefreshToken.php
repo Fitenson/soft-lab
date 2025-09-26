@@ -29,7 +29,7 @@ class ClientDatabaseHasRefreshToken extends \backend\components\db\AppModel
      */
     public static function tableName()
     {
-        return 'client_database_has_refresh_token';
+        return 'clientDatabaseHasRefreshToken';
     }
 
     /**

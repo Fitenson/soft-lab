@@ -12,7 +12,7 @@ class m250918_222605_create_client_database extends DbMigration
     {
         $tableOptions = $this->tableOptions;
 
-        $this->createTable('client_database', array_merge([
+        $this->createTable('clientDatabase', array_merge([
             'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'databaseName' => $this->string(50)->notNull()->unique(),
             'databaseSchema' => $this->string(50)->notNull()->unique(),
@@ -24,7 +24,7 @@ class m250918_222605_create_client_database extends DbMigration
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
-        $this->createTable('client_database_history', array_merge([
+        $this->createTable('clientDatabase_history', array_merge([
             'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'UUID' => $this->char(40)->notNull(),
             'databaseName' => $this->string(50)->notNull(),
@@ -38,7 +38,7 @@ class m250918_222605_create_client_database extends DbMigration
 
 
         $this->createForeignKey()
-        ->table('client_database')
+        ->table('clientDatabase')
         ->column('project')
         ->refTable('project')
         ->refColumn('UUID')
@@ -53,7 +53,7 @@ class m250918_222605_create_client_database extends DbMigration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%client_database}}');
-        $this->dropTable('{{%client_database_history}}');
+        $this->dropTable('{{%clientDatabase}}');
+        $this->dropTable('{{%clientDatabase_history}}');
     }
 }

@@ -33,7 +33,7 @@ class ClientDatabase extends \backend\components\db\AppModel
      */
     public static function tableName()
     {
-        return 'client_database';
+        return 'clientDatabase';
     }
 
     /**

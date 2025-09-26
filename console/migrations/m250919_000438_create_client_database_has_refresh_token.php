@@ -12,7 +12,7 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
     {
         $tableOptions = $this->tableOptions;
 
-        $this->createTable('client_database_has_refresh_token', array_merge([
+        $this->createTable('clientDatabaseHasRefreshToken', array_merge([
             'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'clientDatabase' => $this->char(40)->notNull(),
             'user' => $this->char(40)->notNull(),
@@ -21,7 +21,7 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
 
-        $this->createTable('client_database_has_refresh_token_history', array_merge([
+        $this->createTable('clientDatabaseHasRefreshToken_history', array_merge([
             'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'UUID' => $this->char(40)->notNull(),
             'clientDatabase' => $this->char(40)->notNull(),
@@ -32,15 +32,15 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
 
 
         $this->createForeignKey()
-        ->table('client_database_has_refresh_token')
+        ->table('clientDatabaseHasRefreshToken')
         ->column('clientDatabase')
-        ->refTable('client_database')
+        ->refTable('clientDatabase')
         ->refColumn('UUID')
         ->onDeleteCascade()
         ->build();
 
         $this->createForeignKey()
-        ->table('client_database_has_refresh_token')
+        ->table('clientDatabaseHasRefreshToken')
         ->column('user')
         ->refTable('user')
         ->refColumn('UUID')
@@ -53,8 +53,8 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
      */
     public function safeDown()
     {
-        $this->dropTable('{{%client_database_has_refresh_token}}');
-        $this->dropTable('{{%client_database_has_refresh_token_history}}');
+        $this->dropTable('{{%clientDatabaseHasRefreshToken}}');
+        $this->dropTable('{{%clientDatabaseHasRefreshToken_history}}');
     }
 
     /*

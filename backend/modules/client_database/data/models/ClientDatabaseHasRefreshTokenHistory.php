@@ -33,7 +33,7 @@ class ClientDatabaseHasRefreshTokenHistory extends \backend\components\db\AppMod
      */
     public static function tableName()
     {
-        return 'client_database_has_refresh_token_history';
+        return 'clientDatabaseHasRefreshToken_history';
     }
 
     /**

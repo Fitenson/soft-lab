@@ -115,8 +115,8 @@ class DbMigration extends Migration {
         return [
             'historyUUID' => $this->char(40)->append('PRIMARY KEY')->unique(),
             'user_id' => $this->char(40)->notNull(),
-            'action' => $this->string(40)->notNull(),
-            'date_created' => $this->string(100)->notNull(),
+            'action' => $this->string(30)->notNull(),
+            'date_created' => $this->string(30)->notNull(),
         ];
     }
 
