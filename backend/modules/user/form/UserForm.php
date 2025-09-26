@@ -45,9 +45,10 @@ class UserForm extends Form {
                 }
             ],
             [['valid'], 'integer'],
-            [['gender', 'title', 'role'], 'string', 'max' => 50],
-            [['username', 'phoneNo', 'email'], 'string', 'max' => 100],
+            [['gender', 'role', 'phoneNo'], 'string', 'max' => 50],
+            [['username', 'email'], 'string', 'max' => 100],
             [['fullName'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 30],
             [['description', 'address'], 'string', 'max' => 500],
         ];
     }
