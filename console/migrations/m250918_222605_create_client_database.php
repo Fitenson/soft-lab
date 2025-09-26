@@ -36,6 +36,21 @@ class m250918_222605_create_client_database extends DbMigration
             'project' => $this->char(40)->notNull(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
+        $this->createForeignKey()
+        ->table('clientDatabase')
+        ->column('createdBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
+
+        $this->createForeignKey()
+        ->table('clientDatabase')
+        ->column('updatedBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
 
         $this->createForeignKey()
         ->table('clientDatabase')

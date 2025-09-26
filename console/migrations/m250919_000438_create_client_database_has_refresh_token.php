@@ -30,6 +30,21 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
             'expiresAt' => $this->string(30)->notNull(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
+        $this->createForeignKey()
+        ->table('clientDatabaseHasRefreshToken')
+        ->column('createdBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
+
+        $this->createForeignKey()
+        ->table('clientDatabaseHasRefreshToken')
+        ->column('updatedBy')
+        ->refTable('user')
+        ->refColumn('UUID')
+        ->onDeleteNull()
+        ->build();
 
         $this->createForeignKey()
         ->table('clientDatabaseHasRefreshToken')
