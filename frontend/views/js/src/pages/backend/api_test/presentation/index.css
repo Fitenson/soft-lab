@@ -1,0 +1,39 @@
+/* Shrink tree text and spacing */
+.rct-tree-root {
+    font-size: 0.875rem; /* Tailwind text-sm */
+}
+
+/* General node style */
+.rct-tree-item-title {
+    padding: 2px 4px;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    border-radius: 0.375rem; /* rounded-md */
+}
+
+/* Hover effect */
+.rct-tree-item-title:hover {
+    background-color: var(--muted);
+}
+
+/* Folder nodes (isFolder=true) */
+.rct-tree-item[aria-expanded="true"] > .rct-tree-item-title {
+    font-weight: 600;
+    color: var(--primary);
+}
+.rct-tree-item[aria-expanded="false"] > .rct-tree-item-title {
+    font-weight: 500;
+}
+
+/* Arrow size */
+.rct-tree-item-arrow {
+    width: 0.75rem;
+    height: 0.75rem;
+    color: var(--muted-foreground);
+}
+
+/* Depth-based indentation */
+.rct-tree-item[data-rct-item-depth="1"] { margin-left: 0.5rem; }  /* ~ml-2 */
+.rct-tree-item[data-rct-item-depth="2"] { margin-left: 1rem; }    /* ~ml-4 */
+.rct-tree-item[data-rct-item-depth="3"] { margin-left: 1.5rem; }  /* ~ml-6 */
+.rct-tree-item[data-rct-item-depth="4"] { margin-left: 2rem; }    /* ~ml-8 */

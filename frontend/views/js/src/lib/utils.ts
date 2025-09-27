@@ -45,3 +45,37 @@ export function buildFormData<T extends object>(
 
     return formData;
 };
+
+
+export function buildTreeItems(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nodes: any[],
+    // parentUUID: string | null = null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    items: Record<string, any> = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Record<string, any> {
+    for (const node of nodes) {
+        const UUID = node.UUID;
+
+        let childrenUUIDs: string[] = [];
+        if (node.isFolder && node.apiTests) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            childrenUUIDs = node.apiTests.map((child: any) => child.UUID);
+
+            // Recurse into children
+            buildTreeItems(node.apiTests, items);
+        }
+
+        items[UUID] = {
+            index: UUID,
+            canMove: false,
+            children: childrenUUIDs,
+            data: `${node.testName} - ${node.useCase}`,
+            isFolder: node.isFolder,
+        };
+    }
+
+
+    return items;
+}

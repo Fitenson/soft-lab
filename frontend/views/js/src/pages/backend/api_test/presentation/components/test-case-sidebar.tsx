@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button.tsx";
 import { FaPlus } from "react-icons/fa";
 // import type { DataTableType } from "@/types";
 // import type ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
-// import { UncontrolledTreeEnvironment, Tree, StaticTreeDataProvider } from "react-complex-tree";
-
+import "@/pages/backend/api_test/presentation/index.css";
+import type { TreeNode } from "./tree-view";
+import TreeView from "./tree-view";
 
 // type TestCaseSidebarProps = {
 //     data: DataTableType<ApiTestViewModel>;
@@ -12,23 +13,59 @@ import { FaPlus } from "react-icons/fa";
 
 
 export default function TestCaseSidebar() {
-    // const dataProvider = new StaticTreeDataProvider()
-
-    const mockTree = [
+    const mockTree: TreeNode[] = [
         {
             UUID: "1",
-            testName: "Auth",
-            children: [
-                { id: 2, name: "Login" },
-                { id: 3, name: "Register" },
+            testName: "Authentication",
+            useCase: "Login",
+            isFolder: true,
+            apiTests: [
+                { 
+                    UUID: "2",
+                    testName: "Login",
+                    useCase: "Login As Admin",
+                    isFolder: true,
+                    apiTests: [
+                        { 
+                            UUID: "3",
+                            testName: "Login",
+                            useCase: "Failed to login As Admin",
+                            isFolder: false,
+                        },
+                        { 
+                            UUID: "4",
+                            testName: "Login",
+                            useCase: "Login As Admin success",
+                            isFolder: false,
+                        },
+                    ]
+                },
+                { 
+                    UUID: "5",
+                    testName: "Login",
+                    useCase: "Login As Normal User",
+                    isFolder: false,
+                },
             ],
         },
         {
-            UUID: "4",
-            name: "Payments",
-            children: [
-                { id: 5, name: "Checkout" },
-                { id: 6, name: "Refunds" },
+            UUID: "6",
+            testName: "User",
+            useCase: "Index",
+            isFolder: true,
+            apiTests: [
+                { 
+                    UUID: "7",
+                    testName: "Check normal Index",
+                    useCase: "Login As Admin",
+                    isFolder: false,
+                },
+                { 
+                    UUID: "8",
+                    testName: "Check filter Index",
+                    useCase: "Login As Normal User",
+                    isFolder: false,
+                },
             ],
         },
     ];
@@ -48,6 +85,10 @@ export default function TestCaseSidebar() {
                     <FaPlus size={16} />
                 </Button>
             </div>
+
+            {mockTree.map((node) => (
+                <TreeView key={node.UUID} node={node} />
+            ))}
         </div>
     );
 }
