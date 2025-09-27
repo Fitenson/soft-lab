@@ -17,6 +17,7 @@ use backend\modules\user\data\models\User;
  * @property string $project
  * @property string $testName
  * @property int $seq
+ * @property int $isFolder
  * @property string|null $description
  * @property string|null $moreDescription
  * @property string|null $data
@@ -49,7 +50,7 @@ class ApiTest extends \backend\components\db\AppModel
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['UUID', 'clientDatabase', 'project', 'testName', 'seq'], 'required'],
-            [['seq', 'valid', '_version'], 'integer'],
+            [['seq', 'isFolder', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
             [['testName'], 'string', 'max' => 50],
@@ -77,6 +78,7 @@ class ApiTest extends \backend\components\db\AppModel
             'project' => 'Project',
             'testName' => 'Test Name',
             'seq' => 'Seq',
+            'isFolder' => 'Is Folder',
             'description' => 'Description',
             'moreDescription' => 'More Description',
             'data' => 'Data',

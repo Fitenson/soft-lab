@@ -15,6 +15,7 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  * @property string $project
  * @property string $testName
  * @property int $seq
+ * @property int $isFolder
  * @property string|null $description
  * @property string|null $moreDescription
  * @property string|null $data
@@ -50,7 +51,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'seq', 'user_id', 'action', 'date_created'], 'required'],
-            [['seq', 'valid', '_version'], 'integer'],
+            [['seq', 'isFolder', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['historyUUID', 'UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
             [['testName'], 'string', 'max' => 50],
@@ -74,6 +75,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
             'project' => 'Project',
             'testName' => 'Test Name',
             'seq' => 'Seq',
+            'isFolder' => 'Is Folder',
             'description' => 'Description',
             'moreDescription' => 'More Description',
             'data' => 'Data',

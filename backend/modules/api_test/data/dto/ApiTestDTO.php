@@ -14,6 +14,7 @@ class ApiTestDTO extends Model implements JsonSerializable {
     public ?string $testName;
     public ?string $useCase;
     public ?int $seq;
+    public ?int $isFolder;
     public ?string $description;
     public ?string $moreDescription;
     public ?string $data;
@@ -27,7 +28,7 @@ class ApiTestDTO extends Model implements JsonSerializable {
         return [[
             ['UUID', 'parentApiTest', 'project', 'clientDatabase', 'testName',
             'useCase', 'description', 'moreDescription', 'data', 'transmission',
-            'scenario', 'output', 'seq'
+            'scenario', 'output', 'seq', 'isFolder'
             ],'safe'
         ]];
     }

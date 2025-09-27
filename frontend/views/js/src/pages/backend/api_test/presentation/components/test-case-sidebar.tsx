@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa";
 // import type { DataTableType } from "@/types";
 // import type ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 import "@/pages/backend/api_test/presentation/index.css";
-import type { TreeNode } from "./tree-view";
+import type { TreeNode } from "@/pages/backend/api_test/presentation/redux/tree-view-slice.ts";
 import TreeView from "./tree-view";
 
 // type TestCaseSidebarProps = {
@@ -16,54 +16,46 @@ export default function TestCaseSidebar() {
     const mockTree: TreeNode[] = [
         {
             UUID: "1",
-            testName: "Authentication",
-            useCase: "Login",
+            title: "Authentication",
             isFolder: true,
             apiTests: [
                 { 
                     UUID: "2",
-                    testName: "Login",
-                    useCase: "Login As Admin",
+                    title: "Login",
                     isFolder: true,
                     apiTests: [
                         { 
                             UUID: "3",
-                            testName: "Login",
-                            useCase: "Failed to login As Admin",
+                            title: "Login As Admin",
                             isFolder: false,
                         },
                         { 
                             UUID: "4",
-                            testName: "Login",
-                            useCase: "Login As Admin success",
+                            title: "Login As Normal User",
                             isFolder: false,
                         },
                     ]
                 },
                 { 
                     UUID: "5",
-                    testName: "Login",
-                    useCase: "Login As Normal User",
+                    title: "Login",
                     isFolder: false,
                 },
             ],
         },
         {
             UUID: "6",
-            testName: "User",
-            useCase: "Index",
+            title: "User",
             isFolder: true,
             apiTests: [
                 { 
                     UUID: "7",
-                    testName: "Check normal Index",
-                    useCase: "Login As Admin",
+                    title: "Check normal Index",
                     isFolder: false,
                 },
                 { 
                     UUID: "8",
-                    testName: "Check filter Index",
-                    useCase: "Login As Normal User",
+                    title: "Check filter Index",
                     isFolder: false,
                 },
             ],

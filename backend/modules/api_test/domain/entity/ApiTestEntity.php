@@ -15,6 +15,7 @@ class ApiTestEntity extends Entity {
     private string $project;
     private string $testName;
     private int $seq;
+    private int $isFolder;
     private ?string $description;
     private ?string $moreDescription;
     private ?string $data;
@@ -116,6 +117,16 @@ class ApiTestEntity extends Entity {
     public function getOutput(): ?string
     {
         return $this->output;
+    }
+
+    public function setIsFolder(int $isFolder): void
+    {
+        $this->isFolder = $isFolder;
+    }
+
+    public function getIsFolder(): ?string
+    {
+        return $this->isFolder;
     }
 
     public function setTransmission(?string $transmission = null): void

@@ -7,6 +7,7 @@ export interface ApiTestDTO {
     clientDatabase: string;
     project: string;
     testName: string;
+    isFolder: boolean;
     transmission: string;
     description: string;
     moreDescription: string;
@@ -24,6 +25,7 @@ const apiTestDTOKeys: (keyof ApiTestDTO)[] = [
     "testName",
     "transmission",
     "description",
+    "isFolder",
     "moreDescription",
     "data",
     "output",
