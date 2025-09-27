@@ -15,6 +15,7 @@ class ApiTestEntity extends Entity {
     private string $project;
     private string $testName;
     private string $useCase;
+    private int $seq;
     private ?string $description;
     private ?string $moreDescription;
     private ?string $data;
@@ -146,5 +147,15 @@ class ApiTestEntity extends Entity {
     public function getScenario(): ?string
     {
         return $this->scenario;
+    }
+
+    public function setSeq(int $seq): void
+    {
+        $this->seq = $seq;
+    }
+
+    public function getSeq(): int
+    {
+        return $this->seq;
     }
 }

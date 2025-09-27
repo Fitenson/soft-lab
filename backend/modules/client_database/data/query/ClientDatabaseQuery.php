@@ -44,7 +44,7 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
             'port',
             'username',
             'project',
-            'projectName' => Project::find()->select(['projectName'])->where('project.UUID = client_database.project'),
+            'projectName' => Project::find()->select(['projectName'])->where('project.UUID = clientDatabase.project'),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
+use backend\modules\api_test\data\query\ApiTestHistoryQuery;
 
 /**
  * This is the model class for table "apiTest_history".
@@ -14,6 +15,7 @@ use Yii;
  * @property string $project
  * @property string $testName
  * @property string $useCase
+ * @property int $seq
  * @property string|null $description
  * @property string|null $moreDescription
  * @property string|null $data
@@ -49,10 +51,10 @@ class ApiTestHistory extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['parentApiTest', 'description', 'moreDescription', 'data', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'user_id', 'action', 'date_created'], 'required'],
+            [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'seq', 'user_id', 'action', 'date_created'], 'required'],
+            [['seq', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
-            [['valid', '_version'], 'integer'],
             [['historyUUID', 'UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
             [['testName', 'useCase'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -75,6 +77,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
             'project' => 'Project',
             'testName' => 'Test Name',
             'useCase' => 'Use Case',
+            'seq' => 'Seq',
             'description' => 'Description',
             'moreDescription' => 'More Description',
             'data' => 'Data',
@@ -94,13 +97,9 @@ class ApiTestHistory extends \backend\components\db\AppModel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     * @return \backend\modules\api_test\data\query\ApiTestHistoryQuery the active query used by this AR class.
-     */
+
     public static function find()
     {
-        return new \backend\modules\api_test\data\query\ApiTestHistoryQuery(get_called_class());
+        return new ApiTestHistoryQuery(get_called_class());
     }
-
 }

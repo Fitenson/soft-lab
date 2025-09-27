@@ -1,5 +1,5 @@
-import {buildFormData} from "@/lib/utils.ts";
-import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
+import { buildFormData } from "@/lib/utils.ts";
+
 
 export interface ApiTestDTO {
     UUID: string;

@@ -168,10 +168,10 @@ class YiiProjectRepository extends BaseRepository implements ProjectRepository {
             'project.description',
         ])->joinWith(['clientDatabases' => function($a) {
             $a->select([
-                'client_database.UUID',
-                'client_database.project',
-                'client_database.databaseName',
-                'client_database.databaseSchema',
+                'clientDatabase.UUID',
+                'clientDatabase.project',
+                'clientDatabase.databaseName',
+                'clientDatabase.databaseSchema',
             ]);
         }])
         ->asArray()

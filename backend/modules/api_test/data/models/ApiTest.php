@@ -3,7 +3,7 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
-
+use backend\modules\api_test\data\query\ApiTestQuery;
 use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\project\data\models\Project;
 use backend\modules\user\data\models\User;
@@ -17,6 +17,7 @@ use backend\modules\user\data\models\User;
  * @property string $project
  * @property string $testName
  * @property string $useCase
+ * @property int $seq
  * @property string|null $description
  * @property string|null $moreDescription
  * @property string|null $data
@@ -49,10 +50,10 @@ class ApiTest extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['parentApiTest', 'description', 'moreDescription', 'data', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'clientDatabase', 'project', 'testName', 'useCase'], 'required'],
+            [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'seq'], 'required'],
+            [['seq', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
-            [['valid', '_version'], 'integer'],
             [['UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
             [['testName', 'useCase'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -61,7 +62,7 @@ class ApiTest extends \backend\components\db\AppModel
             [['UUID'], 'unique'],
             [['clientDatabase'], 'exist', 'skipOnError' => true, 'targetClass' => ClientDatabase::class, 'targetAttribute' => ['clientDatabase' => 'UUID']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
-            [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => ApiTest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
+            [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => Apitest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
             [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updatedBy' => 'UUID']],
         ];
@@ -79,6 +80,7 @@ class ApiTest extends \backend\components\db\AppModel
             'project' => 'Project',
             'testName' => 'Test Name',
             'useCase' => 'Use Case',
+            'seq' => 'Seq',
             'description' => 'Description',
             'moreDescription' => 'More Description',
             'data' => 'Data',
@@ -95,13 +97,9 @@ class ApiTest extends \backend\components\db\AppModel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     * @return \backend\modules\api_test\data\query\ApiTestQuery the active query used by this AR class.
-     */
+
     public static function find()
     {
-        return new \backend\modules\api_test\data\query\ApiTestQuery(get_called_class());
+        return new ApiTestQuery(get_called_class());
     }
-
 }

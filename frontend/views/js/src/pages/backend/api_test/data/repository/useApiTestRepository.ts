@@ -3,7 +3,6 @@ import type {ProjectListDTO} from "@/pages/backend/api_test/data/dto/ProjectList
 import type {DataTableType} from "@/types";
 import {type ApiTestDTO, apiTestFormData} from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
-import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
 
 
 const useApiTestRepository = () => {
