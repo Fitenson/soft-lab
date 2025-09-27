@@ -7,7 +7,6 @@ export default class ApiTestViewModel {
     private _clientDatabase: string;
     private _project: string;
     private _testName: string;
-    private _useCase: string;
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
@@ -22,7 +21,6 @@ export default class ApiTestViewModel {
         this._clientDatabase = data.clientDatabase ?? "";
         this._project = data.project ?? "";
         this._testName = data.testName ?? "";
-        this._useCase = data.useCase ?? "";
         this._transmission = data.transmission ?? "";
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
@@ -50,10 +48,6 @@ export default class ApiTestViewModel {
 
     get testName(): string {
         return this._testName;
-    }
-
-    get useCase(): string {
-        return this._useCase;
     }
 
     get transmission(): string {

@@ -9,7 +9,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     private _clientDatabase: string;
     private _project: string;
     private _testName: string;
-    private _useCase: string;
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
@@ -25,7 +24,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._clientDatabase = model.clientDatabase ?? "";
         this._project = model.project ?? "";
         this._testName = model.testName ?? "";
-        this._useCase = model.useCase ?? "";
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";
@@ -78,14 +76,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
 
     set testName(value: string) {
         this._testName = value;
-    }
-
-    get useCase(): string {
-        return this._useCase;
-    }
-
-    set useCase(value: string) {
-        this._useCase = value;
     }
 
     get transmission(): string {

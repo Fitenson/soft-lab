@@ -14,7 +14,6 @@ class ApiTestForm extends Form {
     public ?string $clientDatabase = null;
     public ?string $project = null;
     public ?string $testName = null;
-    public ?string $useCase = null;
     public ?int $seq = 0;
     public ?string $description = null;
     public ?string $moreDescription = null;
@@ -28,7 +27,7 @@ class ApiTestForm extends Form {
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'transmission', 'scenario'], 'default', 'value' => null],
-            [['UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'seq'], 'required'],
+            [['UUID', 'clientDatabase', 'project', 'testName', 'seq'], 'required'],
             [['data', 'output', 'scenario'], 'string'],
             [['parentApiTest', 'clientDatabase', 'project'], 'string', 'max' => 40],
             [['testName', 'useCase'], 'string', 'max' => 50],

@@ -16,7 +16,6 @@ use backend\modules\user\data\models\User;
  * @property string $clientDatabase
  * @property string $project
  * @property string $testName
- * @property string $useCase
  * @property int $seq
  * @property string|null $description
  * @property string|null $moreDescription
@@ -34,8 +33,6 @@ use backend\modules\user\data\models\User;
  */
 class ApiTest extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -51,11 +48,11 @@ class ApiTest extends \backend\components\db\AppModel
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'seq'], 'required'],
+            [['UUID', 'clientDatabase', 'project', 'testName', 'seq'], 'required'],
             [['seq', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
-            [['testName', 'useCase'], 'string', 'max' => 50],
+            [['testName'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['moreDescription'], 'string', 'max' => 500],
             [['transmission', 'updatedAt', 'updatedBy'], 'string', 'max' => 30],
@@ -79,7 +76,6 @@ class ApiTest extends \backend\components\db\AppModel
             'clientDatabase' => 'Client Database',
             'project' => 'Project',
             'testName' => 'Test Name',
-            'useCase' => 'Use Case',
             'seq' => 'Seq',
             'description' => 'Description',
             'moreDescription' => 'More Description',

@@ -14,7 +14,6 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  * @property string $clientDatabase
  * @property string $project
  * @property string $testName
- * @property string $useCase
  * @property int $seq
  * @property string|null $description
  * @property string|null $moreDescription
@@ -35,8 +34,6 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  */
 class ApiTestHistory extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -52,11 +49,11 @@ class ApiTestHistory extends \backend\components\db\AppModel
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'useCase', 'seq', 'user_id', 'action', 'date_created'], 'required'],
+            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'seq', 'user_id', 'action', 'date_created'], 'required'],
             [['seq', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['historyUUID', 'UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
-            [['testName', 'useCase'], 'string', 'max' => 50],
+            [['testName'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['moreDescription'], 'string', 'max' => 500],
             [['transmission', 'updatedAt', 'updatedBy', 'action', 'date_created'], 'string', 'max' => 30],
@@ -76,7 +73,6 @@ class ApiTestHistory extends \backend\components\db\AppModel
             'clientDatabase' => 'Client Database',
             'project' => 'Project',
             'testName' => 'Test Name',
-            'useCase' => 'Use Case',
             'seq' => 'Seq',
             'description' => 'Description',
             'moreDescription' => 'More Description',

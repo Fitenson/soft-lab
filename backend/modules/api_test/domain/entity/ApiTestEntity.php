@@ -14,7 +14,6 @@ class ApiTestEntity extends Entity {
     private string $clientDatabase;
     private string $project;
     private string $testName;
-    private string $useCase;
     private int $seq;
     private ?string $description;
     private ?string $moreDescription;
@@ -77,16 +76,6 @@ class ApiTestEntity extends Entity {
     public function getTestName(): string
     {
         return $this->testName;
-    }
-
-    public function setUseCase(string $useCase): void
-    {
-        $this->useCase = $useCase;
-    }
-
-    public function getUseCase(): string
-    {
-        return $this->useCase;
     }
 
     public function setDescription(?string $description = null): void
