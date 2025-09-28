@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import {FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
 import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm.ts";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
@@ -8,8 +7,8 @@ import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
 
 export default function DocumentationTab() {
     const isLoading = useAppSelector(state => state.loading.global);
-
-    const { form } = useApiTestForm();
+    const selectedApiTestViewModel = useAppSelector(state => state.apiTest.selectedApiTest);
+    const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
 
 
     return (

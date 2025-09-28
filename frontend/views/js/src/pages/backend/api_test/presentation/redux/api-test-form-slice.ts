@@ -40,6 +40,9 @@ export const apiTestFormSlice = createSlice({
                 state.expandedApiTests.push(UUID);
             }
         },
+        addApiTest: (state, action: PayloadAction<ApiTestViewModel>) => {
+            state.dataTableApiTest.rows.push(action.payload);
+        },
         clearSelectedNode: (state) => {
             state.selectedApiTest = null;
         }
@@ -50,8 +53,9 @@ export const apiTestFormSlice = createSlice({
 export const {
     loadApiTests,
     toggleSelectedApiTest,
+    toggleExpandedApiTests,
+    addApiTest,
     clearSelectedNode,
-    toggleExpandedApiTests
 } = apiTestFormSlice.actions;
 
 export default apiTestFormSlice.reducer;

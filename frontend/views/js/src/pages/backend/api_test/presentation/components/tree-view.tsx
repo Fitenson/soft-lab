@@ -3,21 +3,22 @@ import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
     toggleExpandedApiTests,
     toggleSelectedApiTest,
-    type TreeNode
 } from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
+import type ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 
-export default function TreeView({ node, level = 0 }: { node: TreeNode, level?: number}) {
+export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, level?: number}) {
     const dispatch = useDispatch();
     const indent = level * 8;
-    const { selectedNode, expandedNodes } = useAppSelector((state) => state.treeView);
+    const { selectedApiTest, expandedApiTests } = useAppSelector((state) => state.apiTest);
 
-    const isExpanded = expandedNodes.includes(node.UUID);
-    const isSelected = selectedNode?.UUID === node.UUID;
+    const isExpanded = expandedApiTests.includes(node.UUID);
+    const isSelected = selectedApiTest?.UUID === node.UUID;
 
-    const handleToggleSelect = (node: TreeNode) => {
+    const handleToggleSelect = (node: ApiTestViewModel) => {
         dispatch(toggleSelectedApiTest(node));
     };
 
@@ -29,21 +30,29 @@ export default function TreeView({ node, level = 0 }: { node: TreeNode, level?: 
     if (node.isFolder) {
         return (
             <div>
-                <Button
-                    variant="ghost"
-                    onClick={() => {
-                        handleToggleExpand(node.UUID);
-                        handleToggleSelect(node);
-                    }}
-                    className={`w-full flex items-center justify-start gap-1 ${isSelected ? "bg-accent" : ""}`}
-                    style={{ paddingLeft: `${indent}px` }}
-                >
-                    <ChevronRight
-                        className={`h-4 w-4 transform transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`}
-                    />
-                    <Folder size={16} />
-                    <span className="text-sm">{node.title}</span>
-                </Button>
+                <ContextMenu>
+                    <ContextMenuTrigger>
+                        <Button
+                            variant="ghost"
+                            onClick={() => {
+                                handleToggleExpand(node.UUID);
+                                handleToggleSelect(node);
+                            }}
+                            className={`w-full flex items-center justify-start gap-1 ${isSelected ? "bg-accent" : ""}`}
+                            style={{ paddingLeft: `${indent}px` }}
+                        >
+                            <ChevronRight
+                                className={`h-4 w-4 transform transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`}
+                            />
+                            <Folder size={16} />
+                            <span className="text-sm">{node.testName}</span>
+                        </Button>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                        <ContextMenuItem>Rename</ContextMenuItem>
+                        <ContextMenuItem>Remove</ContextMenuItem>                        
+                    </ContextMenuContent>
+                </ContextMenu>
                 {isExpanded && node.apiTests?.map((child) => (
                     <TreeView key={child.UUID} node={child} level={level + 1} />
                 ))}
@@ -51,16 +60,25 @@ export default function TreeView({ node, level = 0 }: { node: TreeNode, level?: 
         );
     }
 
+
     return (
-        <div className="flex items-center gap-1" style={{ paddingLeft: `${indent + 8}px` }}>
-            <FileText size={16} />
-            <Button
-                variant="ghost"
-                onClick={() => handleToggleSelect(node)}
-                className={`w-full flex items-center justify-start gap-1 ${isSelected ? "bg-accent" : ""}`}
-            >
-                {node.title}
-            </Button>
+        <div className="flex items-center gap-1 w-full" style={{ paddingLeft: `${indent + 8}px` }}>
+            <ContextMenu>
+                <ContextMenuTrigger className="w-full">
+                    <Button
+                        variant="ghost"
+                        onClick={() => handleToggleSelect(node)}
+                        className={`w-full flex items-center justify-start gap-1 ${isSelected ? "bg-accent" : ""}`}
+                    >
+                        <FileText size={16} />
+                        {node.testName}
+                    </Button>
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                    <ContextMenuItem className="cursor-pointer">Rename</ContextMenuItem>
+                    <ContextMenuItem className="cursor-pointer">Remove</ContextMenuItem>
+                </ContextMenuContent>
+            </ContextMenu>
         </div>
     );
 }

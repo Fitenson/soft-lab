@@ -1,20 +1,13 @@
-import { useState } from "react";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form/SetFormError";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
-import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import { type ApiTestFormModel, apiTestSchema } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 
 
-const useApiTestForm = ({ apiTestDTO}: { apiTestDTO?: ApiTestDTO }) => {
-    const [apiTestViewModel, setApiTestViewModel] = useState<ApiTestViewModel | undefined>(
-        () => (apiTestDTO ? new ApiTestViewModel(apiTestDTO) : undefined)
-    );
-
-
+const useApiTestForm = ({ apiTestViewModel }: { apiTestViewModel: ApiTestViewModel | null }) => {
     const form = useForm<ApiTestFormModel>({
         resolver: zodResolver(apiTestSchema),
         defaultValues: {
@@ -28,7 +21,7 @@ const useApiTestForm = ({ apiTestDTO}: { apiTestDTO?: ApiTestDTO }) => {
             moreDescription: apiTestViewModel?.moreDescription ?? "",
             data: apiTestViewModel?.data ?? "",
             output: apiTestViewModel?.output ?? "",
-            scenario: apiTestViewModel?.scenario ?? ""
+            scenario: apiTestViewModel?.scenario ?? "",
         }
     });
 
@@ -61,8 +54,6 @@ const useApiTestForm = ({ apiTestDTO}: { apiTestDTO?: ApiTestDTO }) => {
     return {
         form,
         setFormError,
-        apiTestViewModel,
-        setApiTestViewModel,
     };
 }
 

@@ -1,36 +1,42 @@
-// import { Fragment } from "react";
 import { Input } from "@/components/ui/input.tsx";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form.tsx";
 import { Tabs, TabsContent, TabsTrigger ,TabsList } from "@/components/ui/tabs.tsx";
 
 import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm.ts";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
-import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import DocumentationTab from "@/pages/backend/api_test/presentation/components/documentation-tab.tsx";
 import DataTab from "@/pages/backend/api_test/presentation/components/data-tab.tsx";
 import ScenarioTab from "@/pages/backend/api_test/presentation/components/scenario-tab.tsx";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector";
+import { Button } from "@/components/ui/button";
 
 
-export default function TestCaseForm({ apiTestDTO }: { apiTestDTO?: ApiTestDTO}) {
-    const { form } = useApiTestForm({ apiTestDTO: apiTestDTO });
+export default function TestCaseForm() {
+    const selectedApiTestViewModel = useAppSelector(state => state.apiTest.selectedApiTest);
+    const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
+
 
     return (
         <div className="h-full w-full">
             <Form {...form}>
                 <form>
-                    <FormField
-                        name={ApiTestFormField.testName.name}
-                        render={({ field}) => (
-                            <FormItem className="m-2">
-                                <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                    />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
+                    <div className="flex items-end gap-2 m-2">
+                        <FormField
+                            name={ApiTestFormField.testName.name}
+                            render={({ field}) => (
+                                <FormItem className="flex-1">
+                                    <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+                        <Button className="p-2 px-6">Save</Button>
+                    </div>
 
                     <Tabs className="w-full m-2" defaultValue={"documentation"}>
                         <TabsList className="w-full flex justify-start">
