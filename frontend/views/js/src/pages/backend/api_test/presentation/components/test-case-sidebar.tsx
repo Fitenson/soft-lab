@@ -4,12 +4,14 @@ import TreeView from "./tree-view";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDispatch } from "react-redux";
-import { addApiTest, toggleSelectedApiTest } from "@/pages/backend/api_test/presentation/redux/api-test-form-slice";
+import { addApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
+import { toggleSelectedApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
+import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 
 
 export default function TestCaseSidebar() {
-    const apiTests = useAppSelector(state => state.apiTest.dataTableApiTest);
+    const apiTests = useAppSelector(selectApiTests);
     const dispatch = useDispatch();
 
 

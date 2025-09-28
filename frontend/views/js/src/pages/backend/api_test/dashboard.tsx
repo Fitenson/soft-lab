@@ -8,7 +8,7 @@ import {useQuery} from "@tanstack/react-query";
 import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService.ts";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
+import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
 
 
 export default function Dashboard() {
@@ -34,12 +34,12 @@ export default function Dashboard() {
             <Head title={"API Test"} />
 
             <ApiTestLayout>
-                <div className="w-64 border-r flex-shrink-0">
+                <div className="w-64 border-none flex-shrink-0 mx-2">
                     <TestCaseSidebar/>
                 </div>
 
                 <div className="flex-1 flex flex-coloverflow-auto w-full">
-                    <div className="flex flex-1 space-x-4">
+                    <div className="flex flex-1 space-x-2">
                         <div className="flex-1 border rounded">
                             <TestCaseForm/>
                         </div>

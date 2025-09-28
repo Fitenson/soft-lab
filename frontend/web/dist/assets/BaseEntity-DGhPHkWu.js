@@ -1,1 +1,0 @@
-class s{model;constructor(t){this.model=t}breadCrumb="";breadCrumbItem(){try{const t=this.breadCrumb,e=this[t];return encodeURIComponent(JSON.stringify(e))}catch{return""}}static asEntity(t,e){return new e(t)}asDto(){return this.model}clone(){return Object.assign(Object.create(Object.getPrototypeOf(this)),this)}}export{s as B};

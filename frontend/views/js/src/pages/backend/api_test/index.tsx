@@ -33,7 +33,7 @@ export default function ApiTestIndex() {
         <AppLayout breadcrumbs={breadcrumbItems}>
             <Head title="API Test Case" />
             <ApiTestLayout>
-                <div className="w-full h-full grid grid-cols-6 grid-rows-3">
+                <div className="w-full h-full grid grid-cols-6 grid-rows-3 mx-2">
                     {data?.rows?.map((projectViewModel: ProjectListViewModel) => (
                         <ProjectCard projectViewModel={projectViewModel} />
                     ))}

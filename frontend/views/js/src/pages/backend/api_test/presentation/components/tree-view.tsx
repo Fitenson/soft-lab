@@ -1,19 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
+    setRenameApiTest,
     toggleExpandedApiTests,
-    toggleSelectedApiTest,
-} from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
+    toggleSelectedApiTest, triggerMenuAction,
+} from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 import type ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import {
+    selectExpandedApiTests, selectMenuAction,
+    selectSelectedApiTest
+} from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
+import {Input} from "@/components/ui/input.tsx";
+import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
 
 
 export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, level?: number}) {
     const dispatch = useDispatch();
     const indent = level * 8;
-    const { selectedApiTest, expandedApiTests } = useAppSelector((state) => state.apiTest);
+    const selectedApiTest = useAppSelector(selectSelectedApiTest);
+    const expandedApiTests = useAppSelector(selectExpandedApiTests);
+    const menuAction = useAppSelector(selectMenuAction);
 
     const isExpanded = expandedApiTests.includes(node.UUID);
     const isSelected = selectedApiTest?.UUID === node.UUID;
@@ -65,18 +74,45 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
         <div className="flex items-center gap-1 w-full" style={{ paddingLeft: `${indent + 8}px` }}>
             <ContextMenu>
                 <ContextMenuTrigger className="w-full">
-                    <Button
-                        variant="ghost"
-                        onClick={() => handleToggleSelect(node)}
-                        className={`w-full flex items-center justify-start gap-1 ${isSelected ? "bg-accent" : ""}`}
-                    >
-                        <FileText size={16} />
-                        {node.testName}
-                    </Button>
+                    {menuAction === "rename" && selectedApiTest?.UUID === node.UUID ? (
+                        <Input
+                            defaultValue={node.testName}
+                            autoFocus
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                dispatch(setRenameApiTest(e.target.value));
+                            }}
+                            onBlur={() => dispatch(setRenameApiTest(null))}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    dispatch(setRenameApiTest(null));
+                                }
+                            }}
+                        />
+                    ) : (
+                        <Button
+                            variant="ghost"
+                            onClick={() => handleToggleSelect(node)}
+                            className={`w-full flex items-center justify-start gap-1 ${
+                                isSelected ? "bg-accent" : ""
+                            }`}
+                        >
+                            <FileText size={16} />
+                            {node.testName}
+                        </Button>
+                    )}
                 </ContextMenuTrigger>
                 <ContextMenuContent>
-                    <ContextMenuItem className="cursor-pointer">Rename</ContextMenuItem>
-                    <ContextMenuItem className="cursor-pointer">Remove</ContextMenuItem>
+                    <ContextMenuItem
+                        className="cursor-pointer"
+                        onClick={() => dispatch(triggerMenuAction({ action: "rename", viewModel: node, entity: new ApiTestEntity(node.apiDTO) }))}
+                    >
+                        Rename
+                    </ContextMenuItem>
+                    <ContextMenuItem
+                        className="cursor-pointer"
+                    >
+                        Remove
+                    </ContextMenuItem>
                 </ContextMenuContent>
             </ContextMenu>
         </div>

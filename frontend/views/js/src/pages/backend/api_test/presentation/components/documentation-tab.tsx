@@ -3,11 +3,12 @@ import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTe
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
+import { selectSelectedApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 
 
 export default function DocumentationTab() {
     const isLoading = useAppSelector(state => state.loading.global);
-    const selectedApiTestViewModel = useAppSelector(state => state.apiTest.selectedApiTest);
+    const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
 
 

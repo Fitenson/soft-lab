@@ -6,7 +6,7 @@ import userDataTableReducer from "@/pages/organization/user/presentation/redux/u
 import departmentDataTableReducer from "@/pages/department/presentation/redux/departmentDataTableSlice.ts";
 import projectDataTableReducer from "@/pages/project_management/project/presentation/redux/projectDataTableSlice";
 import clientDatabaseReducer from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice.ts";
-import apiTestReducer from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
+import apiTestRootReducer from "@/pages/backend/api_test/presentation/redux";
 
 
 const rootReducer = combineReducers({
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
     userDataTable: userDataTableReducer,
     departmentDataTable: departmentDataTableReducer,
     projectDataTable: projectDataTableReducer,
-    apiTest: apiTestReducer
+    apiTest: apiTestRootReducer
 });
 
 export default rootReducer;

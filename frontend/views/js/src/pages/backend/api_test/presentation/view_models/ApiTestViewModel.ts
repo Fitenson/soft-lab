@@ -15,6 +15,7 @@ export default class ApiTestViewModel {
     private _output: string;
     private _scenario: string;
     private _apiTests: ApiTestViewModel[];
+    private _apiDTO: Partial<ApiTestDTO>;
 
 
     constructor(data: Partial<ApiTestDTO>) {
@@ -31,6 +32,7 @@ export default class ApiTestViewModel {
         this._output = data.output ?? "";
         this._scenario = data.scenario ?? "";
         this._apiTests = (data.apiTests ?? []).map((dto) => new ApiTestViewModel(dto));
+        this._apiDTO = data;
     }
 
 
@@ -84,5 +86,9 @@ export default class ApiTestViewModel {
 
     get apiTests(): ApiTestViewModel[] {
         return this._apiTests;
+    }
+
+    get apiDTO(): Partial<ApiTestDTO> {
+        return this._apiDTO;
     }
 }

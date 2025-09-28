@@ -1,0 +1,1 @@
+import r from"./LoginFormField-DT6Wv1er.js";import{o as m,s as o}from"./schemas-CeLLD0oL.js";import"./main-lnUC2C4t.js";const i=m({username:o().max(r.username.max,{error:r.username.maxError}),password:o().min(r.password.min??3,{error:r.password.minError}).max(r.password.max,{error:r.password.maxError})});export{i as loginSchema};
