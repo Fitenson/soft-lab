@@ -4,18 +4,29 @@ import ApiTestLayout from "@/pages/backend/api_test/presentation/layouts/api-tes
 import TestCaseSidebar from "@/pages/backend/api_test/presentation/components/test-case-sidebar.tsx";
 import TestCaseForm from "@/pages/backend/api_test/presentation/components/test-case-form.tsx";
 import TestCaseOutput from "@/pages/backend/api_test/presentation/components/test-case-output.tsx";
-// import {useQuery} from "@tanstack/react-query";
-// import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService.ts";
+import {useQuery} from "@tanstack/react-query";
+import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService.ts";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
 
 
 export default function Dashboard() {
-    // const { indexApiTest } = useApiTestService();
+    const dispatch = useDispatch();
+    const { indexApiTest } = useApiTestService();
 
-    // const { data, refetch }= useQuery({
-    //     queryKey: ["/backend/api_test/index"],
-    //     queryFn: async () => indexApiTest,
-    //     enabled: true,
-    // });
+    const { data }= useQuery({
+        queryKey: ["/backend/api_test/index"],
+        queryFn: async () => await indexApiTest(),
+        enabled: true,
+    });
+
+
+    useEffect(() => {
+        if(data) {
+            dispatch(loadApiTests(data));
+        }
+    }, [dispatch, data]);
 
 
     return (
@@ -23,12 +34,18 @@ export default function Dashboard() {
             <Head title={"API Test"} />
 
             <ApiTestLayout>
-                <div className="grid grid-cols-10">
+                <div className="w-64 border-r flex-shrink-0">
                     <TestCaseSidebar/>
+                </div>
 
-                    <div className="col-span-6 p-2">
-                        <TestCaseForm/>
-                        <TestCaseOutput/>
+                <div className="flex-1 flex flex-coloverflow-auto w-full">
+                    <div className="flex flex-1 space-x-4">
+                        <div className="flex-1 border rounded">
+                            <TestCaseForm/>
+                        </div>
+                        <div className="flex-1 border rounded">
+                            <TestCaseOutput/>
+                        </div>
                     </div>
                 </div>
             </ApiTestLayout>

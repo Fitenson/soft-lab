@@ -1,8 +1,10 @@
-import type { PropsWithChildren } from "react";
+import React from "react";
 
 
-export default function ApiTestLayout({ children }: PropsWithChildren) {
+export default function ApiTestLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="px-1 py-2 w-full h-full mx-1 flex flex-col overflow-y-hidden">{children}</div>
+        <div className="flex h-screen w-full ">
+            {children}
+        </div>
     );
 }

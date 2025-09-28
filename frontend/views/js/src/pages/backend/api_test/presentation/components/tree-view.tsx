@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
-    toggleExpandedNodes,
-    toggleSelectedNode,
+    toggleExpandedApiTests,
+    toggleSelectedApiTest,
     type TreeNode
-} from "@/pages/backend/api_test/presentation/redux/tree-view-slice.ts";
+} from "@/pages/backend/api_test/presentation/redux/api-test-form-slice.ts";
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
 
@@ -18,11 +18,11 @@ export default function TreeView({ node, level = 0 }: { node: TreeNode, level?: 
     const isSelected = selectedNode?.UUID === node.UUID;
 
     const handleToggleSelect = (node: TreeNode) => {
-        dispatch(toggleSelectedNode(node));
+        dispatch(toggleSelectedApiTest(node));
     };
 
     const handleToggleExpand = (UUID: string) => {
-        dispatch(toggleExpandedNodes(UUID));
+        dispatch(toggleExpandedApiTests(UUID));
     };
 
 

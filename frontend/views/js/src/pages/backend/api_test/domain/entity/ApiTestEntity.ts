@@ -16,6 +16,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     private _data: string;
     private _output: string;
     private _scenario: string;
+    private _apiTests: ApiTestEntity[]
 
 
     constructor(model: Partial<ApiTestDTO>) {
@@ -32,6 +33,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._data = model.data ?? "";
         this._output = model.output ?? "";
         this._scenario = model.scenario ?? "";
+        this._apiTests = (model.apiTests ?? []).map(dto => new ApiTestEntity(dto));
     }
 
     asViewModel(): ApiTestViewModel {
@@ -133,5 +135,14 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
 
     set isFolder(value: boolean) {
         this._isFolder = value;
+    }
+
+
+    get apiTests(): ApiTestEntity[] {
+        return this._apiTests;
+    }
+
+    set apiTests(value: ApiTestEntity[]) {
+        this._apiTests = value;
     }
 }

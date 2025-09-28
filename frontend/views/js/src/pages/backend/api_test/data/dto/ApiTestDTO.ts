@@ -14,6 +14,7 @@ export interface ApiTestDTO {
     data: string;
     output: string;
     scenario: string;
+    apiTests: ApiTestDTO[];
 }
 
 
