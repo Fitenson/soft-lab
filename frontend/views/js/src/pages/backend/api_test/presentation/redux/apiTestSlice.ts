@@ -26,15 +26,9 @@ export const apiTestSlice = createSlice({
             state.dataTableApiTest.rows.push(action.payload);
         },
         updateApiTests: (state, action: PayloadAction<ApiTestViewModel>) => {
-            const index = state.dataTableApiTest.rows.findIndex(
-                (r) => r.UUID === action.payload.UUID
-            );
-        
-            if (index !== -1) {
-                state.dataTableApiTest.rows[index] = action.payload;
-            } else {
-                state.dataTableApiTest.rows.push(action.payload);
-            }
+            state.dataTableApiTest.rows = state.dataTableApiTest.rows
+                .filter((r) => r.UUID !== action.payload.UUID)
+                .concat(action.payload);
         },
         renameApiTest: (
             state,
@@ -46,6 +40,11 @@ export const apiTestSlice = createSlice({
                 row.testName = newName;
             }
         },
+        removeApiTests: (state, action: PayloadAction<string[]>) => {
+            state.dataTableApiTest.rows = state.dataTableApiTest.rows.filter(
+                (r) => !action.payload.includes(r.UUID)
+            );
+        }
     }
 });
 
@@ -55,6 +54,7 @@ export const {
     addApiTest,
     renameApiTest,
     updateApiTests,
+    removeApiTests
 } = apiTestSlice.actions;
 
 export default apiTestSlice.reducer;

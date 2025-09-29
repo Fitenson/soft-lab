@@ -26,7 +26,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._clientDatabase = model.clientDatabase ?? "";
         this._project = model.project ?? "";
         this._testName = model.testName ?? "";
-        this._isFolder = model.isFolder ?? 0;
+        this._isFolder = Number(model.isFolder ?? 0);
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";

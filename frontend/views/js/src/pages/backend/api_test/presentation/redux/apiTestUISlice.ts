@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO";
+import type { MenuActionType } from "../types";
 
 
 interface TreeViewState {
@@ -9,7 +10,7 @@ interface TreeViewState {
         dto: Partial<ApiTestDTO> | null
     };
     expandedApiTests: string[];
-    menuAction: "rename" | "remove" | null
+    menuAction: MenuActionType
 }
 
 const initialState: TreeViewState = {
@@ -48,18 +49,16 @@ export const apiTestUISlice = createSlice({
             state.selectedApiTest.dto = null;
         },
         setRenameApiTest: (state, action: PayloadAction<string | null>) => {
-            if(state.selectedApiTest.dto) {
-                state.selectedApiTest.dto.testName = action.payload ?? "";
-
-                if(!action.payload) {
-                    state.menuAction = null;
-                }
+            if (action.payload !== null) {
+                state.selectedApiTest.dto!.testName = action.payload;
+            } else {
+                state.menuAction = null;
             }
         },
         triggerMenuAction: (
             state,
             action: PayloadAction<{
-                action: "rename" | "remove";
+                action: MenuActionType;
                 viewModel: ApiTestViewModel | null;
                 dto: Partial<ApiTestDTO> | null;
             }>

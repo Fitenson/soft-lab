@@ -25,7 +25,7 @@ export default class ApiTestViewModel {
         this._project = data.project ?? "";
         this._testName = data.testName ?? "";
         this._transmission = data.transmission ?? "";
-        this._isFolder = data.isFolder ?? 0;
+        this._isFolder = Number(data.isFolder ?? 0);
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
         this._data = data.data ?? "";

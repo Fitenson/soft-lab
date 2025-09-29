@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { RootState } from ".";
 
 
 const loadingState = createSlice({
@@ -13,3 +14,4 @@ const loadingState = createSlice({
 
 export const { setIsLoading } = loadingState.actions;
 export default loadingState.reducer;
+export const selectLoading = (state: RootState) => state.loading.global;

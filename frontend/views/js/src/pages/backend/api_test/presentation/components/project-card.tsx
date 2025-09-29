@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice";
 import useShowToast from "@/hooks/use-show-toast";
 import { router } from "@inertiajs/react";
+import { selectLoading } from "@/core/presentation/store/loadingSlice";
 
 
 export default function ProjectCard({ projectViewModel }: { projectViewModel: ProjectListViewModel }) {
@@ -18,6 +19,7 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
     const { connectClientDatabase } = useClientDatabaseService();
     const clientDatabase = useAppSelector(state => state.clientDatabase.clientDatabase);
     const showToast = useShowToast();
+    const isLoading = useAppSelector(selectLoading);
 
 
     const handleConnectClientDatabase = async () => {
@@ -73,7 +75,11 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
                 </DropdownMenu>
             </CardContent>
             <CardFooter className="flex flex-col w-full mt-auto">
-                <Button className="w-full" onClick={handleConnectClientDatabase}>
+                <Button 
+                    className="w-full" 
+                    disabled={isLoading}
+                    onClick={handleConnectClientDatabase}
+                >
                     Connect
                 </Button>
             </CardFooter>

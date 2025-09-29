@@ -14,9 +14,12 @@ import {
     selectSelectedApiTest,
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import {useEffect} from "react";
+import { useDispatch } from "react-redux";
+import { setRenameApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice";
 
 
 export default function TestCaseForm() {
+    const dispatch = useDispatch();
     const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
     const apiTestDTO = useAppSelector(selectApiTestDTO);
@@ -39,6 +42,10 @@ export default function TestCaseForm() {
                                     <FormControl>
                                         <Input
                                             {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                dispatch(setRenameApiTest(e.target.value));
+                                            }}
                                         />
                                     </FormControl>
                                 </FormItem>

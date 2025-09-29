@@ -17,12 +17,15 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
         $ApiTests = ApiTest::find()
         // ->alias('module')
         ->selectIndex()
+        ->orderBy(['testName' => SORT_ASC])
         ->asArray()
         ->all();
 
+        $total = count($ApiTests);
+
 
         return [
-            'total',
+            'total' => (string)$total,
             'rows' => $ApiTests
         ];
     }
@@ -78,13 +81,13 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
                 $transaction->commit();
 
                 $apiTestDTO = new ApiTestDTO();
-                $apiTestDTO->load($ApiTest->asArray(), '');
+                $apiTestDTO->load($ApiTest->getAttributes(), '');
                 $status['success'][] = $apiTestDTO;
             } catch(Throwable $error) {
                 $transaction->rollBack();
 
                 $ApiTestDTO = new ApiTestDTO();
-                $ApiTestDTO->load($ApiTest->asArray(), '');
+                $ApiTestDTO->load($ApiTest->getAttributes(), '');
                 $status['failed'][] = $ApiTestDTO;
                 $status['failed']['message'] = $error->getMessage();
             }

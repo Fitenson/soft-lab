@@ -65,7 +65,7 @@ const useApiTestRepository = () => {
         });
 
         return await request<{ success: ApiTestDTO[], failed: ApiTestDTO[] }>({
-            url: "/client-database/remove",
+            url: "/api-test/remove",
             method: "POST",
             data: formData,
         });

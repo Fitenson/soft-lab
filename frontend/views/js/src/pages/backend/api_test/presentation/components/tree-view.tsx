@@ -2,6 +2,7 @@ import type { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
+    clearSelectedNode,
     setRenameApiTest,
     setSelectedApiTest,
     toggleExpandedApiTests,
@@ -19,7 +20,7 @@ import {
 import {Input} from "@/components/ui/input.tsx";
 import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService";
 import useShowToast from "@/hooks/use-show-toast";
-import { updateApiTests } from "../redux/apiTestSlice";
+import { renameApiTest, updateApiTests, removeApiTests as removeApiTestAction } from "../redux/apiTestSlice";
 import { usePage } from "@inertiajs/react";
 import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors";
 
@@ -43,7 +44,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const isExpanded = expandedApiTests.includes(node.UUID);
     const isSelected = selectedApiTest?.UUID === node.UUID;
 
-    const { createApiTest } = useApiTestService();
+    const { createApiTest, removeApiTest } = useApiTestService();
 
     const handleToggleSelect = (node: ApiTestViewModel) => {
         dispatch(toggleSelectedApiTest(node));
@@ -67,8 +68,14 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
 
                 await createApiTest(newApiTestDTO, clientDatabase.refreshToken, {
                     onSuccess: (newApiTestViewModel) => {
-                        dispatch(setRenameApiTest(null));
+                        const UUIDs = [apiTestDTO?.UUID].filter(
+                            (UUID): UUID is string => UUID !== undefined
+                        );
+                    
+                        dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
+                        
+                        dispatch(setRenameApiTest(null));
                         dispatch(setSelectedApiTest(newApiTestViewModel));
                     }
                 });
@@ -77,6 +84,25 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
             console.error(error);
             showToast("Error", "Unexpected error", "error");
         }
+    }
+
+
+    const handleRemoveApiTest =  async () => {
+        const UUIDs = [selectedApiTest?.UUID].filter(
+            (UUID): UUID is string => UUID !== undefined
+        );
+
+        await removeApiTest(UUIDs, {
+            onSuccess: (result) => {
+                if(result.success.length > 0) {
+                    dispatch(clearSelectedNode());
+                    dispatch(removeApiTestAction(UUIDs));
+                }
+            },
+            onError: () => {
+                showToast("Error", "Server error", "error");
+            }
+        });
     }
 
 
@@ -120,10 +146,12 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 <ContextMenuTrigger className="w-full">
                     {menuAction === "rename" && selectedApiTest?.UUID === node.UUID ? (
                         <Input
-                            defaultValue={node.testName}
+                            // defaultValue={node.testName}
+                            value={apiTestDTO?.testName}
                             autoFocus
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 dispatch(setRenameApiTest(e.target.value));
+                                dispatch(renameApiTest({ UUID: node.UUID, newName: e.target.value}));
                             }}
                             onBlur={() => dispatch(setRenameApiTest(null))}
                             onKeyDown={(e) => {
@@ -154,6 +182,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     </ContextMenuItem>
                     <ContextMenuItem
                         className="cursor-pointer"
+                        onClick={handleRemoveApiTest}
                     >
                         Remove
                     </ContextMenuItem>
