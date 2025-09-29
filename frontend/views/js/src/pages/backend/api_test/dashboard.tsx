@@ -1,5 +1,6 @@
 import AppLayout from "@/layouts/app-layout.tsx";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
+import type { PageProps as InertiaPageProps } from "@inertiajs/core";
 import ApiTestLayout from "@/pages/backend/api_test/presentation/layouts/api-test-layout.tsx";
 import TestCaseSidebar from "@/pages/backend/api_test/presentation/components/test-case-sidebar.tsx";
 import TestCaseForm from "@/pages/backend/api_test/presentation/components/test-case-form.tsx";
@@ -11,7 +12,13 @@ import {useDispatch} from "react-redux";
 import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
 
 
+interface PageProps extends InertiaPageProps {
+    id?: string
+}
+
+
 export default function Dashboard() {
+    const { id } = usePage<PageProps>().props;
     const dispatch = useDispatch();
     const { indexApiTest } = useApiTestService();
 
@@ -26,7 +33,9 @@ export default function Dashboard() {
         if(data) {
             dispatch(loadApiTests(data));
         }
-    }, [dispatch, data]);
+
+        console.log('ID: ', id);
+    }, [dispatch, data, id]);
 
 
     return (

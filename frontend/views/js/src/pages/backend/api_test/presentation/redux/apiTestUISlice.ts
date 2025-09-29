@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
-import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
+import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO";
 
 
 interface TreeViewState {
     selectedApiTest: {
         viewModel: ApiTestViewModel | null,
-        entity: ApiTestEntity | null
+        dto: Partial<ApiTestDTO> | null
     };
     expandedApiTests: string[];
     menuAction: "rename" | "remove" | null
@@ -15,7 +15,7 @@ interface TreeViewState {
 const initialState: TreeViewState = {
     selectedApiTest: {
         viewModel: null,
-        entity: null
+        dto: null
     },
     expandedApiTests: [],
     menuAction: null,
@@ -29,10 +29,10 @@ export const apiTestUISlice = createSlice({
         toggleSelectedApiTest: (state, action: PayloadAction<ApiTestViewModel>) => {
             if (state.selectedApiTest.viewModel?.UUID === action.payload.UUID) {
                 state.selectedApiTest.viewModel = null;
-                state.selectedApiTest.entity = null;
+                state.selectedApiTest.dto = null;
             } else {
                 state.selectedApiTest.viewModel = action.payload;
-                state.selectedApiTest.entity = new ApiTestEntity(action.payload.apiDTO);
+                state.selectedApiTest.dto = action.payload.apiDTO;
             }
         },
         toggleExpandedApiTests: (state, action: PayloadAction<string>) => {
@@ -45,12 +45,15 @@ export const apiTestUISlice = createSlice({
         },
         clearSelectedNode: (state) => {
             state.selectedApiTest.viewModel = null;
-            state.selectedApiTest.entity = null;
+            state.selectedApiTest.dto = null;
         },
         setRenameApiTest: (state, action: PayloadAction<string | null>) => {
-            if(state.selectedApiTest.entity) {
-                state.selectedApiTest.entity.testName = action.payload ?? "";
-                console.log("Redux", state.selectedApiTest.entity.testName);
+            if(state.selectedApiTest.dto) {
+                state.selectedApiTest.dto.testName = action.payload ?? "";
+
+                if(!action.payload) {
+                    state.menuAction = null;
+                }
             }
         },
         triggerMenuAction: (
@@ -58,19 +61,21 @@ export const apiTestUISlice = createSlice({
             action: PayloadAction<{
                 action: "rename" | "remove";
                 viewModel: ApiTestViewModel | null;
-                entity: ApiTestEntity | null;
+                dto: Partial<ApiTestDTO> | null;
             }>
         ) => {
             state.menuAction = action.payload.action;
-            state.selectedApiTest = {
-                viewModel: action.payload.viewModel,
-                entity: action.payload.entity,
+            const apiTestDTO = action.payload.dto;
+
+            state.selectedApiTest.dto = {
+                ...apiTestDTO,
+                UUID: apiTestDTO?.UUID
             };
 
-            if (action.payload.action === "rename" && action.payload.entity && state.selectedApiTest.entity) {
-                state.selectedApiTest.entity.UUID = action.payload.entity.UUID;
+            if (action.payload.action === "rename" && action.payload.dto && state.selectedApiTest.dto) {
+                state.selectedApiTest.dto.UUID = action.payload.dto.UUID;
             } else {
-                state.selectedApiTest.entity = null;
+                state.selectedApiTest.dto = null;
             }
         }
     }

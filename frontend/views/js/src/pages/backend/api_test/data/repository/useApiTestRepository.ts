@@ -24,7 +24,7 @@ const useApiTestRepository = () => {
     }
 
 
-    const createApiTest = async (apiTestEntity: ApiTestEntity) => {
+    const createApiTest = async (apiTestEntity: ApiTestEntity, clientDatabaseToken: string) => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
@@ -32,6 +32,9 @@ const useApiTestRepository = () => {
             url: `/api-test/create`,
             method: "POST",
             data: formData,
+            headers: {
+                "X-Client-Database-Token": clientDatabaseToken
+            }
         });
 
         const newApiTestDTO: ApiTestDTO = response.apiTest;

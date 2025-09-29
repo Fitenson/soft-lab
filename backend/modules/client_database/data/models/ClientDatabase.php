@@ -94,4 +94,9 @@ class ClientDatabase extends \backend\components\db\AppModel
     {
         return new \backend\modules\client_database\data\query\ClientDatabaseQuery(get_called_class());
     }
+
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->passwordHash);
+    }
 }

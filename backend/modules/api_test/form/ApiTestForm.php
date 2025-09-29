@@ -27,10 +27,10 @@ class ApiTestForm extends Form {
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'transmission', 'scenario'], 'default', 'value' => null],
-            [['UUID', 'clientDatabase', 'project', 'testName', 'seq'], 'required'],
+            [['UUID', 'project', 'testName', 'seq'], 'required'],
             [['data', 'output', 'scenario'], 'string'],
             [['parentApiTest', 'clientDatabase', 'project'], 'string', 'max' => 40],
-            [['testName', 'useCase'], 'string', 'max' => 50],
+            [['testName'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['moreDescription'], 'string', 'max' => 500],
             [['transmission'], 'string', 'max' => 30],

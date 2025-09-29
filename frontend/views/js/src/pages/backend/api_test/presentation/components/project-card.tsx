@@ -39,7 +39,7 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
             showToast("Success", "Successfully connecting user to database", "success");
         }
 
-        router.visit(`/backend/api-test/dashboard?id=${selectedDatabase?.UUID}`);
+        router.visit(`/backend/api-test/dashboard?id=${projectViewModel?.UUID}`);
     }
 
 

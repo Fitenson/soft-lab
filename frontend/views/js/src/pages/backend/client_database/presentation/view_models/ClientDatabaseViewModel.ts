@@ -12,6 +12,7 @@ export default class ClientDatabaseViewModel {
     private readonly _project: string;
     private readonly _projectName: string;
     private readonly _valid: boolean;
+    private readonly _dto: Partial<ClientDatabaseDTO>;
 
 
     constructor(data: Partial<ClientDatabaseDTO>) {
@@ -26,6 +27,7 @@ export default class ClientDatabaseViewModel {
         this._project = data.project ?? "";
         this._projectName = data.projectName ?? "";
         this._valid = data.valid ?? true;
+        this._dto = data ?? {};
     }
 
 
@@ -71,5 +73,9 @@ export default class ClientDatabaseViewModel {
 
     get valid(): boolean {
         return this._valid;
+    }
+
+    get dto(): Partial<ClientDatabaseDTO> {
+        return this._dto;
     }
 }

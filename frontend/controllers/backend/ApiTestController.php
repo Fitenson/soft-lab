@@ -11,7 +11,9 @@ class ApiTestController extends InertiaController {
     }
 
 
-    public function actionDashboard() {
-        return $this->inertia('backend/api_test/dashboard');
+    public function actionDashboard(string $id) {
+        return $this->inertia('backend/api_test/dashboard', [
+            'id' => $id
+        ]);
     }
 }

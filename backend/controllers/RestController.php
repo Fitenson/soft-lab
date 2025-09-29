@@ -46,6 +46,24 @@ class RestController extends ActiveController {
             }
         ];
 
+
+        $behaviours[] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['http://softlab.test'], // or ['*']
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 3600,
+                'Access-Control-Allow-Headers' => [
+                    'Content-Type',
+                    'Authorization',
+                    'X-Requested-With',
+                    'X-Client-Database-Token',
+                ],
+            ],
+        ];
+
         return $behaviours;
     }
 

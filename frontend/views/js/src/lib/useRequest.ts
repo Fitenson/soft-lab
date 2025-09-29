@@ -24,6 +24,7 @@ export interface Options {
     data?: AxiosRequestConfig["data"];
     config?: AxiosRequestConfig;
     withLoading?: boolean;
+    headers?: Record<string, string>
 }
 
 
@@ -68,7 +69,8 @@ export const useRequest = (): AxiosRequestResult => {
                 ...options?.config,
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    ...authHeader
+                    ...authHeader,
+                    ...options?.headers,
                 }
             });
 

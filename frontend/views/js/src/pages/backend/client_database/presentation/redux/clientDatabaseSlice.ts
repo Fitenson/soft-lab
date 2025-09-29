@@ -30,7 +30,11 @@ const clientDatabaseSlice = createSlice({
             );
         },
         setClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
-            state.clientDatabase = action.payload as ClientDatabaseViewModel;
+            const clientDatabaseViewModel = action.payload as ClientDatabaseViewModel;
+            state.clientDatabase = new ClientDatabaseViewModel({
+                ...clientDatabaseViewModel.dto,
+                refreshToken: clientDatabaseViewModel.dto.password
+            });
         },
         connectClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
             state.clientDatabase = action.payload as ClientDatabaseViewModel;

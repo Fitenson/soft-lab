@@ -25,6 +25,9 @@ export const apiTestSlice = createSlice({
         addApiTest: (state, action: PayloadAction<ApiTestViewModel>) => {
             state.dataTableApiTest.rows.push(action.payload);
         },
+        updateApiTests: (state, action: PayloadAction<ApiTestViewModel>) => {
+            state.dataTableApiTest.rows.push(action.payload);
+        },
         renameApiTest: (
             state,
             action: PayloadAction<{ UUID: string; newName: string }>
@@ -43,6 +46,7 @@ export const {
     loadApiTests,
     addApiTest,
     renameApiTest,
+    updateApiTests,
 } = apiTestSlice.actions;
 
 export default apiTestSlice.reducer;

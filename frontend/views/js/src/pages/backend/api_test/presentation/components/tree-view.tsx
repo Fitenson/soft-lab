@@ -1,3 +1,4 @@
+import type { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
@@ -10,22 +11,38 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 import type ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import {
+    selectApiTestDTO,
     selectExpandedApiTests, selectMenuAction,
     selectSelectedApiTest
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import {Input} from "@/components/ui/input.tsx";
-import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
+import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService";
+import useShowToast from "@/hooks/use-show-toast";
+import { updateApiTests } from "../redux/apiTestSlice";
+import { usePage } from "@inertiajs/react";
+import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors";
+
+
+interface PageProps extends InertiaPageProps {
+    id: string;
+}
 
 
 export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, level?: number}) {
+    const { id: projectUUID } = usePage<PageProps>().props;
     const dispatch = useDispatch();
     const indent = level * 8;
     const selectedApiTest = useAppSelector(selectSelectedApiTest);
+    const apiTestDTO = useAppSelector(selectApiTestDTO);
     const expandedApiTests = useAppSelector(selectExpandedApiTests);
     const menuAction = useAppSelector(selectMenuAction);
+    const clientDatabase = useAppSelector(selectClientDatabase);
+    const showToast = useShowToast();
 
     const isExpanded = expandedApiTests.includes(node.UUID);
     const isSelected = selectedApiTest?.UUID === node.UUID;
+
+    const { createApiTest } = useApiTestService();
 
     const handleToggleSelect = (node: ApiTestViewModel) => {
         dispatch(toggleSelectedApiTest(node));
@@ -34,6 +51,30 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const handleToggleExpand = (UUID: string) => {
         dispatch(toggleExpandedApiTests(UUID));
     };
+
+
+    const handleSaveTestApi = async () => {
+        try {
+            if(apiTestDTO && clientDatabase) {
+                const newApiTestDTO = {
+                    ...apiTestDTO,
+                    project: projectUUID,
+                    clientDatabase: clientDatabase.UUID,
+                    seq: 1
+                }
+
+                await createApiTest(newApiTestDTO, clientDatabase.refreshToken, {
+                    onSuccess: (newApiTestViewModel) => {
+                        dispatch(setRenameApiTest(null));
+                        dispatch(updateApiTests(newApiTestViewModel));
+                    }
+                });
+            }
+        } catch(error) {
+            console.error(error);
+            showToast("Error", "Unexpected error", "error");
+        }
+    }
 
 
     if (node.isFolder) {
@@ -84,7 +125,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                             onBlur={() => dispatch(setRenameApiTest(null))}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                    dispatch(setRenameApiTest(null));
+                                    handleSaveTestApi();
                                 }
                             }}
                         />
@@ -104,7 +145,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 <ContextMenuContent>
                     <ContextMenuItem
                         className="cursor-pointer"
-                        onClick={() => dispatch(triggerMenuAction({ action: "rename", viewModel: node, entity: new ApiTestEntity(node.apiDTO) }))}
+                        onClick={() => dispatch(triggerMenuAction({ action: "rename", viewModel: node, dto: node.apiDTO }))}
                     >
                         Rename
                     </ContextMenuItem>

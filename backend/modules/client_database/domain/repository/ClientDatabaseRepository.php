@@ -9,8 +9,8 @@ interface ClientDatabaseRepository {
     public function index();
     public function create(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity;
     public function update(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity;
-    public function view(string $id): ClientDatabaseEntity;
     public function remove(array $data): array;
     public function getClientRefreshToken(string $id, ?string $token = null);
-    public function connect(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity;
+    public function connect(string $id, ?string $refreshToken = null): ClientDatabaseEntity;
+    public function loginClientDatabase(string $id, $password): ClientDatabaseEntity;
 }

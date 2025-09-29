@@ -2,6 +2,7 @@
 
 namespace backend\modules\client_database\domain\usecase;
 
+use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\repository\ClientDatabaseRepository;
 
 
@@ -15,7 +16,8 @@ class ConnectClientDatabaseUseCase {
     }
 
 
-    public function execute() {
-        
+    public function execute(string $id, string $refreshToken): ClientDatabaseEntity
+    {
+        return $this->clientDatabaseRepository->connect($id, $refreshToken);
     }
 }

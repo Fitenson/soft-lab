@@ -4,6 +4,7 @@ namespace backend\modules\api_test\domain\usecase;
 
 use backend\modules\api_test\domain\entity\ApiTestEntity;
 use backend\modules\api_test\domain\repository\ApiTestRepository;
+use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
 
 class CreateApiTestUseCase {
@@ -14,7 +15,8 @@ class CreateApiTestUseCase {
         $this->apiTestRepository = $apiTestRepository;
     }
 
-    public function execute(ApiTestEntity $apiTestEntity) {
-        return $this->apiTestRepository->createApiTest($apiTestEntity);
+
+    public function execute(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity) {
+        return $this->apiTestRepository->createApiTest($apiTestEntity, $clientDatabaseEntity);
     }
 }

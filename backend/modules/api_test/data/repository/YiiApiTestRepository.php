@@ -9,7 +9,7 @@ use backend\modules\api_test\data\models\ApiTest;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
 use backend\modules\api_test\domain\repository\ApiTestRepository;
 use backend\modules\api_test\data\dto\ApiTestDTO;
-
+use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
 class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     public function index()
@@ -28,26 +28,30 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     }
 
 
-    public function createApiTest(ApiTestEntity $apiTestEntity): ApiTestEntity
+    public function createApiTest(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity): ApiTestEntity
     {
         $_actionUUID = $this->getActionUUID();
         $apiTestDTO = $apiTestEntity->asDTO();
+        $clientDatabaseDTO = $clientDatabaseEntity->asDTO();
 
         $ApiTest = new ApiTest();
         $ApiTest->load($apiTestDTO->asArray(), '');
+        $ApiTest->clientDatabase = $clientDatabaseDTO->UUID;
         $ApiTest->_actionUUID = $_actionUUID;
         $ApiTest->save(false);
 
         return new ApiTestEntity($ApiTest->getAttributes());
     }
 
-    public function updateApiTest(ApiTestEntity $apiTestEntity): ApiTestEntity
+    public function updateApiTest(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity): ApiTestEntity
     {
         $_actionUUID = $this->getActionUUID();
         $apiTestDTO = $apiTestEntity->asDTO();
+        $clientDatabaseDTO = $clientDatabaseEntity->asDTO();
 
         $ApiTest = ApiTest::findOne($apiTestDTO->UUID);
         $ApiTest->load($apiTestDTO->asArray(), '');
+        $ApiTest->clientDatabase = $clientDatabaseDTO->UUID;
         $ApiTest->_actionUUID = $_actionUUID;
         $ApiTest->save(false);
 

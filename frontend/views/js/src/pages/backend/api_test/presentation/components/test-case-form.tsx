@@ -10,8 +10,8 @@ import ScenarioTab from "@/pages/backend/api_test/presentation/components/scenar
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { Button } from "@/components/ui/button";
 import {
+    selectApiTestDTO,
     selectSelectedApiTest,
-    // selectSelectedApiTestEntity, selectTestName
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import {useEffect} from "react";
 
@@ -19,14 +19,12 @@ import {useEffect} from "react";
 export default function TestCaseForm() {
     const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
-    // const selectedApiTestEntity = useAppSelector(selectSelectedApiTestEntity);
-    const testName = useAppSelector(state => state.apiTest.ui.selectedApiTest.entity?.testName);
+    const apiTestDTO = useAppSelector(selectApiTestDTO);
 
     useEffect(() => {
-        if(testName) {
-            console.log("Test Name", testName);
-        }
-    }, [testName]);
+        form.setValue("testName", apiTestDTO?.testName ?? "");
+    }, [apiTestDTO, form]);
+
 
     return (
         <div className="h-full w-full">

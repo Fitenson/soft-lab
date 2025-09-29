@@ -71,16 +71,23 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
         return new ClientDatabaseEntity($ClientDatabase->getAttributes());        
     }
 
-    public function view(string $id): ClientDatabaseEntity
-    {
-        $ClientDatabase = ClientDatabase::find()
-        ->selectIndex()
-        ->where(['UUID' => $id])
-        ->asArray()
-        ->one();
 
-        return new ClientDatabaseEntity($ClientDatabase);
+    public function view(string $id, string $refreshToken): ClientDatabaseEntity
+    {
+        $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
+            'clientDatabase' => $id,
+            'user' => Yii::$app->user->id
+        ]);
+
+        if(!$ClientDatabaseHasRefreshToken->validateRefreshToken($refreshToken)) {
+            Yii::$app->exception->throw('Unauthorized user', 422);
+        }
+
+        $ClientDatabase = ClientDatabase::findOne($id);
+
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());
     }
+
 
     public function remove(array $data): array
     {
@@ -143,8 +150,31 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
     }
 
 
-    public function connect(ClientDatabaseEntity $clientDatabaseEntity): ClientDatabaseEntity
+    public function connect(string $id, ?string $refreshToken = null): ClientDatabaseEntity
     {
-        return new ClientDatabaseEntity();
+        $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
+            'clientDatabase' => $id,
+            'user' => Yii::$app->user->id
+        ]);
+
+        if(!empty($refreshToken) && !$ClientDatabaseHasRefreshToken->validateRefreshToken($refreshToken)) {
+            Yii::$app->exception->throw('Unauthorized user', 422);
+        }
+
+        $ClientDatabase = ClientDatabase::findOne($id);
+
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());        
+    }
+
+
+    public function loginClientDatabase(string $id, $password): ClientDatabaseEntity
+    {
+        $ClientDatabase = ClientDatabase::findOne($id);
+
+        if($ClientDatabase->validatePassword($password)) {
+            Yii::$app->exception->throw('Incorrect password', 422);
+        }
+
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());
     }
 }

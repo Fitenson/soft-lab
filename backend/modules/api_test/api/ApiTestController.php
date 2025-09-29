@@ -43,7 +43,8 @@ class ApiTestController extends RestController {
 
         $apiTestData = $apiTestForm->getAttributes();
 
-        $apiTestDTO = $this->apiTestService->createApiTest(new ApiTestEntity($apiTestData));
+        $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
+        $apiTestDTO = $this->apiTestService->createApiTest(new ApiTestEntity($apiTestData), $clientDatabaseToken);
 
         return [
             'apiTest' => $apiTestDTO

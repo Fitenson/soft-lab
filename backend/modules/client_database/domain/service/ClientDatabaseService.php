@@ -7,38 +7,42 @@ use backend\components\exception\ApiException;
 
 use backend\modules\client_database\data\dto\ClientDatabaseDTO;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
+use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\CreateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\IndexClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\UpdateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\RemoveClientDatabaseUseCase;
-use backend\modules\client_database\domain\usecase\ViewClientDatabaseUseCase;
+use backend\modules\client_database\domain\usecase\LoginClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\GetClientRefreshTokenUseCase;
-
+use Throwable;
 
 class ClientDatabaseService {
     private IndexClientDatabaseUseCase $indexClientDatabaseUseCase;
     private CreateClientDatabaseUseCase $createClientDatabaseUseCase;
     private UpdateClientDatabaseUseCase $updateClientDatabaseUseCase;
-    private ViewClientDatabaseUseCase $viewClientDatabaseUseCase;
+    private LoginClientDatabaseUseCase $loginClientDatabaseUseCase;
     private RemoveClientDatabaseUseCase $removeClientDatabaseUseCase;
     private GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase;
+    private ConnectClientDatabaseUseCase $connectClientDatabaseUseCase;
 
 
     public function __construct(
         IndexClientDatabaseUseCase $indexClientDatabaseUseCase,
         CreateClientDatabaseUseCase $createClientDatabaseUseCase,
         UpdateClientDatabaseUseCase $updateClientDatabaseUseCase,
-        ViewClientDatabaseUseCase $viewClientDatabaseUseCase,
+        LoginClientDatabaseUseCase $loginClientDatabaseUseCase,
         RemoveClientDatabaseUseCase $removeClientDatabaseUseCase,
-        GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase
+        GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase,
+        ConnectClientDatabaseUseCase $connectClientDatabaseUseCase
     )
     {
         $this->indexClientDatabaseUseCase = $indexClientDatabaseUseCase;
         $this->createClientDatabaseUseCase = $createClientDatabaseUseCase;
         $this->updateClientDatabaseUseCase = $updateClientDatabaseUseCase;
-        $this->viewClientDatabaseUseCase = $viewClientDatabaseUseCase;
+        $this->loginClientDatabaseUseCase = $loginClientDatabaseUseCase;
         $this->removeClientDatabaseUseCase = $removeClientDatabaseUseCase;
         $this->getClientRefreshTokenUseCase = $getClientRefreshTokenUseCase;
+        $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
     }
 
 
@@ -76,13 +80,6 @@ class ClientDatabaseService {
         }
     }
 
-    
-    public function viewClientDatabase(string $id): ClientDatabaseDTO
-    {
-        $clientDatabaseEntity= $this->viewClientDatabaseUseCase->execute($id);
-        return $clientDatabaseEntity->asDTO();
-    }
-
 
     public function removeClientDatabase(array $data): array
     {
@@ -90,11 +87,22 @@ class ClientDatabaseService {
     }
 
 
-    public function connectClientDatabase(string $id)
+    public function loginClientDatabase(string $id, string $password): ClientDatabaseDTO
+    {
+        try {
+            $clientDatabaseEntity = $this->loginClientDatabaseUseCase->execute($id, $password);
+            return $clientDatabaseEntity->asDTO();
+        } catch(Throwable $error) {
+            throw $error;
+        }
+    }
+
+
+    public function connectClientDatabase(string $id, string $refreshToken): ClientDatabaseDTO
     {
         $token = $this->getClientRefreshTokenUseCase->execute($id);
 
-        $clientDatabaseEntity = $this->viewClientDatabaseUseCase->execute($id);
+        $clientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($id, $refreshToken);
         $clientDatabaseEntity->setPassword($token);
 
         return $clientDatabaseEntity->asDTO();

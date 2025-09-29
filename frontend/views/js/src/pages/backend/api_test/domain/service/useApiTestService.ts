@@ -59,20 +59,45 @@ const useApiTestService = () => {
 
     const createApiTest = async (
         apiTestDTO: Partial<ApiTestDTO>,
-        callbacks?: ServiceCallback<ApiTestEntity>
+        clientDatabaseToken: string,
+        callbacks?: ServiceCallback<ApiTestViewModel>
     ) => {
         let apiTestEntity = new ApiTestEntity(apiTestDTO);
-        apiTestEntity = await handleServiceCall<ApiTestEntity>(async () => createApiTestRepo(apiTestEntity), callbacks);
+
+        apiTestEntity = await handleServiceCall<ApiTestEntity>(
+            async () => createApiTestRepo(apiTestEntity, clientDatabaseToken),
+            {
+                onSuccess: (entity) => {
+                    const viewModel = entity.asViewModel();
+                    callbacks?.onSuccess?.(viewModel);
+                },
+                onError: (error) => {
+                    callbacks?.onError?.(error);
+                },
+            }
+        );
+
         return apiTestEntity.asViewModel();
-    }
+    };
 
 
     const updateApiTest = async (
         apiTestDTO: Partial<ApiTestDTO>,
-        callbacks?: ServiceCallback<ApiTestEntity>
+        callbacks?: ServiceCallback<ApiTestViewModel>
     ) => {
         let apiTestEntity = new ApiTestEntity(apiTestDTO);
-        apiTestEntity = await handleServiceCall<ApiTestEntity>(async () => updateApiTestRepo(apiTestEntity), callbacks);
+        apiTestEntity = await handleServiceCall<ApiTestEntity>(
+            async () => updateApiTestRepo(apiTestEntity), 
+        {
+            onSuccess: (entity) => {
+                const viewModel = entity.asViewModel();
+                callbacks?.onSuccess?.(viewModel);
+            },
+            onError: (error) => {
+                callbacks?.onError?.(error);
+            }
+        });
+        
         return apiTestEntity.asViewModel();
     }
 
