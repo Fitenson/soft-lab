@@ -18,10 +18,7 @@ class ApiTestEntity extends Entity {
     private int $isFolder;
     private ?string $description;
     private ?string $moreDescription;
-    private ?string $data;
-    private ?string $output;
     private string $transmission;
-    private ?string $scenario;
 
 
     public function asArray(): array
@@ -99,26 +96,6 @@ class ApiTestEntity extends Entity {
         return $this->moreDescription;
     }
 
-    public function setData(?string $data = null): void
-    {
-        $this->data = $data;
-    }
-
-    public function getData(): ?string
-    {
-        return $this->data;
-    }
-
-    public function setOutput(?string $output = null): void
-    {
-        $this->output = $output;
-    }
-
-    public function getOutput(): ?string
-    {
-        return $this->output;
-    }
-
     public function setIsFolder(int $isFolder): void
     {
         $this->isFolder = $isFolder;
@@ -137,16 +114,6 @@ class ApiTestEntity extends Entity {
     public function getTransmission(): ?string
     {
         return $this->transmission;
-    }
-
-    public function setScenario(?string $scenario = null): void
-    {
-        $this->scenario = $scenario;
-    }
-
-    public function getScenario(): ?string
-    {
-        return $this->scenario;
     }
 
     public function setSeq(int $seq): void

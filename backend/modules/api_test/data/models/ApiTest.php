@@ -3,6 +3,7 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
+
 use backend\modules\api_test\data\query\ApiTestQuery;
 use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\project\data\models\Project;
@@ -34,6 +35,8 @@ use backend\modules\user\data\models\User;
  */
 class ApiTest extends \backend\components\db\AppModel
 {
+
+
     /**
      * {@inheritdoc}
      */
@@ -49,7 +52,7 @@ class ApiTest extends \backend\components\db\AppModel
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'clientDatabase', 'project', 'testName', 'seq'], 'required'],
+            [['UUID', 'clientDatabase', 'project', 'testName', 'seq', 'isFolder'], 'required'],
             [['seq', 'isFolder', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
@@ -58,7 +61,7 @@ class ApiTest extends \backend\components\db\AppModel
             [['moreDescription'], 'string', 'max' => 500],
             [['transmission', 'updatedAt', 'updatedBy'], 'string', 'max' => 30],
             [['UUID'], 'unique'],
-            [['clientDatabase'], 'exist', 'skipOnError' => true, 'targetClass' => ClientDatabase::class, 'targetAttribute' => ['clientDatabase' => 'UUID']],
+            [['clientDatabase'], 'exist', 'skipOnError' => true, 'targetClass' => Clientdatabase::class, 'targetAttribute' => ['clientDatabase' => 'UUID']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
             [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => Apitest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
             [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],

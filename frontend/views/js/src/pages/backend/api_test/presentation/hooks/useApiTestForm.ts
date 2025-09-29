@@ -19,9 +19,6 @@ const useApiTestForm = ({ apiTestViewModel }: { apiTestViewModel: ApiTestViewMod
             transmission: apiTestViewModel?.transmission ?? "",
             description: apiTestViewModel?.description ?? "",
             moreDescription: apiTestViewModel?.moreDescription ?? "",
-            data: apiTestViewModel?.data ?? "",
-            output: apiTestViewModel?.output ?? "",
-            scenario: apiTestViewModel?.scenario ?? "",
         }
     });
 

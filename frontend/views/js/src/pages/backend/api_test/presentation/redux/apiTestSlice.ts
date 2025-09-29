@@ -44,6 +44,8 @@ export const apiTestSlice = createSlice({
             state.dataTableApiTest.rows = state.dataTableApiTest.rows.filter(
                 (r) => !action.payload.includes(r.UUID)
             );
+
+            console.log("Rows", state.dataTableApiTest.rows);
         }
     }
 });

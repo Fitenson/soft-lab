@@ -3,6 +3,7 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
+
 use backend\modules\api_test\data\query\ApiTestHistoryQuery;
 
 /**
@@ -35,6 +36,8 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  */
 class ApiTestHistory extends \backend\components\db\AppModel
 {
+
+
     /**
      * {@inheritdoc}
      */
@@ -50,7 +53,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
     {
         return [
             [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'seq', 'user_id', 'action', 'date_created'], 'required'],
+            [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'seq', 'isFolder', 'user_id', 'action', 'date_created'], 'required'],
             [['seq', 'isFolder', 'valid', '_version'], 'integer'],
             [['data', 'output', 'scenario'], 'string'],
             [['historyUUID', 'UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],

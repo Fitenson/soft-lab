@@ -6,13 +6,10 @@ const ApiTestFormField = {
     clientDatabase: createFormField({ name: "clientDatabase", label: "Client Database" }),
     project: createFormField({ name: "project", label: "Project" }),
     testName: createFormField({ name: "testName", label: "Test Name", max: 50 }),
-    data: createFormField({ name: "data", label: "Data" }),
     isFolder: createFormField({ name: "isFolder", label: "isFolder" }),
     transmission: createFormField({ name: "transmission", label: "Body" }),
     description: createFormField({ name: "description", label: "Description" }),
     moreDescription: createFormField({ name: "moreDescription", label: "More Description" }),
-    output: createFormField({ name: "output", label: "Output" }),
-    scenario: createFormField({ name: "scenario", label: "Scenario" }),
 };
 
 

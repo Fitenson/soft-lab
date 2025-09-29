@@ -11,9 +11,6 @@ export default class ApiTestViewModel {
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
-    private _data: string;
-    private _output: string;
-    private _scenario: string;
     private _apiTests: ApiTestViewModel[];
     private _apiDTO: Partial<ApiTestDTO>;
 
@@ -28,9 +25,6 @@ export default class ApiTestViewModel {
         this._isFolder = Number(data.isFolder ?? 0);
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
-        this._data = data.data ?? "";
-        this._output = data.output ?? "";
-        this._scenario = data.scenario ?? "";
         this._apiTests = (data.apiTests ?? []).map((dto) => new ApiTestViewModel(dto));
         this._apiDTO = data;
     }
@@ -66,18 +60,6 @@ export default class ApiTestViewModel {
 
     get moreDescription(): string {
         return this._moreDescription;
-    }
-
-    get data(): string {
-        return this._data;
-    }
-
-    get output(): string {
-        return this._output;
-    }
-
-    get scenario(): string {
-        return this._scenario;
     }
 
     get isFolder(): number {

@@ -13,9 +13,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
-    private _data: string;
-    private _output: string;
-    private _scenario: string;
     private _apiTests: ApiTestEntity[]
 
 
@@ -30,9 +27,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";
-        this._data = model.data ?? "";
-        this._output = model.output ?? "";
-        this._scenario = model.scenario ?? "";
         this._apiTests = (model.apiTests ?? []).map(dto => new ApiTestEntity(dto));
     }
 
@@ -103,30 +97,6 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
 
     set moreDescription(value: string) {
         this._moreDescription = value;
-    }
-
-    get data(): string {
-        return this._data;
-    }
-
-    set data(value: string) {
-        this._data = value;
-    }
-
-    get output(): string {
-        return this._output;
-    }
-
-    set output(value: string) {
-        this._output = value;
-    }
-
-    get scenario(): string {
-        return this._scenario;
-    }
-
-    set scenario(value: string) {
-        this._scenario = value;
     }
 
     get isFolder(): number {

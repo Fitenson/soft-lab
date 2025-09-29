@@ -11,9 +11,6 @@ export interface ApiTestDTO {
     transmission: string;
     description: string;
     moreDescription: string;
-    data: string;
-    output: string;
-    scenario: string;
     apiTests: ApiTestDTO[];
 }
 
@@ -28,9 +25,6 @@ const apiTestDTOKeys: (keyof ApiTestDTO)[] = [
     "description",
     "isFolder",
     "moreDescription",
-    "data",
-    "output",
-    "scenario",
 ];
 
 

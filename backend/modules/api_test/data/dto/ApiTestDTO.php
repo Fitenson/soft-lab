@@ -16,18 +16,14 @@ class ApiTestDTO extends Model implements JsonSerializable {
     public ?int $isFolder = null;
     public ?string $description = null;
     public ?string $moreDescription = null;
-    public ?string $data = null;
-    public ?string $output = null;
     public ?string $transmission = null;
-    public ?string $scenario = null;
 
 
     public function rules()
     {
         return [[
             ['UUID', 'parentApiTest', 'project', 'clientDatabase', 'testName',
-            'description', 'moreDescription', 'data', 'transmission' ,'scenario',
-            'output', 'seq', 'isFolder'
+            'description', 'moreDescription', 'transmission', 'seq', 'isFolder'
             ],'safe'
         ]];
     }

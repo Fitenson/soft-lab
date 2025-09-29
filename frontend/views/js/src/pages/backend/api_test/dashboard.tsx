@@ -1,6 +1,5 @@
 import AppLayout from "@/layouts/app-layout.tsx";
-import { Head, usePage } from "@inertiajs/react";
-import type { PageProps as InertiaPageProps } from "@inertiajs/core";
+import { Head } from "@inertiajs/react";
 import ApiTestLayout from "@/pages/backend/api_test/presentation/layouts/api-test-layout.tsx";
 import TestCaseSidebar from "@/pages/backend/api_test/presentation/components/test-case-sidebar.tsx";
 import TestCaseForm from "@/pages/backend/api_test/presentation/components/test-case-form.tsx";
@@ -10,17 +9,13 @@ import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTes
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
-
-
-interface PageProps extends InertiaPageProps {
-    id?: string
-}
+import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 
 
 export default function Dashboard() {
-    const { id } = usePage<PageProps>().props;
     const dispatch = useDispatch();
     const { indexApiTest } = useApiTestService();
+    const apiTests = useAppSelector(state => state.apiTest.data.dataTableApiTest);
 
     const { data }= useQuery({
         queryKey: ["/backend/api_test/index"],
@@ -34,8 +29,8 @@ export default function Dashboard() {
             dispatch(loadApiTests(data));
         }
 
-        console.log('ID: ', id);
-    }, [dispatch, data, id]);
+        console.log('Data: ', apiTests);
+    }, [dispatch, data, apiTests]);
 
 
     return (

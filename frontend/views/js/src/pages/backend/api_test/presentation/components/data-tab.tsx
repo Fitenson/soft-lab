@@ -4,15 +4,15 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField";
 import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm";
 import { selectSelectedApiTest } from "../redux/apiTestSelectors";
-import { useReactTable } from "@tanstack/react-table";
+// import { useReactTable } from "@tanstack/react-table";
 
 
 export default function DataTab() {
     const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
-    const table = useReactTable({
+    // const table = useReactTable({
         
-    });
+    // });
 
 
     return (
@@ -38,7 +38,7 @@ export default function DataTab() {
                 )}
             />
 
-            <FormField
+            {/* <FormField
                 name={ApiTestFormField.data.name}
                 control={form.control}
                 render={({ field}) => (
@@ -47,7 +47,7 @@ export default function DataTab() {
                         </FormControl>
                     </FormItem>
                 )}
-            />
+            /> */}
         </div>
     );
 }
