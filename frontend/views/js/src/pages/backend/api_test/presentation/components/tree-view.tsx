@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
     setRenameApiTest,
+    setSelectedApiTest,
     toggleExpandedApiTests,
     toggleSelectedApiTest, triggerMenuAction,
 } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
@@ -59,6 +60,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 const newApiTestDTO = {
                     ...apiTestDTO,
                     project: projectUUID,
+                    transmission: 'formData',
                     clientDatabase: clientDatabase.UUID,
                     seq: 1
                 }
@@ -67,6 +69,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     onSuccess: (newApiTestViewModel) => {
                         dispatch(setRenameApiTest(null));
                         dispatch(updateApiTests(newApiTestViewModel));
+                        dispatch(setSelectedApiTest(newApiTestViewModel));
                     }
                 });
             }

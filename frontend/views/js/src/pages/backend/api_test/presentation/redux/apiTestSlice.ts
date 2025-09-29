@@ -26,7 +26,15 @@ export const apiTestSlice = createSlice({
             state.dataTableApiTest.rows.push(action.payload);
         },
         updateApiTests: (state, action: PayloadAction<ApiTestViewModel>) => {
-            state.dataTableApiTest.rows.push(action.payload);
+            const index = state.dataTableApiTest.rows.findIndex(
+                (r) => r.UUID === action.payload.UUID
+            );
+        
+            if (index !== -1) {
+                state.dataTableApiTest.rows[index] = action.payload;
+            } else {
+                state.dataTableApiTest.rows.push(action.payload);
+            }
         },
         renameApiTest: (
             state,

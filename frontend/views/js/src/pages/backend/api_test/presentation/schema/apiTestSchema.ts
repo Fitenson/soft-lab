@@ -9,7 +9,7 @@ export const apiTestSchema = z.object({
     project: z.string(),
     data: z.string().optional(),
     output: z.string().optional(),
-    isFolder: z.boolean(),
+    isFolder: z.number(),
     transmission: z.string(),
     description: z.string().max(ApiTestFormField.description.max, { error: ApiTestFormField.description.maxError }).optional(),
     moreDescription: z.string().max(ApiTestFormField.moreDescription.max, { error: ApiTestFormField.moreDescription.maxError }).optional(),

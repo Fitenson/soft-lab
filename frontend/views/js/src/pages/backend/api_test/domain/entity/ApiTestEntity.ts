@@ -9,7 +9,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     private _clientDatabase: string;
     private _project: string;
     private _testName: string;
-    private _isFolder: boolean;
+    private _isFolder: number;
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
@@ -26,7 +26,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._clientDatabase = model.clientDatabase ?? "";
         this._project = model.project ?? "";
         this._testName = model.testName ?? "";
-        this._isFolder = model.isFolder ?? false;
+        this._isFolder = model.isFolder ?? 0;
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";
@@ -129,11 +129,11 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._scenario = value;
     }
 
-    get isFolder(): boolean {
+    get isFolder(): number {
         return this._isFolder;
     }
 
-    set isFolder(value: boolean) {
+    set isFolder(value: number) {
         this._isFolder = value;
     }
 

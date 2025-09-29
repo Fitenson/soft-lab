@@ -7,7 +7,7 @@ export interface ApiTestDTO {
     clientDatabase: string;
     project: string;
     testName: string;
-    isFolder: boolean;
+    isFolder: number;
     transmission: string;
     description: string;
     moreDescription: string;

@@ -6,7 +6,7 @@ export default class ApiTestViewModel {
     private _parentApiTest: string;
     private _clientDatabase: string;
     private _project: string;
-    private _isFolder: boolean;
+    private _isFolder: number;
     private _testName: string;
     private _transmission: string;
     private _description: string;
@@ -25,7 +25,7 @@ export default class ApiTestViewModel {
         this._project = data.project ?? "";
         this._testName = data.testName ?? "";
         this._transmission = data.transmission ?? "";
-        this._isFolder = data.isFolder ?? false;
+        this._isFolder = data.isFolder ?? 0;
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
         this._data = data.data ?? "";
@@ -80,7 +80,7 @@ export default class ApiTestViewModel {
         return this._scenario;
     }
 
-    get isFolder(): boolean {
+    get isFolder(): number {
         return this._isFolder;
     }
 

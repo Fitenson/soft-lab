@@ -16,7 +16,7 @@ class ConnectClientDatabaseUseCase {
     }
 
 
-    public function execute(string $id, string $refreshToken): ClientDatabaseEntity
+    public function execute(string $id, ?string $refreshToken = null): ClientDatabaseEntity
     {
         return $this->clientDatabaseRepository->connect($id, $refreshToken);
     }

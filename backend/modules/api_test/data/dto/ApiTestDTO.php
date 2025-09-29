@@ -7,32 +7,31 @@ use yii\base\Model;
 
 
 class ApiTestDTO extends Model implements JsonSerializable {
-    public ?string $UUID;
-    public ?string $parentApiTest;
-    public ?string $clientDatabase;
-    public ?string $project;
-    public ?string $testName;
-    public ?string $useCase;
-    public ?int $seq;
-    public ?int $isFolder;
-    public ?string $description;
-    public ?string $moreDescription;
-    public ?string $data;
-    public ?string $output;
-    public ?string $transmission;
-    public ?string $scenario;
+    public ?string $UUID = null;
+    public ?string $parentApiTest = null;
+    public ?string $clientDatabase = null;
+    public ?string $project = null;
+    public ?string $testName = null;
+    public ?int $seq = null;
+    public ?int $isFolder = null;
+    public ?string $description = null;
+    public ?string $moreDescription = null;
+    public ?string $data = null;
+    public ?string $output = null;
+    public ?string $transmission = null;
+    public ?string $scenario = null;
 
 
     public function rules()
     {
         return [[
             ['UUID', 'parentApiTest', 'project', 'clientDatabase', 'testName',
-            'useCase', 'description', 'moreDescription', 'data', 'transmission',
-            'scenario', 'output', 'seq', 'isFolder'
+            'description', 'moreDescription', 'data', 'transmission' ,'scenario',
+            'output', 'seq', 'isFolder'
             ],'safe'
         ]];
     }
-
+    
 
     public function jsonSerialize(): array
     {

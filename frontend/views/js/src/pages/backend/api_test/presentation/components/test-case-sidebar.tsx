@@ -16,7 +16,7 @@ export default function TestCaseSidebar() {
 
 
     const handleSelectDropdown = () => {
-        const newApiTest = new ApiTestViewModel({ isFolder: false, testName: "New Test Case" });
+        const newApiTest = new ApiTestViewModel({ isFolder: 0, testName: "New Test Case" });
         dispatch(toggleSelectedApiTest(newApiTest));
         dispatch(addApiTest(newApiTest));
     }

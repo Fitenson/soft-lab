@@ -21,7 +21,7 @@ class ApiTestEntity extends Entity {
     private ?string $data;
     private ?string $output;
     private string $transmission;
-    private string $scenario;
+    private ?string $scenario;
 
 
     public function asArray(): array

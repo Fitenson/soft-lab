@@ -77,6 +77,11 @@ export const apiTestUISlice = createSlice({
             } else {
                 state.selectedApiTest.dto = null;
             }
+        },
+        setSelectedApiTest: (state, action: PayloadAction<ApiTestViewModel>) => {
+            const apiTestViewModel = action.payload;
+            state.selectedApiTest.viewModel = apiTestViewModel;
+            state.selectedApiTest.dto = apiTestViewModel.apiDTO;
         }
     }
 });
@@ -88,6 +93,7 @@ export const {
     clearSelectedNode,
     setRenameApiTest,
     triggerMenuAction,
+    setSelectedApiTest,
 } = apiTestUISlice.actions;
 
 export default apiTestUISlice.reducer;

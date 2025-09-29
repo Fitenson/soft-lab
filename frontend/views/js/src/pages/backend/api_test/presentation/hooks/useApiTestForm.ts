@@ -15,7 +15,7 @@ const useApiTestForm = ({ apiTestViewModel }: { apiTestViewModel: ApiTestViewMod
             clientDatabase: apiTestViewModel?.clientDatabase ?? "",
             project: apiTestViewModel?.project ?? "",
             testName: apiTestViewModel?.testName ?? "",
-            isFolder: apiTestViewModel?.isFolder ?? false,
+            isFolder: apiTestViewModel?.isFolder ?? 0,
             transmission: apiTestViewModel?.transmission ?? "",
             description: apiTestViewModel?.description ?? "",
             moreDescription: apiTestViewModel?.moreDescription ?? "",

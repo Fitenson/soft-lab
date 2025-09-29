@@ -98,7 +98,7 @@ class ClientDatabaseService {
     }
 
 
-    public function connectClientDatabase(string $id, string $refreshToken): ClientDatabaseDTO
+    public function connectClientDatabase(string $id, ?string $refreshToken = null): ClientDatabaseDTO
     {
         $token = $this->getClientRefreshTokenUseCase->execute($id);
 
