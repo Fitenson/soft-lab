@@ -10,7 +10,9 @@ import { useReactTable } from "@tanstack/react-table";
 export default function DataTab() {
     const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
-    const table = useReactTable({});
+    const table = useReactTable({
+        
+    });
 
 
     return (

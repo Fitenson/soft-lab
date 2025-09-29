@@ -2,10 +2,7 @@
 
 use backend\components\db\DbMigration;
 
-/**
- * Handles the creation of table `{{%api_test}}`.
- */
-class m250926_004021_create_api_test_table extends DbMigration
+class m250929_092037_create_api_test_has_scenario extends DbMigration
 {
     /**
      * {@inheritdoc}
@@ -14,38 +11,32 @@ class m250926_004021_create_api_test_table extends DbMigration
     {
         $tableOptions = $this->tableOptions;
 
-        $this->createTable('{{%apiTest}}', array_merge([
+        $this->createTable('{{%apiTestHasScenario}}', array_merge([
             'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
-            'parentApiTest' => $this->char(40)->null(),
-            'tester' => $this->char(40)->null(),
-            'clientDatabase' => $this->char(40)->notNull(),
-            'project' => $this->char(40)->notNull(),
-            'testName' => $this->string(50)->notNull(),
+            'apiTest' => $this->char(40)->notNull(),
+            'apiTestHasData' => $this->char(40)->null(),
+            'apiTestHasOutput' => $this->char(40)->null(),
+            'scenario' => $this->string(100)->null(),
             'seq' => $this->smallInteger()->notNull(),
-            'isFolder' => $this->tinyInteger(1)->notNull(),
             'description' => $this->string(255)->null(),
             'moreDescription' => $this->string(500)->null(),
-            'transmission' => $this->string(30),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
-
-        $this->createTable('{{%apiTest_history}}', array_merge([
+        $this->createTable('{{%apiTestHasScenario_history}}', array_merge([
             'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'UUID' => $this->char(40)->notNull(),
-            'parentApiTest' => $this->char(40)->null(),
-            'tester' => $this->char(40)->null(),
-            'clientDatabase' => $this->char(40)->notNull(),
-            'project' => $this->char(40)->notNull(),
-            'testName' => $this->string(50)->notNull(),
+            'apiTest' => $this->char(40)->notNull(),
+            'apiTestHasData' => $this->char(40)->null(),
+            'apiTestHasOutput' => $this->char(40)->null(),
+            'scenario' => $this->string(100)->null(),
             'seq' => $this->smallInteger()->notNull(),
-            'isFolder' => $this->tinyInteger(1)->notNull(),
             'description' => $this->string(255)->null(),
             'moreDescription' => $this->string(500)->null(),
-            'transmission' => $this->string(30),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 
+
         $this->createForeignKey()
-        ->table('apiTest')
+        ->table('apiTestHasScenario')
         ->column('createdBy')
         ->refTable('user')
         ->refColumn('UUID')
@@ -53,7 +44,7 @@ class m250926_004021_create_api_test_table extends DbMigration
         ->build();
 
         $this->createForeignKey()
-        ->table('apiTest')
+        ->table('apiTestHasScenario')
         ->column('updatedBy')
         ->refTable('user')
         ->refColumn('UUID')
@@ -61,35 +52,27 @@ class m250926_004021_create_api_test_table extends DbMigration
         ->build();
 
         $this->createForeignKey()
-        ->table('apiTest')
-        ->column('parentApiTest')
+        ->table('apiTestHasScenario')
+        ->column('apiTest')
         ->refTable('apiTest')
+        ->refColumn('UUID')
+        ->onDeleteRestrict()
+        ->build();
+
+        $this->createForeignKey()
+        ->table('apiTestHasScenario')
+        ->column('apiTestHasData')
+        ->refTable('apiTestHasData')
         ->refColumn('UUID')
         ->onDeleteCascade()
         ->build();
 
         $this->createForeignKey()
-        ->table('apiTest')
-        ->column('clientDatabase')
-        ->refTable('clientDatabase')
+        ->table('apiTestHasScenario')
+        ->column('apiTestHasOutput')
+        ->refTable('apiTestHasOutput')
         ->refColumn('UUID')
-        ->onDeleteRestrict()
-        ->build();
-
-        $this->createForeignKey()
-        ->table('apiTest')
-        ->column('project')
-        ->refTable('project')
-        ->refColumn('UUID')
-        ->onDeleteRestrict()
-        ->build();
-
-        $this->createForeignKey()
-        ->table('apiTest')
-        ->column('tester')
-        ->refTable('user')
-        ->refColumn('UUID')
-        ->onDeleteNull()
+        ->onDeleteCascade()
         ->build();
 
         $this->addForeignKeys();
@@ -100,7 +83,22 @@ class m250926_004021_create_api_test_table extends DbMigration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%apiTest}}');
-        $this->dropTable('{{%apiTest_history}}');
+        $this->dropTable('{{%apiTestHasScenario}}');
+        $this->dropTable('{{%apiTestHasScenario_history}}');
     }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m250929_092037_create_api_test_has_scenario cannot be reverted.\n";
+
+        return false;
+    }
+    */
 }
