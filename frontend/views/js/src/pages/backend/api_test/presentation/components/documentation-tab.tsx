@@ -9,7 +9,7 @@ import { selectSelectedApiTest } from "@/pages/backend/api_test/presentation/red
 export default function DocumentationTab() {
     const isLoading = useAppSelector(state => state.loading.global);
     const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
-    const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
+    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestViewModel });
 
 
     return (

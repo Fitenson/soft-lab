@@ -1,1 +1,0 @@
-import{j as e}from"./main-BtiO4frp.js";function a({children:l}){return e.jsx("div",{className:"px-4 py-6 w-full mx-auto",children:e.jsx("section",{className:"flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12 w-full",children:l})})}export{a as default};

@@ -5,20 +5,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form/SetFormError";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 import { type ApiTestFormModel, apiTestSchema } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
+import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
+import { useState } from "react";
 
 
-const useApiTestForm = ({ apiTestViewModel }: { apiTestViewModel: ApiTestViewModel | null }) => {
+const useApiTestForm = ({ apiTestDTO }: { apiTestDTO: Partial<ApiTestDTO> | null }) => {
+    const [apiTestViewModel, setApiTestViewModel] = useState<ApiTestViewModel | null>(
+        () => apiTestDTO ? new ApiTestViewModel(apiTestDTO) : null
+    );
+
     const form = useForm<ApiTestFormModel>({
         resolver: zodResolver(apiTestSchema),
         defaultValues: {
-            parentApiTest: apiTestViewModel?.parentApiTest ?? "",
-            clientDatabase: apiTestViewModel?.clientDatabase ?? "",
-            project: apiTestViewModel?.project ?? "",
-            testName: apiTestViewModel?.testName ?? "",
-            isFolder: apiTestViewModel?.isFolder ?? 0,
-            transmission: apiTestViewModel?.transmission ?? "",
-            description: apiTestViewModel?.description ?? "",
-            moreDescription: apiTestViewModel?.moreDescription ?? "",
+            parentApiTest: apiTestDTO?.parentApiTest ?? "",
+            clientDatabase: apiTestDTO?.clientDatabase ?? "",
+            project: apiTestDTO?.project ?? "",
+            testName: apiTestDTO?.testName ?? "",
+            isFolder: apiTestDTO?.isFolder ?? 0,
+            transmission: apiTestDTO?.transmission ?? "",
+            description: apiTestDTO?.description ?? "",
+            moreDescription: apiTestDTO?.moreDescription ?? "",
         }
     });
 
@@ -51,6 +57,8 @@ const useApiTestForm = ({ apiTestViewModel }: { apiTestViewModel: ApiTestViewMod
     return {
         form,
         setFormError,
+        apiTestViewModel,
+        setApiTestViewModel
     };
 }
 

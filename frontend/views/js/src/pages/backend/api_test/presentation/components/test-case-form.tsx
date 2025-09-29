@@ -10,23 +10,23 @@ import ScenarioTab from "@/pages/backend/api_test/presentation/components/scenar
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { Button } from "@/components/ui/button";
 import {
-    selectApiTestDTO,
     selectSelectedApiTest,
+    // selectSelectedApiTestEntity, selectTestName
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
+import {setRenameApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
+import {useDispatch} from "react-redux";
 import {useEffect} from "react";
-import { useDispatch } from "react-redux";
-import { setRenameApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice";
 
 
 export default function TestCaseForm() {
+    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
+    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
     const dispatch = useDispatch();
-    const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
-    const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
-    const apiTestDTO = useAppSelector(selectApiTestDTO);
+
 
     useEffect(() => {
-        form.setValue("testName", apiTestDTO?.testName ?? "");
-    }, [apiTestDTO, form]);
+        form.setValue("testName", selectedApiTestDTO?.testName ?? "");
+    }, [selectedApiTestDTO, form])
 
 
     return (

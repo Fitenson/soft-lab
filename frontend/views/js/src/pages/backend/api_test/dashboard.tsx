@@ -4,18 +4,16 @@ import ApiTestLayout from "@/pages/backend/api_test/presentation/layouts/api-tes
 import TestCaseSidebar from "@/pages/backend/api_test/presentation/components/test-case-sidebar.tsx";
 import TestCaseForm from "@/pages/backend/api_test/presentation/components/test-case-form.tsx";
 import TestCaseOutput from "@/pages/backend/api_test/presentation/components/test-case-output.tsx";
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService.ts";
-import {useEffect} from "react";
-import {useDispatch} from "react-redux";
-import {loadApiTests} from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
-import { useAppSelector } from "@/core/presentation/store/useAppSelector";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loadApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
 
 
 export default function Dashboard() {
     const dispatch = useDispatch();
     const { indexApiTest } = useApiTestService();
-    const apiTests = useAppSelector(state => state.apiTest.data.dataTableApiTest);
 
     const { data }= useQuery({
         queryKey: ["/backend/api_test/index"],
@@ -28,9 +26,7 @@ export default function Dashboard() {
         if(data) {
             dispatch(loadApiTests(data));
         }
-
-        console.log('Data: ', apiTests);
-    }, [dispatch, data, apiTests]);
+    }, [dispatch, data]);
 
 
     return (

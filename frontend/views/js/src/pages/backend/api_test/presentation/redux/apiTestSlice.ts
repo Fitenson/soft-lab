@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 import type { DataTableType } from "@/types";
+import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 
 
 interface TreeViewState {
@@ -35,17 +35,18 @@ export const apiTestSlice = createSlice({
             action: PayloadAction<{ UUID: string; newName: string }>
         ) => {
             const { UUID, newName } = action.payload;
-            const row = state.dataTableApiTest.rows.find((r) => r.UUID === UUID);
-            if (row) {
-                row.testName = newName;
+            const index = state.dataTableApiTest.rows.findIndex((r) => r.UUID === UUID);
+            if (index !== -1) {
+                state.dataTableApiTest.rows[index] = {
+                    ...state.dataTableApiTest.rows[index],
+                    testName: newName,
+                };
             }
         },
         removeApiTests: (state, action: PayloadAction<string[]>) => {
             state.dataTableApiTest.rows = state.dataTableApiTest.rows.filter(
                 (r) => !action.payload.includes(r.UUID)
             );
-
-            console.log("Rows", state.dataTableApiTest.rows);
         }
     }
 });

@@ -8,8 +8,8 @@ import { selectSelectedApiTest } from "../redux/apiTestSelectors";
 
 
 export default function DataTab() {
-    const selectedApiTestViewModel = useAppSelector(selectSelectedApiTest);
-    const { form } = useApiTestForm({ apiTestViewModel: selectedApiTestViewModel });
+    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
+    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
     // const table = useReactTable({
         
     // });

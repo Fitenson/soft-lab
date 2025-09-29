@@ -15,6 +15,7 @@ class m250929_085023_create_api_test_has_data extends DbMigration
         $this->createTable('{{%apiTestHasData}}', array_merge([
             'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'apiTest' => $this->char(40)->notNull(),
+            'fieldType' => $this->string(100)->notNull(),
             'key' => $this->string(100)->null(),
             'value' => $this->text()->null(),
             'enabled' => $this->smallInteger()->notNull(),
@@ -25,6 +26,7 @@ class m250929_085023_create_api_test_has_data extends DbMigration
             'historyUUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'UUID' => $this->char(40)->notNull(),
             'apiTest' => $this->char(40)->notNull(),
+            'fieldType' => $this->string(100)->notNull(),
             'key' => $this->string(100)->null(),
             'value' => $this->text()->null(),
             'enabled' => $this->smallInteger()->notNull(),

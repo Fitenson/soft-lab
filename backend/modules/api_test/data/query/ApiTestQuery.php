@@ -49,10 +49,7 @@ class ApiTestQuery extends \backend\components\db\AppQuery
             'testName',
             'description',
             'moreDescription',
-            'data',
-            'output',
             'transmission',
-            'scenario',
         ]);
     }
 }
