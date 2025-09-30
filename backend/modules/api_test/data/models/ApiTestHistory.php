@@ -3,7 +3,6 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
-
 use backend\modules\api_test\data\query\ApiTestHistoryQuery;
 
 /**
@@ -12,6 +11,7 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  * @property string $historyUUID
  * @property string $UUID
  * @property string|null $parentApiTest
+ * @property string|null $tester
  * @property string $clientDatabase
  * @property string $project
  * @property string $testName
@@ -19,10 +19,7 @@ use backend\modules\api_test\data\query\ApiTestHistoryQuery;
  * @property int $isFolder
  * @property string|null $description
  * @property string|null $moreDescription
- * @property string|null $data
- * @property string|null $output
  * @property string|null $transmission
- * @property string|null $scenario
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -52,11 +49,10 @@ class ApiTestHistory extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['parentApiTest', 'tester', 'description', 'moreDescription', 'transmission', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['historyUUID', 'UUID', 'clientDatabase', 'project', 'testName', 'seq', 'isFolder', 'user_id', 'action', 'date_created'], 'required'],
             [['seq', 'isFolder', 'valid', '_version'], 'integer'],
-            [['data', 'output', 'scenario'], 'string'],
-            [['historyUUID', 'UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
+            [['historyUUID', 'UUID', 'parentApiTest', 'tester', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
             [['testName'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['moreDescription'], 'string', 'max' => 500],
@@ -74,6 +70,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
             'historyUUID' => 'History Uuid',
             'UUID' => 'Uuid',
             'parentApiTest' => 'Parent Api Test',
+            'tester' => 'Tester',
             'clientDatabase' => 'Client Database',
             'project' => 'Project',
             'testName' => 'Test Name',
@@ -81,10 +78,7 @@ class ApiTestHistory extends \backend\components\db\AppModel
             'isFolder' => 'Is Folder',
             'description' => 'Description',
             'moreDescription' => 'More Description',
-            'data' => 'Data',
-            'output' => 'Output',
             'transmission' => 'Transmission',
-            'scenario' => 'Scenario',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',

@@ -11,6 +11,7 @@ use backend\modules\user\data\models\User;
  *
  * @property string $UUID
  * @property string $apiTest
+ * @property string $fieldType
  * @property string|null $key
  * @property string|null $value
  * @property int $enabled
@@ -42,11 +43,11 @@ class ApiTestHasData extends \backend\components\db\AppModel
     {
         return [
             [['key', 'value', 'description', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'apiTest', 'enabled'], 'required'],
+            [['UUID', 'apiTest', 'fieldType', 'enabled'], 'required'],
             [['value'], 'string'],
             [['enabled', 'valid', '_version'], 'integer'],
             [['UUID', 'apiTest', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
-            [['key'], 'string', 'max' => 100],
+            [['fieldType', 'key'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 500],
             [['updatedAt', 'updatedBy'], 'string', 'max' => 30],
             [['UUID'], 'unique'],
@@ -64,6 +65,7 @@ class ApiTestHasData extends \backend\components\db\AppModel
         return [
             'UUID' => 'Uuid',
             'apiTest' => 'Api Test',
+            'fieldType' => 'Field Type',
             'key' => 'Key',
             'value' => 'Value',
             'enabled' => 'Enabled',
@@ -77,6 +79,7 @@ class ApiTestHasData extends \backend\components\db\AppModel
             '_version' => 'Version',
         ];
     }
+
 
     /**
      * {@inheritdoc}

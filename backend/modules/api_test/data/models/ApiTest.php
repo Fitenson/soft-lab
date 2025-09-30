@@ -3,17 +3,18 @@
 namespace backend\modules\api_test\data\models;
 
 use Yii;
-
 use backend\modules\api_test\data\query\ApiTestQuery;
 use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\project\data\models\Project;
 use backend\modules\user\data\models\User;
+
 
 /**
  * This is the model class for table "apiTest".
  *
  * @property string $UUID
  * @property string|null $parentApiTest
+ * @property string|null $tester
  * @property string $clientDatabase
  * @property string $project
  * @property string $testName
@@ -21,10 +22,7 @@ use backend\modules\user\data\models\User;
  * @property int $isFolder
  * @property string|null $description
  * @property string|null $moreDescription
- * @property string|null $data
- * @property string|null $output
  * @property string|null $transmission
- * @property string|null $scenario
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property string|null $createdBy
@@ -51,11 +49,10 @@ class ApiTest extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['parentApiTest', 'description', 'moreDescription', 'data', 'output', 'transmission', 'scenario', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['parentApiTest', 'tester', 'description', 'moreDescription', 'transmission', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['UUID', 'clientDatabase', 'project', 'testName', 'seq', 'isFolder'], 'required'],
             [['seq', 'isFolder', 'valid', '_version'], 'integer'],
-            [['data', 'output', 'scenario'], 'string'],
-            [['UUID', 'parentApiTest', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
+            [['UUID', 'parentApiTest', 'tester', 'clientDatabase', 'project', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],
             [['testName'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['moreDescription'], 'string', 'max' => 500],
@@ -65,6 +62,7 @@ class ApiTest extends \backend\components\db\AppModel
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
             [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => Apitest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
             [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],
+            [['tester'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['tester' => 'UUID']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updatedBy' => 'UUID']],
         ];
     }
@@ -77,6 +75,7 @@ class ApiTest extends \backend\components\db\AppModel
         return [
             'UUID' => 'Uuid',
             'parentApiTest' => 'Parent Api Test',
+            'tester' => 'Tester',
             'clientDatabase' => 'Client Database',
             'project' => 'Project',
             'testName' => 'Test Name',
@@ -84,10 +83,7 @@ class ApiTest extends \backend\components\db\AppModel
             'isFolder' => 'Is Folder',
             'description' => 'Description',
             'moreDescription' => 'More Description',
-            'data' => 'Data',
-            'output' => 'Output',
             'transmission' => 'Transmission',
-            'scenario' => 'Scenario',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
             'createdBy' => 'Created By',

@@ -10,6 +10,7 @@ use Yii;
  * @property string $historyUUID
  * @property string $UUID
  * @property string $apiTest
+ * @property string $fieldType
  * @property string|null $key
  * @property string|null $value
  * @property int $enabled
@@ -44,11 +45,11 @@ class ApiTestHasDataHistory extends \backend\components\db\AppModel
     {
         return [
             [['key', 'value', 'description', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'apiTest', 'enabled', 'user_id', 'action', 'date_created'], 'required'],
+            [['historyUUID', 'UUID', 'apiTest', 'fieldType', 'enabled', 'user_id', 'action', 'date_created'], 'required'],
             [['value'], 'string'],
             [['enabled', 'valid', '_version'], 'integer'],
             [['historyUUID', 'UUID', 'apiTest', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
-            [['key'], 'string', 'max' => 100],
+            [['fieldType', 'key'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 500],
             [['updatedAt', 'updatedBy', 'action', 'date_created'], 'string', 'max' => 30],
             [['historyUUID'], 'unique'],
@@ -64,6 +65,7 @@ class ApiTestHasDataHistory extends \backend\components\db\AppModel
             'historyUUID' => 'History Uuid',
             'UUID' => 'Uuid',
             'apiTest' => 'Api Test',
+            'fieldType' => 'Field Type',
             'key' => 'Key',
             'value' => 'Value',
             'enabled' => 'Enabled',
@@ -80,6 +82,7 @@ class ApiTestHasDataHistory extends \backend\components\db\AppModel
             'date_created' => 'Date Created',
         ];
     }
+
 
     /**
      * {@inheritdoc}
