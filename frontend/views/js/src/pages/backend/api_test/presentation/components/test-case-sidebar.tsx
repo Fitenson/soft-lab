@@ -9,6 +9,8 @@ import { addApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestS
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
 import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
+import { setSelectedApiTest } from "../redux/apiTestUISlice";
+import type { ApiTestDTO } from "../../data/dto/ApiTestDTO";
 
 
 export default function TestCaseSidebar() {
@@ -17,8 +19,10 @@ export default function TestCaseSidebar() {
 
 
     const handleSelectAddTestCaseFile = () => {
-        const newApiTest = new ApiTestViewModel({ UUID: uuid(), isFolder: 0, testName: "New Test Case" });
+        const apiTestDTO: Partial<ApiTestDTO> = { UUID: uuid(), isFolder: 0, testName: "New Test Case" };
+        const newApiTest = new ApiTestViewModel(apiTestDTO);
         dispatch(addApiTest(newApiTest));
+        dispatch(setSelectedApiTest(apiTestDTO));
         // dispatch(toggleSelectedApiTest(newApiTest.apiDTO));
         // dispatch(triggerMenuAction({ action: "rename", dto: newApiTest.apiDTO }));
     }

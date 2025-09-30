@@ -46,7 +46,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const { createApiTest, removeApiTest } = useApiTestService();
 
     const handleToggleSelect = (node: ApiTestViewModel) => {
-        dispatch(toggleSelectedApiTest(node));
+        dispatch(toggleSelectedApiTest(node.apiDTO));
     };
 
     const handleToggleExpand = (UUID: string) => {
