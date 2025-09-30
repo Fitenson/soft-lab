@@ -35,6 +35,8 @@ export const apiTestSlice = createSlice({
             action: PayloadAction<{ UUID: string; newName: string }>
         ) => {
             const { UUID, newName } = action.payload;
+            if (!UUID) return; 
+
             const index = state.dataTableApiTest.rows.findIndex((r) => r.UUID === UUID);
             if (index !== -1) {
                 state.dataTableApiTest.rows[index] = {

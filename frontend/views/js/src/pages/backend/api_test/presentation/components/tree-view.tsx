@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
     clearSelectedNode,
-    setRenameApiTest,
+    setRenameSelectedApiTest,
     setSelectedApiTest,
     toggleExpandedApiTests,
     toggleSelectedApiTest,
@@ -74,7 +74,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                         dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
                         
-                        dispatch(setRenameApiTest(null));
+                        dispatch(renameApiTest({ UUID: "", newName: "" }));
                         dispatch(setSelectedApiTest(newApiTestViewModel));
                     }
                 });
@@ -105,8 +105,8 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     }
 
 
-    const handleRenameApiTest = (node: ApiTestViewModel) => {
-        dispatch(triggerMenuAction({ action: "rename", dto: node.apiDTO }));
+    const handleRenameApiTest = () => {
+        dispatch(triggerMenuAction({ action: "rename", dto: {...selectedApiTestDTO} }));
     }
 
 
@@ -150,31 +150,32 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 <ContextMenuTrigger className="w-full">
                     {menuAction === "rename" && selectedApiTestDTO?.UUID === node.UUID ? (
                         <Input
-                            value={selectedApiTestDTO?.testName ?? selectedApiTestDTO?.testName}
+                            value={selectedApiTestDTO?.testName}
                             autoFocus
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 // only update the draft (not the main rows yet)
-                                dispatch(setRenameApiTest(e.target.value));
+                                dispatch(renameApiTest({ UUID: selectedApiTestDTO.UUID ?? "", newName: e.target.value }));
+                                dispatch(setRenameSelectedApiTest(e.target.value));
                             }}
                             onBlur={() => {
                                 // commit the rename into rows
-                                if (selectedApiTestDTO?.UUID) {
-                                    dispatch(renameApiTest({
-                                        UUID: selectedApiTestDTO.UUID,
-                                        newName: selectedApiTestDTO.testName ?? "",
-                                    }));
-                                }
+                                dispatch(renameApiTest({
+                                    UUID: node.UUID,
+                                    newName: node.testName ?? "",
+                                }));
                                 // exit rename mode
-                                dispatch(setRenameApiTest(null));
+                                // dispatch(setRenameSelectedApiTest(null));
                             }}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter" && selectedApiTestDTO?.UUID) {
+                                console.log('DTO: ', selectedApiTestDTO);
+                                console.log('DTO UUID: ', selectedApiTestDTO.UUID);
+                                if (e.key === "Enter" && node?.UUID) {
                                     dispatch(renameApiTest({
-                                        UUID: selectedApiTestDTO.UUID,
+                                        UUID: node.UUID,
                                         newName: selectedApiTestDTO.testName ?? "",
                                     }));
                                     handleSaveTestApi();
-                                    dispatch(setRenameApiTest(null));
+                                    // dispatch(setRenameSelectedApiTest(null));
                                 }
                             }}
                         />
@@ -192,7 +193,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 <ContextMenuContent>
                     <ContextMenuItem
                         className="cursor-pointer"
-                        onClick={() => handleRenameApiTest(node)}
+                        onClick={handleRenameApiTest}
                     >
                         Rename
                     </ContextMenuItem>

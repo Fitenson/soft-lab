@@ -38,37 +38,23 @@ export const apiTestUISlice = createSlice({
         clearSelectedNode: (state) => {
             state.selectedApiTest = null;
         },
-        setRenameApiTest: (state, action: PayloadAction<string | null>) => {
-            if (action.payload !== null) {
-                if (state.selectedApiTest) {
-                    state.selectedApiTest = {
-                        ...state.selectedApiTest,
-                        testName: action.payload,
-                    };
-                }
-            } else {
-                state.menuAction = null;
+        setRenameSelectedApiTest: (state, action: PayloadAction<string>) => {
+            if (state.selectedApiTest) {
+                state.selectedApiTest = {
+                    ...state.selectedApiTest,
+                    testName: action.payload,
+                };
             }
         },
-        triggerMenuAction: (
-            state,
-            action: PayloadAction<{
-                action: MenuActionType;
-                dto: Partial<ApiTestDTO> | null;
-            }>
-        ) => {
+        triggerMenuAction: (state, action) => {
             state.menuAction = action.payload.action;
             const apiTestDTO = action.payload.dto;
-
-            state.selectedApiTest = {
-                ...apiTestDTO,
-                UUID: apiTestDTO?.UUID
-            };
-
-            if (action.payload.action === "rename" && action.payload.dto && state.selectedApiTest) {
-                state.selectedApiTest.UUID = action.payload.dto.UUID;
-            } else {
-                state.selectedApiTest = null;
+        
+            if (action.payload.action === "rename" && apiTestDTO) {
+                state.selectedApiTest = {
+                    ...state.selectedApiTest,
+                    ...apiTestDTO,
+                };
             }
         },
         setSelectedApiTest: (state, action: PayloadAction<ApiTestDTO>) => {
@@ -82,7 +68,7 @@ export const {
     toggleSelectedApiTest,
     toggleExpandedApiTests,
     clearSelectedNode,
-    setRenameApiTest,
+    setRenameSelectedApiTest,
     triggerMenuAction,
     setSelectedApiTest,
 } = apiTestUISlice.actions;

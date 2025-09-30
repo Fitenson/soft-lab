@@ -5,8 +5,9 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDispatch } from "react-redux";
 import { addApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
-import {toggleSelectedApiTest, triggerMenuAction} from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
+// import { toggleSelectedApiTest, triggerMenuAction } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
+import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 
 
@@ -15,11 +16,11 @@ export default function TestCaseSidebar() {
     const dispatch = useDispatch();
 
 
-    const handleSelectDropdown = () => {
-        const newApiTest = new ApiTestViewModel({ isFolder: 0, testName: "New Test Case" });
+    const handleSelectAddTestCaseFile = () => {
+        const newApiTest = new ApiTestViewModel({ UUID: uuid(), isFolder: 0, testName: "New Test Case" });
         dispatch(addApiTest(newApiTest));
-        dispatch(toggleSelectedApiTest(newApiTest.apiDTO));
-        dispatch(triggerMenuAction({ action: "rename", dto: newApiTest.apiDTO }));
+        // dispatch(toggleSelectedApiTest(newApiTest.apiDTO));
+        // dispatch(triggerMenuAction({ action: "rename", dto: newApiTest.apiDTO }));
     }
 
 
@@ -47,7 +48,7 @@ export default function TestCaseSidebar() {
                         </DropdownMenuItem>
                         <DropdownMenuItem 
                             className="cursor-pointer"
-                            onClick={handleSelectDropdown}
+                            onClick={handleSelectAddTestCaseFile}
                         >
                             Add Test Case
                         </DropdownMenuItem>

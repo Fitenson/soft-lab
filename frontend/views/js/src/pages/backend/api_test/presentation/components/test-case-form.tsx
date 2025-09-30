@@ -13,7 +13,7 @@ import {
     selectSelectedApiTest,
     // selectSelectedApiTestEntity, selectTestName
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
-import {setRenameApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
+import {setRenameSelectedApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import {useDispatch} from "react-redux";
 import {useEffect} from "react";
 
@@ -44,7 +44,7 @@ export default function TestCaseForm() {
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
-                                                dispatch(setRenameApiTest(e.target.value));
+                                                dispatch(setRenameSelectedApiTest(e.target.value));
                                             }}
                                         />
                                     </FormControl>
