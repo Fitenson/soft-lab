@@ -51,7 +51,7 @@ class ApiTestHasData extends \backend\components\db\AppModel
             [['description'], 'string', 'max' => 500],
             [['updatedAt', 'updatedBy'], 'string', 'max' => 30],
             [['UUID'], 'unique'],
-            [['apiTest'], 'exist', 'skipOnError' => true, 'targetClass' => Apitest::class, 'targetAttribute' => ['apiTest' => 'UUID']],
+            [['apiTest'], 'exist', 'skipOnError' => true, 'targetClass' => ApiTest::class, 'targetAttribute' => ['apiTest' => 'UUID']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updatedBy' => 'UUID']],
         ];
