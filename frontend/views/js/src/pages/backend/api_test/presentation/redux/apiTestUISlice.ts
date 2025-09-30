@@ -26,8 +26,6 @@ export const apiTestUISlice = createSlice({
             } else {
                 state.selectedApiTest = action.payload;
             }
-
-            console.log('Toggle Api: ', action.payload);
         },
         toggleExpandedApiTests: (state, action: PayloadAction<string>) => {
             const UUID = action.payload;
@@ -51,8 +49,6 @@ export const apiTestUISlice = createSlice({
         triggerMenuAction: (state, action) => {
             state.menuAction = action.payload.action;
             const apiTestDTO = action.payload.dto;
-
-            console.log('Trigger Menu: ', apiTestDTO);
         
             if (action.payload.action === "rename" && apiTestDTO) {
                 state.selectedApiTest = {

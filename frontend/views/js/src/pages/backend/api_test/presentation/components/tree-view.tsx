@@ -65,17 +65,24 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     seq: 1
                 }
 
+                const UUIDs = [selectedApiTestDTO?.UUID].filter(
+                    (UUID): UUID is string => UUID !== undefined
+                );
+
                 await createApiTest(newApiTestDTO, clientDatabase.refreshToken, {
                     onSuccess: (newApiTestViewModel) => {
-                        const UUIDs = [selectedApiTestDTO?.UUID].filter(
-                            (UUID): UUID is string => UUID !== undefined
-                        );
-                    
                         dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
                         
                         dispatch(renameApiTest({ UUID: "", newName: "" }));
                         dispatch(setSelectedApiTest(newApiTestViewModel));
+                    },
+                    onError: (error) => {
+                        console.error(error);
+                        showToast("Error", "Failed to create test case", "error");
+                        dispatch(clearSelectedNode());
+                        dispatch(triggerMenuAction({ action: null }));
+                        dispatch(removeApiTestAction(UUIDs));
                     }
                 });
             }
@@ -153,29 +160,15 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                             value={selectedApiTestDTO?.testName}
                             autoFocus
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                // only update the draft (not the main rows yet)
-                                dispatch(renameApiTest({ UUID: selectedApiTestDTO.UUID ?? "", newName: e.target.value }));
                                 dispatch(setRenameSelectedApiTest(e.target.value));
                             }}
-                            onBlur={() => {
-                                // commit the rename into rows
-                                dispatch(renameApiTest({
-                                    UUID: node.UUID,
-                                    newName: node.testName ?? "",
-                                }));
-                                // exit rename mode
-                                // dispatch(setRenameSelectedApiTest(null));
-                            }}
                             onKeyDown={(e) => {
-                                console.log('DTO: ', selectedApiTestDTO);
-                                console.log('DTO UUID: ', selectedApiTestDTO.UUID);
                                 if (e.key === "Enter" && node?.UUID) {
                                     dispatch(renameApiTest({
                                         UUID: node.UUID,
                                         newName: selectedApiTestDTO.testName ?? "",
                                     }));
                                     handleSaveTestApi();
-                                    // dispatch(setRenameSelectedApiTest(null));
                                 }
                             }}
                         />

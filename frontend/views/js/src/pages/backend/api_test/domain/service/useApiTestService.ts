@@ -43,17 +43,9 @@ const useApiTestService = () => {
     };
 
     const indexApiTest = async (
-        callbacks?: ServiceCallback<DataTableType<ApiTestViewModel>>
+        callbacks?: ServiceCallback<DataTableType<ApiTestDTO>>
     ) => {
-        return handleServiceCall<DataTableType<ApiTestViewModel>>(async () => {
-            const response = await indexApiTestRepo();
-            const rows = response.rows.map(dto => new ApiTestViewModel(dto));
-
-            return {
-                ...response,
-                rows,
-            };
-        }, callbacks);
+        return handleServiceCall<DataTableType<ApiTestDTO>>(async () => await indexApiTestRepo(), callbacks);
     }
 
 

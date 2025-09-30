@@ -5,12 +5,13 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDispatch } from "react-redux";
 import { addApiTest } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
-// import { toggleSelectedApiTest, triggerMenuAction } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
+import { toggleSelectedApiTest, triggerMenuAction } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel";
 import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import { setSelectedApiTest } from "../redux/apiTestUISlice";
 import type { ApiTestDTO } from "../../data/dto/ApiTestDTO";
+import {useEffect} from "react";
 
 
 export default function TestCaseSidebar() {
@@ -20,12 +21,15 @@ export default function TestCaseSidebar() {
 
     const handleSelectAddTestCaseFile = () => {
         const apiTestDTO: Partial<ApiTestDTO> = { UUID: uuid(), isFolder: 0, testName: "New Test Case" };
-        const newApiTest = new ApiTestViewModel(apiTestDTO);
-        dispatch(addApiTest(newApiTest));
+        dispatch(addApiTest(apiTestDTO));
         dispatch(setSelectedApiTest(apiTestDTO));
-        // dispatch(toggleSelectedApiTest(newApiTest.apiDTO));
-        // dispatch(triggerMenuAction({ action: "rename", dto: newApiTest.apiDTO }));
+        dispatch(toggleSelectedApiTest(apiTestDTO));
+        dispatch(triggerMenuAction({ action: "rename", dto: apiTestDTO }));
     }
+
+    useEffect(() => {
+        console.log(apiTests);
+    }, [apiTests]);
 
 
     return (
@@ -60,9 +64,13 @@ export default function TestCaseSidebar() {
                 </DropdownMenu>
             </div>
 
-            {apiTests.rows.map((node) => (
-                <TreeView key={node.UUID} node={node} />
-            ))}
+            {apiTests.rows.map((node) => {
+                const apiTestViewModel = new ApiTestViewModel(node);
+
+                return (
+                    <TreeView key={apiTestViewModel.UUID} node={apiTestViewModel} />
+                );
+            })}
         </div>
     );
 }
