@@ -11,7 +11,7 @@ interface LoadingButtonProps extends React.ComponentProps<typeof ButtonType> {
 
 export function LoadingButton({ isLoading, children, ...props }: LoadingButtonProps) {
     return (
-        <Button disabled={isLoading} {...props}>
+        <Button disabled={isLoading} {...props} type="submit">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isLoading && children}
         </Button>

@@ -73,7 +73,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     onSuccess: (newApiTestViewModel) => {
                         dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
-                        
+                        dispatch(triggerMenuAction({ action: null }));
                         dispatch(renameApiTest({ UUID: "", newName: "" }));
                         dispatch(setSelectedApiTest(newApiTestViewModel));
                     },

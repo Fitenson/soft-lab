@@ -11,7 +11,7 @@ import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import { setSelectedApiTest } from "../redux/apiTestUISlice";
 import type { ApiTestDTO } from "../../data/dto/ApiTestDTO";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 
 export default function TestCaseSidebar() {
@@ -20,7 +20,12 @@ export default function TestCaseSidebar() {
 
 
     const handleSelectAddTestCaseFile = () => {
-        const apiTestDTO: Partial<ApiTestDTO> = { UUID: uuid(), isFolder: 0, testName: "New Test Case" };
+        const apiTestDTO: Partial<ApiTestDTO> = {
+            UUID: uuid(),
+            isFolder: 0,
+            testName: "New Test Case",
+            transmission: 'formData',
+        };
         dispatch(addApiTest(apiTestDTO));
         dispatch(setSelectedApiTest(apiTestDTO));
         dispatch(toggleSelectedApiTest(apiTestDTO));

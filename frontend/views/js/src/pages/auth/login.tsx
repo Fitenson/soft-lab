@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "./presentation/redux/authSlice";
 import LoginFormField from "@/pages/auth/presentation/form/LoginFormField";
 import type { AuthDTO } from "@/pages/auth/data/dto/AuthDTO";
+import type {LoginModel} from "@/pages/auth/presentation/schema/loginSchema.tsx";
 
 
 export default function LoginPage() {
@@ -25,8 +26,7 @@ export default function LoginPage() {
     const { login } = useAuthService();
 
 
-    const submit = async () => {
-        const formValues = form.getValues();
+    const submit = async (formValues: LoginModel) => {
         const auth = new Auth(formValues);
 
         await login(auth, {
@@ -36,7 +36,6 @@ export default function LoginPage() {
                 router.visit('/dashboard');
             },
             onError: (error) => {
-                console.log('Error: ', error);
                 setFormError(error, {
                     setToastError(message) {
                         showToast("Failed", message, "error");
