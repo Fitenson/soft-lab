@@ -5,9 +5,10 @@ namespace backend\modules\api_test\api;
 use Yii;
 use backend\controllers\RestController;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
+use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 use backend\modules\api_test\domain\service\ApiTestService;
 use backend\modules\api_test\form\ApiTestForm;
-
+use backend\modules\api_test\form\ApiTestHasDataForm;
 
 class ApiTestController extends RestController {
     private ApiTestService $apiTestService;
@@ -32,19 +33,39 @@ class ApiTestController extends RestController {
 
     public function actionCreate()
     {
-        $data = Yii::$app->request->post();
+        $post = Yii::$app->request->post();
 
         $apiTestForm = new ApiTestForm();
-        $apiTestForm->load($data['apiTest'], '');
+        $apiTestForm->load($post['apiTest'], '');
 
         if(!$apiTestForm->validate()) {
             Yii::$app->exception->throw($apiTestForm->getErrors(), 422);
         }
 
+        $apiTestHasDataEntities = [];
+
+        if(!empty($post['apiTestHasData'])) {
+            $apiTestHasDataForm = new ApiTestHasDataForm();
+            $apiTestHasDataForm->load($post['apiTestHasData'], '');
+
+            if(!$apiTestHasDataForm->validate()) {
+                Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+            }
+
+            $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
+        }
+        
+
         $apiTestData = $apiTestForm->getAttributes();
 
         $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
-        $apiTestDTO = $this->apiTestService->createApiTest(new ApiTestEntity($apiTestData), $clientDatabaseToken);
+        $apiTestDTO = $this->apiTestService->createApiTest([
+            'apiTestEntity' => new ApiTestEntity($apiTestData),
+            'apiTestHasDataEntities' => $apiTestHasDataEntities, 
+            'clientDatabaseToken' => $clientDatabaseToken
+        ]);
+
+
 
         return [
             'apiTest' => $apiTestDTO

@@ -6,6 +6,7 @@ use Yii;
 use Throwable;
 use backend\modules\api_test\data\dto\ApiTestDTO;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
+use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 use backend\modules\api_test\domain\usecase\IndexApiTestUseCase;
 use backend\modules\project\domain\usecase\IndexProjectUseCase;
 use backend\modules\api_test\domain\usecase\CreateApiTestUseCase;
@@ -52,8 +53,19 @@ class ApiTestService {
     }
 
 
-    public function createApiTest(ApiTestEntity $apiTestEntity, string $clientDatabaseToken): ApiTestDTO
+    /**
+     *  @param ApiTestEntity $apiTestEntity
+     *  @param ApiTestHasDataEntity[] $apiTestHasDataEntities
+     *  @param string $clientDatabaseToken
+     * 
+     *  @return ApiTestDTO
+    */
+    public function createApiTest($params): ApiTestDTO
     {
+        $apiTestEntity = $params['apiTestEntity'];
+        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
+        $clientDatabaseToken = $params['clientDatabaseToken'];
+
         try {
             $transaction = Yii::$app->db->beginTransaction();
             $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($apiTestEntity->getClientDatabase(), $clientDatabaseToken);
@@ -69,8 +81,19 @@ class ApiTestService {
     }
 
 
-    public function updateApiTest(ApiTestEntity $apiTestEntity): ApiTestDTO
+    /**
+     *  @param ApiTestEntity $apiTestEntity
+     *  @param ApiTestHasDataEntity[]|null $apiTestHasDataEntities
+     *  @param string $clientDatabaseToken
+     * 
+     *  @return ApiTestDTO
+    */
+    public function updateApiTest($params): ApiTestDTO
     {
+        $apiTestEntity = $params['apiTestEntity'];
+        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
+        $clientDatabaseToken = $params['clientDatabaseToken'];
+
         try {
             $transaction = Yii::$app->db->beginTransaction();
             $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity);

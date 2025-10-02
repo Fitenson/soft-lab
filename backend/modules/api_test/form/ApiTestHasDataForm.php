@@ -20,7 +20,7 @@ class ApiTestHasDataForm extends Form {
     {
         return [
             [['key', 'value', 'description'], 'default', 'value' => null],
-            [['UUID', 'apiTest', 'fieldType', 'enabled'], 'required'],
+            [['UUID', 'fieldType', 'enabled'], 'required'],
             [['value'], 'string'],
             [['enabled'], 'integer'],
             [['fieldType', 'key'], 'string', 'max' => 100],
