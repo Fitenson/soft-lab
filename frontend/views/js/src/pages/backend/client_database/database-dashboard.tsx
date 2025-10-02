@@ -6,10 +6,16 @@ import DatabaseSchemaTab from "@/pages/backend/client_database/presentation/comp
 import ErdDiagramTab from "@/pages/backend/client_database/presentation/components/tabs/erd-diagram-tab.tsx";
 import breadcrumbItems from "@/components/app/breadcrumb-items.tsx";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
+import ClientDatabaseViewModel from "./presentation/view_models/ClientDatabaseViewModel";
+import { useState } from "react";
+import type { ClientDatabaseDTO } from "./data/dto/ClientDatabaseDTO";
 
 
 export default function DatabaseDashboard() {
-    const clientDatabaseViewModel = useAppSelector(state => state.clientDatabase.clientDatabase);
+    const clientDatabaseDTO: Partial<ClientDatabaseDTO> | null = useAppSelector(state => state.clientDatabase.clientDatabase);
+    const [clientDatabaseViewModel] = useState<ClientDatabaseViewModel | null>(
+        () => clientDatabaseDTO ? new ClientDatabaseViewModel(clientDatabaseDTO) : null
+    );
 
     const breadcrumbs = [
         ...(breadcrumbItems ?? []),

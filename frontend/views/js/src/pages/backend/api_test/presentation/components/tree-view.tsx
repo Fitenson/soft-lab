@@ -23,6 +23,8 @@ import useShowToast from "@/hooks/use-show-toast";
 import {renameApiTest, updateApiTests, removeApiTests as removeApiTestAction } from "../redux/apiTestSlice";
 import { usePage } from "@inertiajs/react";
 import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors";
+import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO";
+import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
 
 
 interface PageProps extends InertiaPageProps {
@@ -34,10 +36,10 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const { id: projectUUID } = usePage<PageProps>().props;
     const dispatch = useDispatch();
     const indent = level * 8;
-    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
+    const selectedApiTestDTO: Partial<ApiTestDTO> | null = useAppSelector(selectSelectedApiTest);
     const expandedApiTests = useAppSelector(selectExpandedApiTests);
     const menuAction = useAppSelector(selectMenuAction);
-    const clientDatabase = useAppSelector(selectClientDatabase);
+    const clientDatabase: Partial<ClientDatabaseDTO> | null = useAppSelector(selectClientDatabase);
     const showToast = useShowToast();
 
     const isExpanded = expandedApiTests.includes(node.UUID);
@@ -56,7 +58,10 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
 
     const handleSaveTestApi = async () => {
         try {
-            if(selectedApiTestDTO && clientDatabase) {
+            if(selectedApiTestDTO && 
+                clientDatabase && 
+                clientDatabase.refreshToken
+            ) {
                 const newApiTestDTO = {
                     ...selectedApiTestDTO,
                     project: projectUUID,

@@ -10,10 +10,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Button } from "@/components/ui/button.tsx";
 import {useEffect, useState} from "react";
 import DatabaseDialog from "./presentation/components/database-dialog.tsx";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { listClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice.ts";
 import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
-import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 export default function ClientDatabaseIndex() {
     const [isOpenDialog, setIsOpenDialog] = useState<string | null>(null);
     const dispatch = useDispatch();
-    const clientDatabaseViewModels = useAppSelector(state => state.clientDatabase.clientDatabases);
+    const clientDatabaseDTOs = useAppSelector(state => state.clientDatabase.clientDatabases);
 
     const breadcrumbs: BreadcrumbItem[] = [
         ...(breadcrumbItems ?? []),
@@ -35,12 +35,11 @@ export default function ClientDatabaseIndex() {
     const { rows } = usePage<Props>().props;
 
     useEffect(() => {
-        console.log("Rows: ", clientDatabaseViewModels);
         if(rows?.length === 0) {
             return;
         }
 
-        dispatch(listClientDatabase(rows?.map((clientDatabaseDTO) => new ClientDatabaseViewModel(clientDatabaseDTO))));
+        dispatch(listClientDatabase(rows));
     }, [dispatch, rows])
 
 
@@ -71,9 +70,13 @@ export default function ClientDatabaseIndex() {
                 />
 
                 <div className="grid grid-cols-6 grid-rows-2 gap-4 w-full h-full border-2 border-accent dark:border-accent p-2 rounded-2xl">
-                    {clientDatabaseViewModels?.length > 0  && clientDatabaseViewModels?.map((clientDatabaseViewModel: ClientDatabaseViewModel) => (
-                        <DatabaseCard clientDatabaseViewModel={clientDatabaseViewModel} />
-                    ))}
+                    {clientDatabaseDTOs?.length > 0  && clientDatabaseDTOs?.map((clientDatabaseDTO: ClientDatabaseDTO) => {
+                        const clientDatabaseViewModel = new ClientDatabaseViewModel(clientDatabaseDTO);
+
+                        return (
+                            <DatabaseCard clientDatabaseViewModel={clientDatabaseViewModel} />
+                        );
+                    })}
                 </div>
             </ClientDatabaseLayout>
         </AppLayout>

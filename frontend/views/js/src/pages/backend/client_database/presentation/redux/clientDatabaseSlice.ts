@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
+import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
 
 
 interface ClientDatabaseState {
-    clientDatabase: ClientDatabaseViewModel | null;
-    clientDatabases: ClientDatabaseViewModel[];
+    clientDatabase: Partial<ClientDatabaseDTO> | null;
+    clientDatabases: ClientDatabaseDTO[];
 }
 
 const initialState: ClientDatabaseState = {
@@ -18,26 +18,22 @@ const clientDatabaseSlice = createSlice({
     name: "client-database",
     initialState,
     reducers: {
-        listClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel[]>) => {
+        listClientDatabase: (state, action: PayloadAction<ClientDatabaseDTO[]>) => {
             state.clientDatabases = action.payload;
         },
-        addClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
-            state.clientDatabases.push(action.payload as ClientDatabaseViewModel);
+        addClientDatabase: (state, action: PayloadAction<ClientDatabaseDTO>) => {
+            state.clientDatabases.push(action.payload as ClientDatabaseDTO);
         },
         removeClientDatabase: (state, action: PayloadAction<string>) => {
             state.clientDatabases = state.clientDatabases.filter(
                 (client) => client.UUID !== action.payload
             );
         },
-        setClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
-            const clientDatabaseViewModel = action.payload as ClientDatabaseViewModel;
-            state.clientDatabase = new ClientDatabaseViewModel({
-                ...clientDatabaseViewModel.dto,
-                refreshToken: clientDatabaseViewModel.dto.password
-            });
+        setClientDatabase: (state, action: PayloadAction<ClientDatabaseDTO>) => {
+            state.clientDatabase = action.payload as ClientDatabaseDTO;
         },
-        connectClientDatabase: (state, action: PayloadAction<ClientDatabaseViewModel>) => {
-            state.clientDatabase = action.payload as ClientDatabaseViewModel;
+        connectClientDatabase: (state, action: PayloadAction<ClientDatabaseDTO>) => {
+            state.clientDatabase = action.payload as ClientDatabaseDTO;
         },
         logoutClientDatabase: (state) => {
             state.clientDatabase = null;
