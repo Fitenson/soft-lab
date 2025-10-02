@@ -9,6 +9,8 @@ use backend\modules\api_test\data\models\ApiTest;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
 use backend\modules\api_test\domain\repository\ApiTestRepository;
 use backend\modules\api_test\data\dto\ApiTestDTO;
+use backend\modules\api_test\data\models\ApiTestHasData;
+use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
 class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
@@ -31,9 +33,21 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     }
 
 
-    public function createApiTest(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity): ApiTestEntity
+    /**
+    * @param array{
+    *     apiTestEntity: ApiTestEntity,
+    *     clientDatabaseToken: string
+    * } $params
+     * 
+     * @return ApiTestEntity $apiTestEntity
+    */
+    public function createApiTest($params): ApiTestEntity
     {
         $_actionUUID = $this->getActionUUID();
+
+        $apiTestEntity = $params['apiTestEntity'];
+        $clientDatabaseEntity = $params['clientDatabaseEntity'];
+
         $apiTestDTO = $apiTestEntity->asDTO();
         $clientDatabaseDTO = $clientDatabaseEntity->asDTO();
 
@@ -46,9 +60,23 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
         return new ApiTestEntity($ApiTest->getAttributes());
     }
 
-    public function updateApiTest(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity): ApiTestEntity
+
+    /**
+    * @param array{
+    *     apiTestEntity: ApiTestEntity,
+    *     apiTestHasDataEntities: ApiTestHasDataEntity[],
+    *     clientDatabaseToken: string
+    * } $params
+     * 
+     * @return ApiTestEntity $apiTestEntity
+    */
+    public function updateApiTest($params): ApiTestEntity
     {
         $_actionUUID = $this->getActionUUID();
+        $apiTestEntity = $params['apiTestEntity'];
+        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
+        $clientDatabaseEntity = $params['clientDatabaseEntity'];
+        
         $apiTestDTO = $apiTestEntity->asDTO();
         $clientDatabaseDTO = $clientDatabaseEntity->asDTO();
 
@@ -94,5 +122,31 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
         }
 
         return $status;        
+    }
+
+
+    /**
+    * @param array{
+    *     apiTestHasDataEntities: ApiTestHasDataEntity[],
+    * } $params
+     * 
+     * @return ApiTestHasDataEntity[] $apiTestHasDataEntity[]
+    */
+    public function createApiTestHasData(array $params): array
+    {
+        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
+        $newApiTestHasDataEntities = [];
+        $_actionUUID = $this->getActionUUID();
+
+        foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
+            $ApiTestHasData = new ApiTestHasData();
+            $ApiTestHasData->load($apiTestHasDataEntity->asArray(), '');
+            $ApiTestHasData->_actionUUID = $_actionUUID;
+            $ApiTestHasData->save(false);
+
+            $newApiTestHasDataEntities[] = new ApiTestHasDataEntity($ApiTestHasData->getAttributes());
+        }
+        
+        return $newApiTestHasDataEntities;
     }
 }
