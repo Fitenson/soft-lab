@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import type ProjectListViewModel from "@/pages/backend/api_test/presentation/view_models/ProjectListViewModel.ts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
-import type ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
+import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel.ts";
 import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import { useDispatch } from "react-redux";
@@ -17,13 +17,16 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
     const dispatch = useDispatch();
     const [selectedDatabase, setSelectedDatabase] = React.useState<ClientDatabaseViewModel>();
     const { connectClientDatabase } = useClientDatabaseService();
-    const clientDatabase = useAppSelector(state => state.clientDatabase.clientDatabase);
+    const clientDatabaseDTO = useAppSelector(state => state.clientDatabase.clientDatabase);
+    const [clientDatabaseViewModel] = useState<ClientDatabaseViewModel | null>(
+        () => clientDatabaseDTO ? new ClientDatabaseViewModel(clientDatabaseDTO) : null
+    );
     const showToast = useShowToast();
     const isLoading = useAppSelector(selectLoading);
 
 
     const handleConnectClientDatabase = async () => {
-        if(clientDatabase?.UUID != selectedDatabase?.UUID) {
+        if(clientDatabaseViewModel?.UUID != selectedDatabase?.UUID) {
             await connectClientDatabase(selectedDatabase?.UUID ?? "", {
                 onSuccess: (data: ClientDatabaseViewModel) => {
                     dispatch(setClientDatabase(data));
@@ -34,8 +37,8 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
                 }
             });
         } else {
-            if (clientDatabase) {
-                setSelectedDatabase(clientDatabase);
+            if (clientDatabaseViewModel) {
+                setSelectedDatabase(clientDatabaseViewModel);
             }
             
             showToast("Success", "Successfully connecting user to database", "success");

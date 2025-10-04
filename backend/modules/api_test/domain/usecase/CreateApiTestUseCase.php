@@ -17,6 +17,9 @@ class CreateApiTestUseCase {
 
 
     public function execute(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity) {
-        return $this->apiTestRepository->createApiTest($apiTestEntity, $clientDatabaseEntity);
+        return $this->apiTestRepository->createApiTest([
+            'apiTestEntity' => $apiTestEntity,
+            'clientDatabaseEntity' => $clientDatabaseEntity
+        ]);
     }
 }
