@@ -4,15 +4,13 @@ import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField";
 import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm";
 import { selectSelectedApiTest } from "../redux/apiTestSelectors";
+import ApiTestDataTable from "@/pages/backend/api_test/presentation/components/data_table/api-test-data-table.tsx";
 // import { useReactTable } from "@tanstack/react-table";
 
 
 export default function DataTab() {
     const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
     const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
-    // const table = useReactTable({
-        
-    // });
 
 
     return (
@@ -48,6 +46,7 @@ export default function DataTab() {
                     </FormItem>
                 )}
             /> */}
+            <ApiTestDataTable data={}
         </div>
     );
 }

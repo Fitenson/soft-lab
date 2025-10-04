@@ -6,28 +6,42 @@ use Yii;
 use Throwable;
 use backend\components\repository\BaseRepository;
 use backend\modules\api_test\data\models\ApiTest;
+use backend\modules\client_database\data\models\ClientDatabase;
+use backend\modules\project\data\models\Project;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
 use backend\modules\api_test\domain\repository\ApiTestRepository;
 use backend\modules\api_test\data\dto\ApiTestDTO;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
+
 class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     public function index()
     {
         $ApiTests = ApiTest::find()
-        // ->alias('module')
         ->selectIndex()
-        ->orderBy(['testName' => SORT_ASC])
+        ->joinWith(['subApiTest' => function($subApiTestQuery) {
+            $subApiTestQuery->select([
+                'subApiTest.UUID',
+                'subApiTest.UUID',
+                'subApiTest.parentApiTest',
+                'subApiTest.clientDatabase',
+                'clientDatabaseName' => ClientDatabase::find()->select(['databaseName'])->where('clientDatabase.UUID = subApiTest.clientDatabase'),
+                'subApiTest.project',
+                'subApiTest.isFolder',
+                'subApiTest.seq',
+                'projectName' => Project::find()->select(['projectName'])->where('project.UUID = subApiTest.project'),
+                'subApiTest.testName',
+                'subApiTest.description',
+                'subApiTest.moreDescription',
+                'subApiTest.transmission',
+            ])
+            ->orderBy(['subApiTest.testName' => SORT_ASC]);
+        }])
+        ->orderBy(['apiTest.testName' => SORT_ASC])
         ->asArray()
         ->all();
 
-        $total = count($ApiTests);
-
-
-        return [
-            'total' => (string)$total,
-            'rows' => $ApiTests
-        ];
+        return $ApiTests;
     }
 
 

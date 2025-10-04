@@ -48,7 +48,13 @@ class ApiTestService {
 
     public function index()
     {
-        return $this->indexApiTestUseCase->execute();
+        $parentApiTests = $this->indexApiTestUseCase->execute();
+
+        foreach($parentApiTests as &$parentApiTest) {
+            $apiTests = $parentApiTest['apiTests'];
+        }
+
+        return $parentApiTests;
     }
 
 

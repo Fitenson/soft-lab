@@ -38,18 +38,18 @@ class ApiTestQuery extends \backend\components\db\AppQuery
 
     public function selectIndex() {
         return $this->select([
-            'UUID',
-            'parentApiTest',
-            'clientDatabase',
+            'apiTest.UUID',
+            'apiTest.parentApiTest',
+            'apiTest.clientDatabase',
             'clientDatabaseName' => ClientDatabase::find()->select(['databaseName'])->where('clientDatabase.UUID = apiTest.clientDatabase'),
-            'project',
-            'isFolder',
-            'seq',
+            'apiTest.project',
+            'apiTest.isFolder',
+            'apiTest.seq',
             'projectName' => Project::find()->select(['projectName'])->where('project.UUID = apiTest.project'),
-            'testName',
-            'description',
-            'moreDescription',
-            'transmission',
+            'apiTest.testName',
+            'apiTest.description',
+            'apiTest.moreDescription',
+            'apiTest.transmission',
         ]);
     }
 }
