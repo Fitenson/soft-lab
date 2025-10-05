@@ -58,9 +58,9 @@ class ApiTest extends \backend\components\db\AppModel
             [['moreDescription'], 'string', 'max' => 500],
             [['transmission', 'updatedAt', 'updatedBy'], 'string', 'max' => 30],
             [['UUID'], 'unique'],
-            [['clientDatabase'], 'exist', 'skipOnError' => true, 'targetClass' => Clientdatabase::class, 'targetAttribute' => ['clientDatabase' => 'UUID']],
+            [['clientDatabase'], 'exist', 'skipOnError' => true, 'targetClass' => ClientDatabase::class, 'targetAttribute' => ['clientDatabase' => 'UUID']],
             [['createdBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['createdBy' => 'UUID']],
-            [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => Apitest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
+            [['parentApiTest'], 'exist', 'skipOnError' => true, 'targetClass' => ApiTest::class, 'targetAttribute' => ['parentApiTest' => 'UUID']],
             [['project'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project' => 'UUID']],
             [['tester'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['tester' => 'UUID']],
             [['updatedBy'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updatedBy' => 'UUID']],
@@ -94,6 +94,106 @@ class ApiTest extends \backend\components\db\AppModel
         ];
     }
 
+    /**
+     * Gets query for [[ApiTests]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApiTests()
+    {
+        return $this->hasMany(ApiTest::class, ['parentApiTest' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[Apitesthasdatas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApiTestHasDatas()
+    {
+        return $this->hasMany(ApiTestHasData::class, ['apiTest' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[Apitesthasoutputs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApiTestHasOutputs()
+    {
+        return $this->hasMany(ApiTestHasOutput::class, ['apiTest' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[Apitesthasscenarios]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getApiTestHasScenarios()
+    {
+        return $this->hasMany(ApiTestHasScenario::class, ['apiTest' => 'UUID']);
+    }
+
+    /**
+     * Gets query for [[ClientDatabase0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClientDatabase0()
+    {
+        return $this->hasOne(ClientDatabase::class, ['UUID' => 'clientDatabase']);
+    }
+
+    /**
+     * Gets query for [[CreatedBy0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy0()
+    {
+        return $this->hasOne(User::class, ['UUID' => 'createdBy']);
+    }
+
+    /**
+     * Gets query for [[ParentApiTest0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParentApiTest0()
+    {
+        return $this->hasOne(ApiTest::class, ['UUID' => 'parentApiTest']);
+    }
+
+    /**
+     * Gets query for [[Project0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject0()
+    {
+        return $this->hasOne(Project::class, ['UUID' => 'project']);
+    }
+
+    /**
+     * Gets query for [[Tester0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTester0()
+    {
+        return $this->hasOne(User::class, ['UUID' => 'tester']);
+    }
+
+    /**
+     * Gets query for [[UpdatedBy0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy0()
+    {
+        return $this->hasOne(User::class, ['UUID' => 'updatedBy']);
+    }
+    
 
     public static function find()
     {

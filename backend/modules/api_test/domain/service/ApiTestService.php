@@ -54,11 +54,18 @@ class ApiTestService {
     {
         $parentApiTests = $this->indexApiTestUseCase->execute();
 
-        foreach($parentApiTests as &$parentApiTest) {
-            $apiTests = $parentApiTest['apiTests'];
-        }
+        // foreach($parentApiTests as &$parentApiTest) {
+        //     $apiTests = $parentApiTest['apiTests'];
 
-        return $parentApiTests;
+        //     // $apiTestHasData = $parentApiTest[''];
+        // }
+
+        $total = count($parentApiTests);
+
+        return [
+            'total' => (string)$total,
+            'rows' => $parentApiTests
+        ];
     }
 
 

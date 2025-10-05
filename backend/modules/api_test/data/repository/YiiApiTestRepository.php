@@ -21,8 +21,10 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     {
         $ApiTests = ApiTest::find()
         ->selectIndex()
-        ->joinWith(['subApiTest' => function($subApiTestQuery) {
-            $subApiTestQuery->select([
+        ->joinWith(['apiTests' => function($subApiTestQuery) {
+            $subApiTestQuery
+            ->alias('subApiTest')
+            ->select([
                 'subApiTest.UUID',
                 'subApiTest.UUID',
                 'subApiTest.parentApiTest',

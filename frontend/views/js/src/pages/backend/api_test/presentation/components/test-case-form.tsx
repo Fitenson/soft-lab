@@ -89,43 +89,43 @@ export default function TestCaseForm() {
 
     return (
         <div className="h-full w-full">
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(submit)}>
-                    <div className="flex items-end gap-2 m-2">
-                        <FormField
-                            name={ApiTestFormField.testName.name}
-                            render={({ field}) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            onChange={(e) => {
-                                                field.onChange(e);
-                                                dispatch(setRenameSelectedApiTest(e.target.value));
-                                            }}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(submit)}>
+                        <div className="flex items-end gap-2 m-2">
+                            <FormField
+                                name={ApiTestFormField.testName.name}
+                                render={({ field}) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    dispatch(setRenameSelectedApiTest(e.target.value));
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
 
-                        <Button className="p-2 px-6">Save</Button>
-                    </div>
+                            <Button className="p-2 px-6">Save</Button>
+                        </div>
 
-                    <Tabs className="w-full m-2" defaultValue={"documentation"}>
-                        <TabsList className="w-full flex justify-start">
-                            <TabsTrigger className="cursor-pointer" value={"documentation"}>Documentation</TabsTrigger>
-                            <TabsTrigger className="cursor-pointer" value={"data"}>Data</TabsTrigger>
-                            <TabsTrigger className="cursor-pointer" value={"scenario"}>Scenario</TabsTrigger>
-                        </TabsList>
+                        <Tabs className="w-full m-2" defaultValue={"data"}>
+                            <TabsList className="w-full flex justify-start">
+                                <TabsTrigger className="cursor-pointer" value={"documentation"}>Documentation</TabsTrigger>
+                                <TabsTrigger className="cursor-pointer" value={"data"}>Data</TabsTrigger>
+                                <TabsTrigger className="cursor-pointer" value={"scenario"}>Scenario</TabsTrigger>
+                            </TabsList>
 
-                        <TabsContent value={"documentation"} className="m-2">
-                            <DocumentationTab />
-                        </TabsContent>
-                        <TabsContent value={"data"} className="m-2">
-                            <DataTab />
-                        </TabsContent>
+                            <TabsContent value={"documentation"} className="m-2">
+                                <DocumentationTab />
+                            </TabsContent>
+                            <TabsContent value={"data"} className="m-2">
+                                <DataTab />
+                            </TabsContent>
                         <TabsContent value={"scenario"} className="m-2">
                             <ScenarioTab/>
                         </TabsContent>
