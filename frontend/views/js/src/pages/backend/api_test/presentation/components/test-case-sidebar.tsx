@@ -11,7 +11,6 @@ import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import { setSelectedApiTest } from "../redux/apiTestUISlice";
 import type { ApiTestDTO } from "../../data/dto/ApiTestDTO";
-import { useEffect } from "react";
 
 
 export default function TestCaseSidebar() {
@@ -31,10 +30,6 @@ export default function TestCaseSidebar() {
         dispatch(toggleSelectedApiTest(apiTestDTO));
         dispatch(triggerMenuAction({ action: "rename", dto: apiTestDTO }));
     }
-
-    useEffect(() => {
-        console.log(apiTests);
-    }, [apiTests]);
 
 
     return (

@@ -9,7 +9,7 @@ import ApiTestDataTable from "@/pages/backend/api_test/presentation/components/d
 
 export default function DataTab() {
     const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
-    const { form ,apiTestViewModel } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
+    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
 
 
     return (
@@ -49,7 +49,7 @@ export default function DataTab() {
             /> */}
 
             <div className="col-span-2">
-                <ApiTestDataTable data={apiTestViewModel?.apiTestData?.rows ?? []} />
+                <ApiTestDataTable />
             </div>
         </div>
     );

@@ -22,12 +22,6 @@ const useApiTestDataForm = ({ apiTestDataDTOs }: { apiTestDataDTOs?: ApiTestData
             key: "",
             value: "",
             description: "",
-            data: apiTestDataViewModels.map(apiTestDataViewModel => ({
-                enabled: apiTestDataViewModel.enabled,
-                key: apiTestDataViewModel.key ?? "",
-                value: apiTestDataViewModel.value ?? "",
-                description: apiTestDataViewModel.description ?? "",
-            })),
         },
     });
 

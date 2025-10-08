@@ -1,5 +1,6 @@
 import { z } from "zod";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
+import {apiTestDataSchema} from "@/pages/backend/api_test/presentation/schema/apiTestDataSchema.ts";
 
 
 export const apiTestSchema = z.object({
@@ -11,6 +12,8 @@ export const apiTestSchema = z.object({
     transmission: z.string(),
     description: z.string().max(ApiTestFormField.description.max, { error: ApiTestFormField.description.maxError }).optional(),
     moreDescription: z.string().max(ApiTestFormField.moreDescription.max, { error: ApiTestFormField.moreDescription.maxError }).optional(),
+}).extend({
+    apiTestData: z.array(apiTestDataSchema).default([]).optional(),
 });
 
 

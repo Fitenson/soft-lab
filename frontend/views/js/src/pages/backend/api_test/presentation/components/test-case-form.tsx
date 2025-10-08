@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {Fragment, useEffect} from "react";
 import type { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { usePage } from "@inertiajs/react";
 import { useDispatch } from "react-redux";
@@ -31,6 +31,7 @@ import {
     updateApiTests
 } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
 import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
+import type {ApiTestDataDTO} from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
 
 
 interface PageProps extends InertiaPageProps {
@@ -42,7 +43,8 @@ export default function TestCaseForm() {
     const { id: projectUUID } = usePage<PageProps>().props;
     const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
     const selectedClientDatabase = useAppSelector(selectClientDatabase);
-    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
+    const { form: apiTestForm } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
+
     const dispatch = useDispatch();
     const {
         createApiTest: createApiTestService
@@ -51,14 +53,16 @@ export default function TestCaseForm() {
 
 
     useEffect(() => {
-        form.setValue("testName", selectedApiTestDTO?.testName ?? "");
-        form.setValue("transmission", selectedApiTestDTO?.transmission ?? "formData");
-    }, [selectedApiTestDTO, form]);
+        apiTestForm.setValue("testName", selectedApiTestDTO?.testName ?? "");
+        apiTestForm.setValue("transmission", selectedApiTestDTO?.transmission ?? "formData");
+    }, [selectedApiTestDTO, apiTestForm]);
 
 
     const submit = async (formValues: ApiTestFormModel) => {
         const clientDatabaseToken = selectedClientDatabase?.password;
         const clientDatabase = selectedClientDatabase?.UUID;
+
+        console.log('Test Data', apiTestForm.getValues());
 
         const UUIDs = [selectedApiTestDTO?.UUID].filter(
             (UUID): UUID is string => UUID !== undefined
@@ -69,6 +73,10 @@ export default function TestCaseForm() {
                 ...formValues,
                 project: projectUUID,
                 clientDatabase: clientDatabase,
+                apiTestData: {
+                    total: (formValues.apiTestData?.length ?? 0).toString(),
+                    rows: formValues.apiTestData as ApiTestDataDTO[]
+                }
             };
 
             await createApiTestService(apiTestDTO, clientDatabaseToken, {
@@ -89,49 +97,54 @@ export default function TestCaseForm() {
 
     return (
         <div className="h-full w-full">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)}>
-                        <div className="flex items-end gap-2 m-2">
-                            <FormField
-                                name={ApiTestFormField.testName.name}
-                                render={({ field}) => (
-                                    <FormItem className="flex-1">
-                                        <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                onChange={(e) => {
-                                                    field.onChange(e);
-                                                    dispatch(setRenameSelectedApiTest(e.target.value));
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
+            {selectedApiTestDTO && (
+                <Fragment>
+                    <Form {...apiTestForm}>
+                        <form onSubmit={apiTestForm.handleSubmit(submit)}>
+                            <div className="flex items-end gap-2 m-2">
+                                <FormField
+                                    name={ApiTestFormField.testName.name}
+                                    control={apiTestForm.control}
+                                    render={({ field}) => (
+                                        <FormItem className="flex-1">
+                                            <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    onChange={(e) => {
+                                                        field.onChange(e);
+                                                        dispatch(setRenameSelectedApiTest(e.target.value));
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <Button className="p-2 px-6">Save</Button>
-                        </div>
+                                <Button className="p-2 px-6">Save</Button>
+                            </div>
 
-                        <Tabs className="w-full m-2" defaultValue={"data"}>
-                            <TabsList className="w-full flex justify-start">
-                                <TabsTrigger className="cursor-pointer" value={"documentation"}>Documentation</TabsTrigger>
-                                <TabsTrigger className="cursor-pointer" value={"data"}>Data</TabsTrigger>
-                                <TabsTrigger className="cursor-pointer" value={"scenario"}>Scenario</TabsTrigger>
-                            </TabsList>
+                            <Tabs className="w-full m-2" defaultValue={"data"}>
+                                <TabsList className="w-full flex justify-start">
+                                    <TabsTrigger className="cursor-pointer" value={"documentation"}>Documentation</TabsTrigger>
+                                    <TabsTrigger className="cursor-pointer" value={"data"}>Data</TabsTrigger>
+                                    <TabsTrigger className="cursor-pointer" value={"scenario"}>Scenario</TabsTrigger>
+                                </TabsList>
 
-                            <TabsContent value={"documentation"} className="m-2">
-                                <DocumentationTab />
-                            </TabsContent>
-                            <TabsContent value={"data"} className="m-2">
-                                <DataTab />
-                            </TabsContent>
-                        <TabsContent value={"scenario"} className="m-2">
-                            <ScenarioTab/>
-                        </TabsContent>
-                    </Tabs>
-                </form>
-            </Form>
+                                <TabsContent value={"documentation"} className="m-2">
+                                    <DocumentationTab />
+                                </TabsContent>
+                                <TabsContent value={"data"} className="m-2">
+                                    <DataTab />
+                                </TabsContent>
+                                <TabsContent value={"scenario"} className="m-2">
+                                    <ScenarioTab/>
+                                </TabsContent>
+                            </Tabs>
+                        </form>
+                    </Form>
+                </Fragment>
+            )}
         </div>
     );
 }

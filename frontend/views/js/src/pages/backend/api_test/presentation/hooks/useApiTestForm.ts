@@ -17,14 +17,15 @@ const useApiTestForm = ({ apiTestDTO }: { apiTestDTO: Partial<ApiTestDTO> | null
     const form = useForm<ApiTestFormModel>({
         resolver: zodResolver(apiTestSchema),
         defaultValues: {
-            parentApiTest: apiTestDTO?.parentApiTest ?? "",
-            clientDatabase: apiTestDTO?.clientDatabase ?? "",
-            project: apiTestDTO?.project ?? "",
-            testName: apiTestDTO?.testName ?? "",
-            isFolder: apiTestDTO?.isFolder ?? 0,
-            transmission: apiTestDTO?.transmission ?? "",
-            description: apiTestDTO?.description ?? "",
-            moreDescription: apiTestDTO?.moreDescription ?? "",
+            parentApiTest: apiTestViewModel?.parentApiTest ?? "",
+            clientDatabase: apiTestViewModel?.clientDatabase ?? "",
+            project: apiTestViewModel?.project ?? "",
+            testName: apiTestViewModel?.testName ?? "",
+            isFolder: apiTestViewModel?.isFolder ?? 0,
+            transmission: apiTestViewModel?.transmission ?? "",
+            description: apiTestViewModel?.description ?? "",
+            moreDescription: apiTestViewModel?.moreDescription ?? "",
+            apiTestData: apiTestViewModel?.apiTestData?.rows ?? []
         }
     });
 

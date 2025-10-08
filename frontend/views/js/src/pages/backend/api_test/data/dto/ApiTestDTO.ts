@@ -13,8 +13,8 @@ export interface ApiTestDTO {
     transmission: string;
     description: string;
     moreDescription: string;
-    apiTestData: DataTableType<ApiTestDataDTO>;
-    apiTests: ApiTestDTO[];
+    apiTestData?: DataTableType<ApiTestDataDTO>;
+    apiTests?: ApiTestDTO[];
 }
 
 
