@@ -1,17 +1,12 @@
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAppSelector } from "@/core/presentation/store/useAppSelector";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField";
-import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm";
-import { selectSelectedApiTest } from "../redux/apiTestSelectors";
 import ApiTestDataTable from "@/pages/backend/api_test/presentation/components/data_table/api-test-data-table.tsx";
+import type {UseFormReturn} from "react-hook-form";
+import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 
 
-export default function DataTab() {
-    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
-    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
-
-
+export default function DataTab({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
     return (
         <div className="grid grid-cols-2 w-full space-y-2">
             <div className="col-span-2">
@@ -49,7 +44,7 @@ export default function DataTab() {
             /> */}
 
             <div className="col-span-2">
-                <ApiTestDataTable />
+                <ApiTestDataTable form={form} />
             </div>
         </div>
     );

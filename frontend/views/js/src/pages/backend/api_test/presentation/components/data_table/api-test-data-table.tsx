@@ -13,11 +13,11 @@ import { selectLoading } from "@/core/presentation/store/loadingSlice.ts";
 import { Input } from "@/components/ui/input.tsx";
 import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/ApiTestDataFormField.ts";
 import { Checkbox } from "@/components/ui/checkbox";
-import {Form, FormControl, FormField, FormItem} from "@/components/ui/form.tsx";
-import {useFieldArray} from "react-hook-form";
-import {useEffect, useRef} from "react";
-import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm.ts";
-import {selectSelectedApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form.tsx";
+import { useFieldArray, type UseFormReturn } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
+
 
 const dataKeys = ["key", "value", "description"] as const;
 type DataRowKey = typeof dataKeys[number];
@@ -26,17 +26,15 @@ const isDataRowKey = (k: string): k is DataRowKey =>
 type RowPath = `apiTestData.${number}.${DataRowKey}`;
 
 
-export default function ApiTestDataTable() {
-    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
-    const { form: apiTestForm, apiTestViewModel } = useApiTestForm({ apiTestDTO:  selectedApiTestDTO });
+export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
     const { fields, append } = useFieldArray({
-        control: apiTestForm.control,
+        control: form.control,
         name: "apiTestData",
     });
 
 
     const table: TableType<ApiTestDataViewModel> = useReactTable({
-        data: apiTestViewModel?.apiTestData?.rows ?? [],
+        data: (form.getValues("apiTestData") ?? []) as ApiTestDataViewModel[],
         columns: apiTestDataColumns,
         enableRowSelection: true,
         enableSorting: false,
@@ -57,7 +55,7 @@ export default function ApiTestDataTable() {
     };
 
     const handleEnabledToggle = (rowIndex: number, next: number) => {
-        apiTestForm.setValue(`apiTestData.${rowIndex}.enabled`, next);
+        form.setValue(`apiTestData.${rowIndex}.enabled`, next);
         if (rowIndex === fields.length - 1 && next === 1) {
             addEmptyRow(rowIndex);
         }
@@ -65,9 +63,9 @@ export default function ApiTestDataTable() {
 
 
     const handleInputFocus = (rowIndex: number) => {
-        const enabled = apiTestForm.getValues(`apiTestData.${rowIndex}.enabled`);
+        const enabled = form.getValues(`apiTestData.${rowIndex}.enabled`);
         if (enabled !== 1) {
-            apiTestForm.setValue(`apiTestData.${rowIndex}.enabled`, 1);
+            form.setValue(`apiTestData.${rowIndex}.enabled`, 1);
         }
 
         if (rowIndex === fields.length - 1) {
@@ -85,7 +83,7 @@ export default function ApiTestDataTable() {
 
 
     return (
-        <Form {...apiTestForm}>
+        <Form {...form}>
             <Table className="card">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -141,7 +139,7 @@ export default function ApiTestDataTable() {
                                         {column.id === ApiTestDataFormField.enabled.name ? (
                                             // ✅ Checkbox column
                                             <FormField
-                                                control={apiTestForm.control}
+                                                control={form.control}
                                                 name={`apiTestData.${rowIndex}.enabled` as `apiTestData.${number}.enabled`}
                                                 render={({ field }) => (
                                                     <FormItem>
@@ -169,7 +167,7 @@ export default function ApiTestDataTable() {
                                             // ✅ Text input columns
                                             isDataRowKey(column.id) && (
                                                 <FormField
-                                                    control={apiTestForm.control}
+                                                    control={form.control}
                                                     name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
                                                     render={({ field }) => (
                                                         <FormControl>

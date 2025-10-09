@@ -9,11 +9,18 @@ import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTes
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loadApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
+import {FormProvider} from "react-hook-form";
+import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm.ts";
+import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
+import {selectSelectedApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
+import {Form} from "@/components/ui/form.tsx";
 
 
 export default function Dashboard() {
     const dispatch = useDispatch();
     const { indexApiTest } = useApiTestService();
+    const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
+    const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
 
     const { data }= useQuery({
         queryKey: ["/backend/api_test/index"],
@@ -34,20 +41,26 @@ export default function Dashboard() {
             <Head title={"API Test"} />
 
             <ApiTestLayout>
-                <div className="w-64 border-none flex-shrink-0 mx-2">
-                    <TestCaseSidebar/>
-                </div>
+                <FormProvider {...form}>
+                    <div className="w-64 border-none flex-shrink-0 mx-2">
+                        <TestCaseSidebar/>
+                    </div>
 
-                <div className="flex-1 flex flex-coloverflow-auto w-full">
-                    <div className="flex flex-1 space-x-2">
-                        <div className="flex-1 border rounded">
-                            <TestCaseForm/>
-                        </div>
-                        <div className="flex-1 border rounded">
-                            <TestCaseOutput/>
+                    <div className="flex-1 flex flex-coloverflow-auto w-full">
+                        <div className="flex flex-1 space-x-2">
+                            <Form {...form}>
+                                <form>
+                                    <div className="flex-1 border rounded">
+                                        <TestCaseForm/>
+                                    </div>
+                                    <div className="flex-1 border rounded">
+                                        <TestCaseOutput/>
+                                    </div>
+                                </form>
+                            </Form>
                         </div>
                     </div>
-                </div>
+                </FormProvider>
             </ApiTestLayout>
         </AppLayout>
     );

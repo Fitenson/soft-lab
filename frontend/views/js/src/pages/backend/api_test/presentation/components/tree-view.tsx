@@ -25,6 +25,10 @@ import { usePage } from "@inertiajs/react";
 import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors";
 import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO";
 import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
+import {FormControl, FormField, FormItem} from "@/components/ui/form.tsx";
+import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
+import {useFormContext} from "react-hook-form";
+import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 
 
 interface PageProps extends InertiaPageProps {
@@ -41,6 +45,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const menuAction = useAppSelector(selectMenuAction);
     const clientDatabase: Partial<ClientDatabaseDTO> | null = useAppSelector(selectClientDatabase);
     const showToast = useShowToast();
+    const form = useFormContext<ApiTestFormModel>();
 
     const isExpanded = expandedApiTests.includes(node.UUID);
     const isSelected = selectedApiTestDTO?.UUID === node.UUID;
@@ -161,21 +166,33 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
             <ContextMenu>
                 <ContextMenuTrigger className="w-full">
                     {menuAction === "rename" && selectedApiTestDTO?.UUID === node.UUID ? (
-                        <Input
-                            value={selectedApiTestDTO?.testName}
-                            autoFocus
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                dispatch(setRenameSelectedApiTest(e.target.value));
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter" && node?.UUID) {
-                                    dispatch(renameApiTest({
-                                        UUID: node.UUID,
-                                        newName: selectedApiTestDTO.testName ?? "",
-                                    }));
-                                    handleSaveTestApi();
-                                }
-                            }}
+                        <FormField
+                            name={ApiTestFormField.testName.name}
+                            control={form.control}
+                            render={({ field}) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            value={selectedApiTestDTO?.testName}
+                                            autoFocus
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                field.onChange(e.target.value);
+                                                dispatch(setRenameSelectedApiTest(e.target.value));
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter" && node?.UUID) {
+                                                    dispatch(renameApiTest({
+                                                        UUID: node.UUID,
+                                                        newName: selectedApiTestDTO.testName ?? "",
+                                                    }));
+                                                    handleSaveTestApi();
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
                         />
                     ) : (
                         <Button
