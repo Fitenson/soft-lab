@@ -11,6 +11,7 @@ import { setClientDatabase } from "@/pages/backend/client_database/presentation/
 import useShowToast from "@/hooks/use-show-toast";
 import { router } from "@inertiajs/react";
 import { selectLoading } from "@/core/presentation/store/loadingSlice";
+import type {ClientDatabaseDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO.ts";
 
 
 export default function ProjectCard({ projectViewModel }: { projectViewModel: ProjectListViewModel }) {
@@ -29,7 +30,7 @@ export default function ProjectCard({ projectViewModel }: { projectViewModel: Pr
         if(clientDatabaseViewModel?.UUID != selectedDatabase?.UUID) {
             await connectClientDatabase(selectedDatabase?.UUID ?? "", {
                 onSuccess: (data: ClientDatabaseViewModel) => {
-                    dispatch(setClientDatabase(data));
+                    dispatch(setClientDatabase(data.dto as ClientDatabaseDTO));
                     showToast("Success", "Successfully connecting user to database", "success");
                 },
                 onError: () => {

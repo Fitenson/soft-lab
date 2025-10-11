@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, FileText, Folder } from "lucide-react";
 import {
     clearSelectedNode,
-    setRenameSelectedApiTest,
     setSelectedApiTest,
     toggleExpandedApiTests,
     toggleSelectedApiTest,
@@ -20,7 +19,7 @@ import {
 import {Input} from "@/components/ui/input.tsx";
 import useApiTestService from "@/pages/backend/api_test/domain/service/useApiTestService";
 import useShowToast from "@/hooks/use-show-toast";
-import {renameApiTest, updateApiTests, removeApiTests as removeApiTestAction } from "../redux/apiTestSlice";
+import {updateApiTests, removeApiTests as removeApiTestAction } from "../redux/apiTestSlice";
 import { usePage } from "@inertiajs/react";
 import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors";
 import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO";
@@ -29,6 +28,7 @@ import {FormControl, FormField, FormItem} from "@/components/ui/form.tsx";
 import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTestFormField.ts";
 import {useFormContext} from "react-hook-form";
 import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
+import type {MenuActionType} from "@/pages/backend/api_test/presentation/types";
 
 
 interface PageProps extends InertiaPageProps {
@@ -62,10 +62,14 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
 
 
     const handleSaveTestApi = async () => {
+        console.log("Client Database: ", clientDatabase);
+        console.log("Selected Api: ", selectedApiTestDTO);
+
+
         try {
-            if(selectedApiTestDTO && 
-                clientDatabase && 
-                clientDatabase.refreshToken
+            if(selectedApiTestDTO &&
+                clientDatabase &&
+                clientDatabase.password
             ) {
                 const newApiTestDTO = {
                     ...selectedApiTestDTO,
@@ -79,12 +83,11 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     (UUID): UUID is string => UUID !== undefined
                 );
 
-                await createApiTest(newApiTestDTO, clientDatabase.refreshToken, {
+                await createApiTest(newApiTestDTO, clientDatabase.password, {
                     onSuccess: (newApiTestViewModel) => {
                         dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
                         dispatch(triggerMenuAction({ action: null }));
-                        dispatch(renameApiTest({ UUID: "", newName: "" }));
                         dispatch(setSelectedApiTest(newApiTestViewModel));
                     },
                     onError: (error) => {
@@ -95,10 +98,16 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                         dispatch(removeApiTestAction(UUIDs));
                     }
                 });
+            } else {
+                throw new Error("Missing Client Database Token");
             }
         } catch(error) {
             console.error(error);
-            showToast("Error", "Unexpected error", "error");
+            const message = error instanceof Error ?
+                error.message : typeof error === "string" ?
+                    error : "Unexpected error occurred";
+
+            showToast("Error", message, "error");
         }
     }
 
@@ -122,8 +131,24 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     }
 
 
-    const handleRenameApiTest = () => {
-        dispatch(triggerMenuAction({ action: "rename", dto: {...selectedApiTestDTO} }));
+    const handleSelectMenuAction = (action: MenuActionType) => {
+        switch (action) {
+            case "rename":
+                dispatch(triggerMenuAction({ action: "rename", dto: {...selectedApiTestDTO} }));
+                break;
+
+            case "cancel":
+                form.reset({
+                    ...form.getValues(),
+                    testName: selectedApiTestDTO?.testName ?? "",
+                });
+
+                dispatch(triggerMenuAction({ action: "cancel", dto: { ...selectedApiTestDTO } }));
+                break;
+
+            default:
+                throw new Error("No such action.");
+        }
     }
 
 
@@ -174,18 +199,11 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            value={selectedApiTestDTO?.testName}
+                                            value={field.value ?? ""}
                                             autoFocus
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                                field.onChange(e.target.value);
-                                                dispatch(setRenameSelectedApiTest(e.target.value));
-                                            }}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter" && node?.UUID) {
-                                                    dispatch(renameApiTest({
-                                                        UUID: node.UUID,
-                                                        newName: selectedApiTestDTO.testName ?? "",
-                                                    }));
+                                                    e.preventDefault();
                                                     handleSaveTestApi();
                                                 }
                                             }}
@@ -208,7 +226,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 <ContextMenuContent>
                     <ContextMenuItem
                         className="cursor-pointer"
-                        onClick={handleRenameApiTest}
+                        onClick={() => handleSelectMenuAction("rename")}
                     >
                         Rename
                     </ContextMenuItem>
@@ -217,6 +235,12 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                         onClick={handleRemoveApiTest}
                     >
                         Remove
+                    </ContextMenuItem>
+                    <ContextMenuItem
+                        className="cursor-pointer accent-destructive dark:accent-destructive"
+                        onClick={() => handleSelectMenuAction("cancel")}
+                    >
+                        Cancel
                     </ContextMenuItem>
                 </ContextMenuContent>
             </ContextMenu>

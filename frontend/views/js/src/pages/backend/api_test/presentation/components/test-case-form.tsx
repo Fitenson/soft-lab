@@ -41,9 +41,6 @@ export default function TestCaseForm() {
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            onChange={(e) => {
-                                                field.onChange(e);
-                                            }}
                                         />
                                     </FormControl>
                                 </FormItem>

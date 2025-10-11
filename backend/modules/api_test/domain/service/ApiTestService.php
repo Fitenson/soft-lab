@@ -41,6 +41,7 @@ class ApiTestService {
         $this->updateApiTestUseCase = $updateApiTestUseCase;
         $this->removeApiTestUseCase = $removeApiTestUseCase;
         $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
+        $this->createApiTestHasDataUseCase = $createApiTestHasDataUseCase;
     }
 
 

@@ -38,14 +38,6 @@ export const apiTestUISlice = createSlice({
         clearSelectedNode: (state) => {
             state.selectedApiTest = null;
         },
-        setRenameSelectedApiTest: (state, action: PayloadAction<string>) => {
-            if (state.selectedApiTest) {
-                state.selectedApiTest = {
-                    ...state.selectedApiTest,
-                    testName: action.payload,
-                };
-            }
-        },
         triggerMenuAction: (state, action) => {
             state.menuAction = action.payload.action;
             const apiTestDTO = action.payload.dto;
@@ -68,7 +60,6 @@ export const {
     toggleSelectedApiTest,
     toggleExpandedApiTests,
     clearSelectedNode,
-    setRenameSelectedApiTest,
     triggerMenuAction,
     setSelectedApiTest,
 } = apiTestUISlice.actions;

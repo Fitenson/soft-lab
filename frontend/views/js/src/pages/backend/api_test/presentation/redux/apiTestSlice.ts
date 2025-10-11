@@ -30,21 +30,6 @@ export const apiTestSlice = createSlice({
                 .filter((r) => r.UUID !== action.payload.UUID)
                 .concat(action.payload);
         },
-        renameApiTest: (
-            state,
-            action: PayloadAction<{ UUID: string; newName: string }>
-        ) => {
-            const { UUID, newName } = action.payload;
-            if (!UUID) return;
-
-            const index = state.dataTableApiTest.rows.findIndex((r) => r.UUID === UUID);
-            if (index !== -1) {
-                state.dataTableApiTest.rows[index] = {
-                    ...state.dataTableApiTest.rows[index],
-                    testName: newName,
-                };
-            }
-        },
         removeApiTests: (state, action: PayloadAction<string[]>) => {
             const results = state.dataTableApiTest.rows.filter(
                 (row) => !action.payload.includes(row.UUID)
@@ -61,7 +46,6 @@ export const apiTestSlice = createSlice({
 export const {
     loadApiTests,
     addApiTest,
-    renameApiTest,
     updateApiTests,
     removeApiTests
 } = apiTestSlice.actions;
