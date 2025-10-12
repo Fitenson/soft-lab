@@ -9,7 +9,7 @@ import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts
 import { useState } from "react";
 
 
-const useApiTestForm = ({ apiTestDTO }: { apiTestDTO: Partial<ApiTestDTO> | null }) => {
+const useApiTestForm = ({ apiTestDTO }: { apiTestDTO?: Partial<ApiTestDTO> | null }) => {
     const [apiTestViewModel, setApiTestViewModel] = useState<ApiTestViewModel | null>(
         () => apiTestDTO ? new ApiTestViewModel(apiTestDTO) : null
     );
@@ -25,7 +25,7 @@ const useApiTestForm = ({ apiTestDTO }: { apiTestDTO: Partial<ApiTestDTO> | null
             transmission: apiTestViewModel?.transmission ?? "",
             description: apiTestViewModel?.description ?? "",
             moreDescription: apiTestViewModel?.moreDescription ?? "",
-            apiTestData: apiTestViewModel?.apiTestData?.rows ?? []
+            apiTestData: apiTestViewModel?.apiTestData ?? []
         }
     });
 

@@ -17,6 +17,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form.tsx
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
 import { useEffect, useRef } from "react";
 import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select.tsx";
 
 
 const dataKeys = ["key", "value", "description"] as const;
@@ -137,7 +138,6 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                 {table.getAllLeafColumns().map((column) => (
                                     <TableCell key={column.id} className="p-2">
                                         {column.id === ApiTestDataFormField.enabled.name ? (
-                                            // ✅ Checkbox column
                                             <FormField
                                                 control={form.control}
                                                 name={`apiTestData.${rowIndex}.enabled` as `apiTestData.${number}.enabled`}
@@ -164,21 +164,37 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                 )}
                                             />
                                         ) : (
-                                            // ✅ Text input columns
                                             isDataRowKey(column.id) && (
                                                 <FormField
                                                     control={form.control}
                                                     name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
                                                     render={({ field }) => (
-                                                        <FormControl>
-                                                            <Input
-                                                                {...field}
-                                                                value={field.value ?? ""}
-                                                                onChange={(e) => field.onChange(e.target.value)}
-                                                                onFocus={() => handleInputFocus(rowIndex)}
-                                                                className="w-full h-8"
-                                                            />
-                                                        </FormControl>
+                                                        <FormItem>
+                                                            <FormControl>
+                                                                <div className="flex flex-row gap-1">
+                                                                    <Input
+                                                                        {...field}
+                                                                        value={field.value ?? ""}
+                                                                        onChange={(e) => field.onChange(e.target.value)}
+                                                                        onFocus={() => handleInputFocus(rowIndex)}
+                                                                        className="w-full h-8"
+                                                                    />
+                                                                    {column.id === ApiTestDataFormField.value.name && (
+                                                                        <Select
+                                                                            onValueChange={field.onChange}
+                                                                            defaultValue={field.value ?? ""}
+                                                                        >
+                                                                            <SelectTrigger className="h-6 w-6 flex items-center justify-center rounded-md border text-xs p-1"/>
+                                                                            <SelectContent>
+                                                                                <SelectItem value="text">Text</SelectItem>
+                                                                                <SelectItem value="dropdown">Dropdown</SelectItem>
+                                                                                <SelectItem value="file">File</SelectItem>
+                                                                            </SelectContent>
+                                                                        </Select>
+                                                                    )}
+                                                                </div>
+                                                            </FormControl>
+                                                        </FormItem>
                                                     )}
                                                 />
                                             )

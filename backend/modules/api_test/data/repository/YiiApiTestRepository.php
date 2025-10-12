@@ -41,6 +41,19 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
             ])
             ->orderBy(['subApiTest.testName' => SORT_ASC]);
         }])
+        ->joinWith(['apiTestHasDatas' => function($parentApiTestHasDataQuery) {
+            $parentApiTestHasDataQuery
+            ->alias('parentApiTestHasData')
+            ->select([
+                'parentApiTestHasData.UUID',
+                'parentApiTestHasData.apiTest',
+                'parentApiTestHasData.fieldType',
+                'parentApiTestHasData.key',
+                'parentApiTestHasData.value',
+                'parentApiTestHasData.enabled',
+                'parentApiTestHasData.description',
+            ]);
+        }])
         ->orderBy(['apiTest.testName' => SORT_ASC])
         ->asArray()
         ->all();
@@ -90,7 +103,6 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
     {
         $_actionUUID = $this->getActionUUID();
         $apiTestEntity = $params['apiTestEntity'];
-        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
         $clientDatabaseEntity = $params['clientDatabaseEntity'];
         
         $apiTestDTO = $apiTestEntity->asDTO();

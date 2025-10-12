@@ -50,14 +50,17 @@ const useApiTestService = () => {
 
 
     const createApiTest = async (
-        apiTestDTO: Partial<ApiTestDTO>,
-        clientDatabaseToken: string,
+        { apiTestDTO, clientDatabaseToken }:
+        { apiTestDTO: Partial<ApiTestDTO>, clientDatabaseToken: string },
         callbacks?: ServiceCallback<ApiTestViewModel>
     ) => {
         let apiTestEntity = new ApiTestEntity(apiTestDTO);
 
         apiTestEntity = await handleServiceCall<ApiTestEntity>(
-            async () => createApiTestRepo(apiTestEntity, clientDatabaseToken),
+            async () => createApiTestRepo({
+                apiTestEntity,
+                clientDatabaseToken
+            }),
             {
                 onSuccess: (entity) => {
                     const viewModel = entity.asViewModel();
@@ -74,12 +77,17 @@ const useApiTestService = () => {
 
 
     const updateApiTest = async (
-        apiTestDTO: Partial<ApiTestDTO>,
+        { apiTestDTO, clientDatabaseToken }:
+        { apiTestDTO: Partial<ApiTestDTO>, clientDatabaseToken: string },
         callbacks?: ServiceCallback<ApiTestViewModel>
     ) => {
         let apiTestEntity = new ApiTestEntity(apiTestDTO);
+
         apiTestEntity = await handleServiceCall<ApiTestEntity>(
-            async () => updateApiTestRepo(apiTestEntity), 
+            async () => updateApiTestRepo({
+                apiTestEntity,
+                clientDatabaseToken
+            }),
         {
             onSuccess: (entity) => {
                 const viewModel = entity.asViewModel();

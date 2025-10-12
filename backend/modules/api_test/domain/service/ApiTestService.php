@@ -123,9 +123,9 @@ class ApiTestService {
     *     clientDatabaseToken: string
     * } $params
     * 
-    *  @return ApiTestDTO
+    *  @return array
     */
-    public function updateApiTest($params): ApiTestDTO
+    public function updateApiTest($params): array
     {
         $apiTestEntity = $params['apiTestEntity'];
         $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
@@ -133,10 +133,27 @@ class ApiTestService {
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity);
-            $transaction->commit();
+            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($apiTestEntity->getClientDatabase(), $clientDatabaseToken);
+            $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
+            
+            $newApiTestHasDataDTO = [];
 
-            return $newApiTestEntity->asDTO();
+            if(!empty($apiTestHasDataEntities)) {
+                $newApiTestHasDataEntities = $this->createApiTestHasDataUseCase->execute([
+                    'apiTestHasDataEntities' => $apiTestHasDataEntities
+                ]);
+
+                foreach($newApiTestHasDataEntities as $newApiTestHasDataEntity) {
+                    $newApiTestHasDataDTO[] = $newApiTestHasDataEntity->asDTO();
+                }
+            }
+
+            // $transaction->commit();
+
+            return [
+                'apiTestDTO' => $newApiTestEntity->asDTO(),
+                'apiTestHasDataDTO' => $newApiTestHasDataDTO
+            ];
         } catch(Throwable $error) {
             $transaction->rollBack();
             Yii::$app->exception->throw($error->getMessage(), 422);

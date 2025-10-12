@@ -92,10 +92,10 @@ class DbMigration extends Migration {
     protected function timestamps(): array
     {
         return [
-            'createdAt' => $this->string(40)->null(),
+            'createdAt' => $this->string(30)->null(),
             'updatedAt' => $this->string(30)->null(),
             'createdBy' => $this->string(40)->null(),
-            'updatedBy' => $this->string(30)->null(),
+            'updatedBy' => $this->string(40)->null(),
         ];
     }
 

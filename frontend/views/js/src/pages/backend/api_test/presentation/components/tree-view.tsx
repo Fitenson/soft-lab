@@ -29,6 +29,7 @@ import ApiTestFormField from "@/pages/backend/api_test/presentation/form/ApiTest
 import {useFormContext} from "react-hook-form";
 import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 import type {MenuActionType} from "@/pages/backend/api_test/presentation/types";
+import type {ApiTestDataDTO} from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
 
 
 interface PageProps extends InertiaPageProps {
@@ -53,7 +54,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
     const { createApiTest, removeApiTest } = useApiTestService();
 
     const handleToggleSelect = (node: ApiTestViewModel) => {
-        dispatch(toggleSelectedApiTest(node.apiDTO));
+        dispatch(toggleSelectedApiTest(node.apiTestDTO));
     };
 
     const handleToggleExpand = (UUID: string) => {
@@ -62,33 +63,41 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
 
 
     const handleSaveTestApi = async () => {
-        console.log("Client Database: ", clientDatabase);
-        console.log("Selected Api: ", selectedApiTestDTO);
-
-
         try {
             if(selectedApiTestDTO &&
                 clientDatabase &&
                 clientDatabase.password
             ) {
-                const newApiTestDTO = {
-                    ...selectedApiTestDTO,
+                const formValues = form.getValues("apiTestData") as Partial<ApiTestDataDTO>[];
+
+                const apiTestDataDTO: Partial<ApiTestDataDTO>[] = formValues.map(data => ({
+                    enabled: data.enabled ?? 0,
+                    key: data.key ?? "",
+                    value: data.value ?? "",
+                    description: data.description ?? "",
+                }));
+
+
+                const newApiTestDTO: Partial<ApiTestDTO> = {
+                    ...form.getValues(),
                     project: projectUUID,
-                    transmission: 'formData',
                     clientDatabase: clientDatabase.UUID,
-                    seq: 1
+                    apiTestData: apiTestDataDTO as ApiTestDataDTO[] ?? []
                 }
 
                 const UUIDs = [selectedApiTestDTO?.UUID].filter(
                     (UUID): UUID is string => UUID !== undefined
                 );
 
-                await createApiTest(newApiTestDTO, clientDatabase.password, {
+                await createApiTest({
+                    apiTestDTO: newApiTestDTO,
+                    clientDatabaseToken: clientDatabase.password
+                }, {
                     onSuccess: (newApiTestViewModel) => {
                         dispatch(removeApiTestAction(UUIDs));
                         dispatch(updateApiTests(newApiTestViewModel));
                         dispatch(triggerMenuAction({ action: null }));
-                        dispatch(setSelectedApiTest(newApiTestViewModel));
+                        dispatch(setSelectedApiTest(newApiTestViewModel.apiTestDTO));
                     },
                     onError: (error) => {
                         console.error(error);

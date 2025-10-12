@@ -29,56 +29,36 @@ export function createFormField<Name extends string>(options: {
 
 
 export function buildFormData<T extends object>(
-    data: T,
-    allowedKeys: (keyof T)[],
+    data: T | T[],
+    allowedKeys?: (keyof T)[],
     formData: FormData = new FormData(),
     parentKey?: string
 ): FormData {
-    const keys = (allowedKeys ?? (Object.keys(data) as (keyof T)[]));
+    if (Array.isArray(data)) {
+        data.forEach((item, index) => {
+            const keyPrefix = parentKey ? `${parentKey}[${index}]` : String(index);
+            buildFormData(item, allowedKeys, formData, keyPrefix);
+        });
+        return formData;
+    }
 
-    for(const key of keys) {
+    // Handle object case
+    const keys = allowedKeys ?? (Object.keys(data) as (keyof T)[]);
+
+    for (const key of keys) {
         const value = data[key];
         if (value === undefined || value === null) continue;
+
         const formKey = parentKey ? `${parentKey}[${String(key)}]` : String(key);
 
-        formData.append(formKey, String(value));
+        if (Array.isArray(value) || (typeof value === "object" && !(value instanceof File))) {
+            buildFormData(value as never, undefined, formData, formKey);
+        } else {
+            formData.append(formKey, value instanceof File ? value : String(value));
+        }
     }
 
     return formData;
-};
-
-
-export function buildTreeItems(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    nodes: any[],
-    // parentUUID: string | null = null,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    items: Record<string, any> = {}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Record<string, any> {
-    for (const node of nodes) {
-        const UUID = node.UUID;
-
-        let childrenUUIDs: string[] = [];
-        if (node.isFolder && node.apiTests) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            childrenUUIDs = node.apiTests.map((child: any) => child.UUID);
-
-            // Recurse into children
-            buildTreeItems(node.apiTests, items);
-        }
-
-        items[UUID] = {
-            index: UUID,
-            canMove: false,
-            children: childrenUUIDs,
-            data: `${node.testName} - ${node.useCase}`,
-            isFolder: node.isFolder,
-        };
-    }
-
-
-    return items;
 }
 
 

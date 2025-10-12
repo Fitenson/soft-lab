@@ -1,3 +1,5 @@
+import {buildFormData} from "@/lib/utils.ts";
+
 export interface ApiTestDataDTO {
     UUID: string;
     apiTest: string;
@@ -6,4 +8,23 @@ export interface ApiTestDataDTO {
     value: string;
     enabled: number;
     description: string;
+}
+
+
+const apiTestDataDTOKeys: (keyof ApiTestDataDTO)[] = [
+    "UUID",
+    "apiTest",
+    "fieldType",
+    "key",
+    "value",
+    "enabled",
+    "description",
+];
+
+
+export function apiTestDataFormData(
+    apiTestData: Partial<ApiTestDataDTO>[],
+    formData: FormData
+) {
+    return buildFormData(apiTestData, apiTestDataDTOKeys, formData, 'apiTestHasData');
 }

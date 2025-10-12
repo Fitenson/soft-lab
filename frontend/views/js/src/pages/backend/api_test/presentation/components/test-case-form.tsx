@@ -13,10 +13,13 @@ import {
     selectSelectedApiTest,
 } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
-import {useFormContext} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import { selectLoading } from "@/core/presentation/store/loadingSlice.ts";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 
 export default function TestCaseForm() {
+    const isLoading = useAppSelector(selectLoading);
     const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
     const form = useFormContext<ApiTestFormModel>();
 
@@ -32,22 +35,29 @@ export default function TestCaseForm() {
             {selectedApiTestDTO && (
                 <Fragment>
                     <div className="flex items-end gap-2 m-2">
-                        <FormField
-                            name={ApiTestFormField.testName.name}
-                            control={form.control}
-                            render={({ field}) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-
-                        <Button className="p-2 px-6">Save</Button>
+                        {isLoading ? (
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-4 w-24" /> {/* Label placeholder */}
+                                <Skeleton className="h-9 w-full rounded-md" /> {/* Input placeholder */}
+                            </div>
+                        ) : (
+                            <FormField
+                                name={ApiTestFormField.testName.name}
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>{ApiTestFormField.testName.label}</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                        <Button
+                            disabled={isLoading}
+                            className="p-2 px-6"
+                        >Save</Button>
                     </div>
 
                     <Tabs className="w-full m-2" defaultValue={"data"}>
@@ -61,7 +71,7 @@ export default function TestCaseForm() {
                             <DocumentationTab />
                         </TabsContent>
                         <TabsContent value={"data"} className="m-2">
-                            <DataTab form={form} />
+                            <DataTab />
                         </TabsContent>
                         <TabsContent value={"scenario"} className="m-2">
                             <ScenarioTab/>

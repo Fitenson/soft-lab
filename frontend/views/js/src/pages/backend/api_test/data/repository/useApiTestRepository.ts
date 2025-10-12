@@ -3,6 +3,8 @@ import type {ProjectListDTO} from "@/pages/backend/api_test/data/dto/ProjectList
 import type {DataTableType} from "@/types";
 import {type ApiTestDTO, apiTestFormData} from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
+import type ApiTestDataEntity from "@/pages/backend/api_test/domain/entity/ApiTestDataEntity.ts";
+import {apiTestDataFormData} from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
 
 
 const useApiTestRepository = () => {
@@ -24,7 +26,10 @@ const useApiTestRepository = () => {
     }
 
 
-    const createApiTest = async (apiTestEntity: ApiTestEntity, clientDatabaseToken: string) => {
+    const createApiTest = async ({
+        apiTestEntity,
+        clientDatabaseToken
+    }: { apiTestEntity: ApiTestEntity, clientDatabaseToken: string}) => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
@@ -42,14 +47,24 @@ const useApiTestRepository = () => {
     }
 
 
-    const updateApiTest = async (apiTestEntity: ApiTestEntity) => {
+    const updateApiTest = async ({
+        apiTestEntity,
+        clientDatabaseToken
+    }: { apiTestEntity: ApiTestEntity, apiTestDataEntity?: ApiTestDataEntity[], clientDatabaseToken: string }) => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
+
+        if (Array.isArray(apiTestDTO.apiTestData) && apiTestDTO.apiTestData.length > 0) {
+            apiTestDataFormData(apiTestDTO.apiTestData, formData);
+        }
 
         const response = await request<{ apiTest: ApiTestDTO}>({
             url: `/api-test/update?id=${apiTestDTO.UUID}`,
             method: "POST",
             data: formData,
+            headers: {
+                "X-Client-Database-Token": clientDatabaseToken
+            }
         });
 
         const newApiTestDTO: ApiTestDTO = response.apiTest;

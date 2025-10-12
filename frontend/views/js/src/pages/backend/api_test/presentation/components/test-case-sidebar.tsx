@@ -11,11 +11,15 @@ import { uuid } from "@/lib/utils";
 import { selectApiTests } from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
 import { setSelectedApiTest } from "../redux/apiTestUISlice";
 import type { ApiTestDTO } from "../../data/dto/ApiTestDTO";
+import {selectLoading} from "@/core/presentation/store/loadingSlice.ts";
+import {Fragment} from "react";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
 
 export default function TestCaseSidebar() {
     const apiTests = useAppSelector(selectApiTests);
     const dispatch = useDispatch();
+    const isLoading = useAppSelector(selectLoading);
 
 
     const handleSelectAddTestCaseFile = () => {
@@ -24,6 +28,7 @@ export default function TestCaseSidebar() {
             isFolder: 0,
             testName: "New Test Case",
             transmission: 'formData',
+            isNew: true,
         };
         dispatch(addApiTest(apiTestDTO));
         dispatch(setSelectedApiTest(apiTestDTO));
@@ -64,13 +69,29 @@ export default function TestCaseSidebar() {
                 </DropdownMenu>
             </div>
 
-            {apiTests.rows.map((node) => {
-                const apiTestViewModel = new ApiTestViewModel(node);
+            {isLoading ? (
+                <Fragment>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <div key={`skeleton-${i}`} className="flex items-center gap-3 p-2">
+                            <Skeleton className="h-5 w-5 rounded-full" />
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-4 w-1/3" />
+                                <Skeleton className="h-3 w-1/2" />
+                            </div>
+                        </div>
+                    ))}
+                </Fragment>
+            ) : (
+                <Fragment>
+                    {apiTests.rows.map((node) => {
+                        const apiTestViewModel = new ApiTestViewModel(node);
 
-                return (
-                    <TreeView key={apiTestViewModel.UUID} node={apiTestViewModel} />
-                );
-            })}
+                        return (
+                            <TreeView key={apiTestViewModel.UUID} node={apiTestViewModel} />
+                        );
+                    })}
+                </Fragment>
+            )}
         </div>
     );
 }

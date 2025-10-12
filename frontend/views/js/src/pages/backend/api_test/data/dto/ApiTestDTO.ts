@@ -1,6 +1,5 @@
 import { buildFormData } from "@/lib/utils.ts";
 import type { ApiTestDataDTO } from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
-import type { DataTableType } from "@/types";
 
 
 export interface ApiTestDTO {
@@ -13,8 +12,9 @@ export interface ApiTestDTO {
     transmission: string;
     description: string;
     moreDescription: string;
-    apiTestData?: DataTableType<ApiTestDataDTO>;
+    apiTestData?: ApiTestDataDTO[];
     apiTests?: ApiTestDTO[];
+    isNew?: boolean;
 }
 
 

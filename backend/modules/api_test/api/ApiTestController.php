@@ -78,21 +78,45 @@ class ApiTestController extends RestController {
 
     public function actionUpdate(string $id)
     {
-        $data = Yii::$app->request->post();
+        $post = Yii::$app->request->post();
 
         $apiTestForm = new ApiTestForm();
-        $apiTestForm->load($data['apiTest'], '');
+        $apiTestForm->load($post['apiTest'], '');
         $apiTestForm->UUID = $id;
 
         if(!$apiTestForm->validate()) {
             Yii::$app->exception->throw($apiTestForm->getErrors(), 422);
         }
 
+        $apiTestHasDataEntities = [];
+
+        if(!empty($post['apiTestHasData'])) {
+            $apiTestHasDataForm = new ApiTestHasDataForm();
+            $apiTestHasDataForm->load($post['apiTestHasData'], '');
+
+            if(!$apiTestHasDataForm->validate()) {
+                Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+            }
+
+            $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
+        }        
+
         $apiTestData = $apiTestForm->getAttributes();
-        $apiTestDTO = $this->apiTestService->updateApiTest(new ApiTestEntity($apiTestData));
+
+        $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
+        $data = $this->apiTestService->updateApiTest([
+            'apiTestEntity' => new ApiTestEntity($apiTestData),
+            'apiTestHasDataEntities' => $apiTestHasDataEntities,
+            'clientDatabaseToken' => $clientDatabaseToken
+        ]);
+
+        $apiTestDTO = $data['apiTestDTO'];
+        $apiTestHasDataDTO = $data['apiTestHasDataDTO'];
+
 
         return [
-            'apiTest' => $apiTestDTO
+            'apiTest' => $apiTestDTO,
+            'apiTestHasData' => $apiTestHasDataDTO,
         ];
     }
 
