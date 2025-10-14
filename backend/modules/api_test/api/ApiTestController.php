@@ -91,14 +91,16 @@ class ApiTestController extends RestController {
         $apiTestHasDataEntities = [];
 
         if(!empty($post['apiTestHasData'])) {
-            $apiTestHasDataForm = new ApiTestHasDataForm();
-            $apiTestHasDataForm->load($post['apiTestHasData'], '');
-
-            if(!$apiTestHasDataForm->validate()) {
-                Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+            foreach($post['apiTestHasData'] as $apiTestHasDataPost) {
+                $apiTestHasDataForm = new ApiTestHasDataForm();
+                $apiTestHasDataForm->load($apiTestHasDataPost, '');
+                
+                if(!$apiTestHasDataForm->validate()) {
+                    Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+                }
+            
+                $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
             }
-
-            $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
         }        
 
         $apiTestData = $apiTestForm->getAttributes();

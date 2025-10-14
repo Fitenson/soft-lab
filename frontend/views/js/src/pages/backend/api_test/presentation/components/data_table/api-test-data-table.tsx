@@ -15,9 +15,13 @@ import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/Api
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form.tsx";
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import {Fragment, useEffect, useRef, useState} from "react";
 import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select.tsx";
+import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command.tsx";
 
 
 const dataKeys = ["key", "value", "description"] as const;
@@ -28,6 +32,8 @@ type RowPath = `apiTestData.${number}.${DataRowKey}`;
 
 
 export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
+    const [openTablePopover, setOpenTablePopover] = useState(false);
+
     const { fields, append } = useFieldArray({
         control: form.control,
         name: "apiTestData",
@@ -52,7 +58,10 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
             if (lastAppendFromIndexRef.current === fromIndex) return;
             lastAppendFromIndexRef.current = fromIndex;
         }
-        append({ enabled: 0, key: "", value: "", description: "" }, { shouldFocus: false });
+
+        const fieldType = new DataFieldType();
+        fieldType.setField("text");
+        append({ enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
     };
 
     const handleEnabledToggle = (rowIndex: number, next: number) => {
@@ -165,13 +174,13 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                             />
                                         ) : (
                                             isDataRowKey(column.id) && (
-                                                <FormField
-                                                    control={form.control}
-                                                    name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormControl>
-                                                                <div className="flex flex-row gap-1">
+                                                <div className="flex flex-row gap-1">
+                                                    <FormField
+                                                        control={form.control}
+                                                        name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormControl>
                                                                     <Input
                                                                         {...field}
                                                                         value={field.value ?? ""}
@@ -179,24 +188,102 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                         onFocus={() => handleInputFocus(rowIndex)}
                                                                         className="w-full h-8"
                                                                     />
+                                                                </FormControl>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+
+                                                    <FormField
+                                                        name={`apiTestData.${rowIndex}.${ApiTestDataFormField.fieldType.name}`}
+                                                        control={form.control}
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormControl>
                                                                     {column.id === ApiTestDataFormField.value.name && (
-                                                                        <Select
-                                                                            onValueChange={field.onChange}
-                                                                            defaultValue={field.value ?? ""}
-                                                                        >
-                                                                            <SelectTrigger className="h-6 w-6 flex items-center justify-center rounded-md border text-xs p-1"/>
-                                                                            <SelectContent>
-                                                                                <SelectItem value="text">Text</SelectItem>
-                                                                                <SelectItem value="dropdown">Dropdown</SelectItem>
-                                                                                <SelectItem value="file">File</SelectItem>
-                                                                            </SelectContent>
-                                                                        </Select>
+                                                                        <Fragment>
+                                                                            <Select
+                                                                                onValueChange={(value) => {
+                                                                                    const fieldType = new DataFieldType();
+
+                                                                                    fieldType.setField(value as "text" | "file" | "dropdown");
+
+                                                                                    if (value === "dropdown") {
+                                                                                        setTimeout(() => setOpenTablePopover(true), 500);
+                                                                                        fieldType.setDropdown("user");
+                                                                                    }
+
+                                                                                    field.onChange(fieldType.asJSONString());
+                                                                                }}
+                                                                            >
+                                                                                <SelectTrigger className="h-6 w-6 flex items-center justify-center rounded-md border text-xs p-1" />
+                                                                                <SelectContent>
+                                                                                    <SelectItem value="text">Text</SelectItem>
+                                                                                    <SelectItem value="dropdown">Dropdown</SelectItem>
+                                                                                    <SelectItem value="file">File</SelectItem>
+                                                                                </SelectContent>
+                                                                            </Select>
+
+                                                                            <Popover
+                                                                                modal={false}
+                                                                                open={openTablePopover}
+                                                                                onOpenChange={setOpenTablePopover}
+                                                                            >
+                                                                                <PopoverTrigger asChild>
+                                                                                    <button className="hidden" type="button"></button>
+                                                                                </PopoverTrigger>
+
+                                                                                {openTablePopover && (
+                                                                                    <div className="fixed inset-0 z-50 flex items-center justify-center">
+                                                                                        {/* Background overlay (dark transparent, no blur) */}
+                                                                                        <div
+                                                                                            className="absolute inset-0 bg-black/60"
+                                                                                            onClick={() => setOpenTablePopover(false)}
+                                                                                        />
+
+                                                                                        {/* Centered Popover */}
+                                                                                        <PopoverContent
+                                                                                            side="top"
+                                                                                            align="center"
+                                                                                            className="
+            relative z-50 w-80 p-4 text-center
+            bg-neutral-900 border border-neutral-700 rounded-xl shadow-2xl
+            text-gray-100
+          "
+                                                                                        >
+                                                                                            <div className="flex items-center justify-between mb-3">
+                                                                                                <Label className="text-gray-300 text-sm">Table</Label>
+                                                                                                <button
+                                                                                                    className="text-gray-500 hover:text-gray-200"
+                                                                                                    onClick={() => setOpenTablePopover(false)}
+                                                                                                >
+                                                                                                    ✕
+                                                                                                </button>
+                                                                                            </div>
+
+                                                                                            <Command>
+                                                                                                <CommandInput
+                                                                                                    placeholder="Search for a table"
+                                                                                                    className="placeholder-gray-500"
+                                                                                                />
+                                                                                                <CommandList>
+                                                                                                    <CommandEmpty>No results found</CommandEmpty>
+                                                                                                    <CommandGroup heading={"Suggestion"}>
+                                                                                                        <CommandItem>User</CommandItem>
+                                                                                                        <CommandItem>Project</CommandItem>
+                                                                                                    </CommandGroup>
+                                                                                                </CommandList>
+                                                                                            </Command>
+                                                                                        </PopoverContent>
+                                                                                    </div>
+                                                                                )}
+                                                                            </Popover>
+                                                                        </Fragment>
                                                                     )}
-                                                                </div>
-                                                            </FormControl>
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                                                </FormControl>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
                                             )
                                         )}
                                     </TableCell>

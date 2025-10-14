@@ -59,10 +59,12 @@ export default function Dashboard() {
                 const formValues = form.getValues("apiTestData") as Partial<ApiTestDataDTO>[];
 
                 const apiTestDataDTO: Partial<ApiTestDataDTO>[] = formValues.map(data => ({
+                    apiTest: selectedApiTestDTO.UUID,
                     enabled: data.enabled ?? 0,
                     key: data.key ?? "",
                     value: data.value ?? "",
                     description: data.description ?? "",
+                    fieldType: data.fieldType ?? "",
                 }));
 
                 const newApiTestDTO: Partial<ApiTestDTO> = {
