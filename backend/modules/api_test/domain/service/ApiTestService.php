@@ -14,6 +14,7 @@ use backend\modules\api_test\domain\usecase\CreateApiTestUseCase;
 use backend\modules\api_test\domain\usecase\RemoveApiTestUseCase;
 use backend\modules\api_test\domain\usecase\UpdateApiTestUseCase;
 use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
+use backend\modules\client_database\domain\usecase\GetTableListUseCase;
 
 class ApiTestService {
     private IndexProjectUseCase $indexProjectUseCase;
@@ -23,6 +24,7 @@ class ApiTestService {
     private CreateApiTestHasDataUseCase $createApiTestHasDataUseCase;
     private UpdateApiTestUseCase $updateApiTestUseCase;
     private RemoveApiTestUseCase $removeApiTestUseCase;
+    private GetTableListUseCase $getTableListUseCase;
 
 
     public function __construct(
@@ -32,7 +34,8 @@ class ApiTestService {
         UpdateApiTestUseCase $updateApiTestUseCase,
         RemoveApiTestUseCase $removeApiTestUseCase,
         ConnectClientDatabaseUseCase $connectClientDatabaseUseCase,
-        CreateApiTestHasDataUseCase $createApiTestHasDataUseCase
+        CreateApiTestHasDataUseCase $createApiTestHasDataUseCase,
+        GetTableListUseCase $getTableListUseCase
     )
     {
         $this->indexProjectUseCase = $indexProjectUseCase;
@@ -42,6 +45,7 @@ class ApiTestService {
         $this->removeApiTestUseCase = $removeApiTestUseCase;
         $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
         $this->createApiTestHasDataUseCase = $createApiTestHasDataUseCase;
+        $this->getTableListUseCase = $getTableListUseCase;
     }
 
 
@@ -90,7 +94,10 @@ class ApiTestService {
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($apiTestEntity->getClientDatabase(), $clientDatabaseToken);
+            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
+                'refreshToken' => $clientDatabaseToken
+            ]);
+            
             $newApiTestEntity = $this->createApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
 
             $newApiTestHasDataEntities = $this->createApiTestHasDataUseCase->execute([
@@ -133,7 +140,10 @@ class ApiTestService {
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($apiTestEntity->getClientDatabase(), $clientDatabaseToken);
+            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
+                'refreshToken' => $clientDatabaseToken
+            ]);
+
             $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
             
             $newApiTestHasDataDTO = [];
@@ -165,5 +175,10 @@ class ApiTestService {
     public function removeApiTest(array $data): array
     {
         return $this->removeApiTestUseCase->execute($data);
+    }
+
+    public function getTableList(string $refreshToken): array
+    {
+        return $this->getTableListUseCase->execute($refreshToken);
     }
 }

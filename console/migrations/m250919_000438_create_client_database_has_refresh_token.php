@@ -16,7 +16,7 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
             'UUID' => $this->char(40)->notNull()->append('PRIMARY KEY')->unique(),
             'clientDatabase' => $this->char(40)->notNull(),
             'user' => $this->char(40)->notNull(),
-            'refreshTokenHash'=> $this->string(),
+            'refreshToken'=> $this->string(32),
             'expiresAt' => $this->string(30)->notNull(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
@@ -26,7 +26,7 @@ class m250919_000438_create_client_database_has_refresh_token extends DbMigratio
             'UUID' => $this->char(40)->notNull(),
             'clientDatabase' => $this->char(40)->notNull(),
             'user' => $this->char(40)->notNull(),
-            'refreshTokenHash'=> $this->string(),
+            'refreshToken'=> $this->string(32),
             'expiresAt' => $this->string(30)->notNull(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 

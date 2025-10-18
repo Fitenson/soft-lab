@@ -16,8 +16,15 @@ class ConnectClientDatabaseUseCase {
     }
 
 
-    public function execute(string $id, ?string $refreshToken = null): ClientDatabaseEntity
+    public function execute(array $params): ClientDatabaseEntity
     {
-        return $this->clientDatabaseRepository->connect($id, $refreshToken);
+        $id = !empty($params['id']) ? $params['id'] : null;
+        $refreshToken = $params['refreshToken'];
+
+        if(!empty($id)) {
+            return $this->clientDatabaseRepository->findById($id);
+        }
+
+        return $this->clientDatabaseRepository->findByRefreshToken($refreshToken);
     }
 }

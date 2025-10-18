@@ -66,4 +66,11 @@ class ClientDatabaseController extends RestController {
     public function actionConnect($id) {
         return $this->clientDatabaseService->connectClientDatabase($id);
     }
+
+
+    public function actionIndexTable() {
+        $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
+
+        
+    }
 }

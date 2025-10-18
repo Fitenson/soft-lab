@@ -105,4 +105,13 @@ class ClientDatabaseEntity extends Entity {
     {
         return $this->project;
     }
+
+    public function getDsn(): string
+    {
+        return sprintf(
+            'mysql:host=%s;dbname=%s;charset=utf8',
+            $this->getHost(),
+            $this->getDatabaseSchema()
+        );
+    }
 }

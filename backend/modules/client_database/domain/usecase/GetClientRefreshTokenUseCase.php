@@ -15,8 +15,8 @@ class GetClientRefreshTokenUseCase {
     }
 
 
-    public function execute(string $id, ?string $token = null): string
+    public function execute(string $id): string
     {
-        return $this->clientDatabaseRepository->getClientRefreshToken($id, $token);
+        return $this->clientDatabaseRepository->generateRefreshToken($id);
     }
 }

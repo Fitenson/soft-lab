@@ -11,7 +11,7 @@ use Yii;
  * @property string $UUID
  * @property string $clientDatabase
  * @property string $user
- * @property string|null $refreshTokenHash
+ * @property string|null $refreshToken
  * @property string $expiresAt
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -42,12 +42,12 @@ class ClientDatabaseHasRefreshTokenHistory extends \backend\components\db\AppMod
     public function rules()
     {
         return [
-            [['refreshTokenHash', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
+            [['refreshToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
             [['historyUUID', 'UUID', 'clientDatabase', 'user', 'expiresAt', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
             [['historyUUID', 'user_id', 'action'], 'string', 'max' => 50],
             [['UUID', 'clientDatabase', 'user', '_actionUUID'], 'string', 'max' => 40],
-            [['refreshTokenHash'], 'string', 'max' => 255],
+            [['refreshToken'], 'string', 'max' => 32],
             [['expiresAt', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['date_created'], 'string', 'max' => 100],
             [['historyUUID'], 'unique'],
@@ -64,7 +64,7 @@ class ClientDatabaseHasRefreshTokenHistory extends \backend\components\db\AppMod
             'UUID' => 'Uuid',
             'clientDatabase' => 'Client Database',
             'user' => 'User',
-            'refreshTokenHash' => 'Refresh Token Hash',
+            'refreshToken' => 'Refresh Token',
             'expiresAt' => 'Expires At',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',

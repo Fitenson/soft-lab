@@ -10,7 +10,7 @@ use Yii;
  * @property string $UUID
  * @property string $clientDatabase
  * @property string $user
- * @property string|null $refreshTokenHash
+ * @property string|null $refreshToken
  * @property string $expiresAt
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -38,11 +38,11 @@ class ClientDatabaseHasRefreshToken extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['refreshTokenHash', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['refreshToken', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['UUID', 'clientDatabase', 'user', 'expiresAt'], 'required'],
             [['valid', '_version'], 'integer'],
             [['UUID', 'clientDatabase', 'user', '_actionUUID'], 'string', 'max' => 40],
-            [['refreshTokenHash'], 'string', 'max' => 255],
+            [['refreshToken'], 'string', 'max' => 32],
             [['expiresAt', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['UUID'], 'unique'],
         ];
@@ -57,7 +57,7 @@ class ClientDatabaseHasRefreshToken extends \backend\components\db\AppModel
             'UUID' => 'Uuid',
             'clientDatabase' => 'Client Database',
             'user' => 'User',
-            'refreshTokenHash' => 'Refresh Token Hash',
+            'refreshToken' => 'Refresh Token',
             'expiresAt' => 'Expires At',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
@@ -78,16 +78,10 @@ class ClientDatabaseHasRefreshToken extends \backend\components\db\AppModel
         return new \backend\modules\client_database\data\query\ClientDatabaseHasRefreshTokenQuery(get_called_class());
     }
 
-
-    public function validateRefreshToken($refreshToken)
-    {
-        return Yii::$app->security->validatePassword($refreshToken, $this->refreshTokenHash);
-    }
-
     public function generateRefreshToken()
     {
-        $token = Yii::$app->security->generateRandomString();
-        $this->refreshTokenHash = Yii::$app->security->generatePasswordHash($token);
+        $token = Yii::$app->security->generateRandomString(32);
+        $this->refreshToken = $token;
         return $token;
     }
 }

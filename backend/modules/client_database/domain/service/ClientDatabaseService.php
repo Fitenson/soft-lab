@@ -3,6 +3,7 @@
 namespace backend\modules\client_database\domain\service;
 
 use Yii;
+use Throwable;
 use backend\components\exception\ApiException;
 
 use backend\modules\client_database\data\dto\ClientDatabaseDTO;
@@ -14,7 +15,7 @@ use backend\modules\client_database\domain\usecase\UpdateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\RemoveClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\LoginClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\GetClientRefreshTokenUseCase;
-use Throwable;
+
 
 class ClientDatabaseService {
     private IndexClientDatabaseUseCase $indexClientDatabaseUseCase;
@@ -102,7 +103,11 @@ class ClientDatabaseService {
     {
         $token = $this->getClientRefreshTokenUseCase->execute($id);
 
-        $clientDatabaseEntity = $this->connectClientDatabaseUseCase->execute($id, $refreshToken);
+        $clientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
+            'id' => $id,
+            'refreshToken' => $refreshToken
+        ]);
+
         $clientDatabaseEntity->setPassword($token);
 
         return $clientDatabaseEntity->asDTO();

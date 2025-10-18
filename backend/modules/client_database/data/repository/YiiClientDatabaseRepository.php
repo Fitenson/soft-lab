@@ -9,7 +9,9 @@ use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\repository\ClientDatabaseRepository;
 use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\client_database\data\dto\ClientDatabaseDTO;
+use backend\modules\client_database\data\dto\ClientDatabaseTableDTO;
 use backend\modules\client_database\data\models\ClientDatabaseHasRefreshToken;
+
 
 class YiiClientDatabaseRepository extends BaseRepository implements ClientDatabaseRepository {
     public function index()
@@ -124,46 +126,59 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
     }
 
 
-    public function getClientRefreshToken(string $id, ?string $token = null)
+    public function generateRefreshToken(string $id)
     {
         $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
             'clientDatabase' => $id,
             'user' => Yii::$app->user->id
         ]);
 
-
         if(empty($ClientDatabaseHasRefreshToken)) {
             Yii::$app->exception->throw('Unauthorized user', 422);
         }
 
-
-        if(!empty($token)) {
-            $ClientDatabaseHasRefreshToken->validateRefreshToken($token);
-        } else {
-            $token = $ClientDatabaseHasRefreshToken->generateRefreshToken();
-        }
-        
-
+        $token = $ClientDatabaseHasRefreshToken->generateRefreshToken();
         $ClientDatabaseHasRefreshToken->saveQuietly(false);
 
         return $token;
     }
 
 
-    public function connect(string $id, ?string $refreshToken = null): ClientDatabaseEntity
+    public function connect(array $params): ClientDatabaseEntity
+    {
+        $refreshToken = $params['refreshToken'];
+
+        $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
+            'refreshToken' => $refreshToken,
+            'user' => Yii::$app->user->id
+        ]);
+
+        $ClientDatabase = ClientDatabase::findOne($ClientDatabaseHasRefreshToken->clientDatabase);
+
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());        
+    }
+
+    public function findById(string $id): ClientDatabaseEntity
     {
         $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
             'clientDatabase' => $id,
             'user' => Yii::$app->user->id
         ]);
 
-        if(!empty($refreshToken) && !$ClientDatabaseHasRefreshToken->validateRefreshToken($refreshToken)) {
-            Yii::$app->exception->throw('Unauthorized user', 422);
-        }
+        $ClientDatabase = ClientDatabase::findOne($ClientDatabaseHasRefreshToken->clientDatabase);
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());
+    }
 
-        $ClientDatabase = ClientDatabase::findOne($id);
 
-        return new ClientDatabaseEntity($ClientDatabase->getAttributes());        
+    public function findByRefreshToken(string $refreshToken): ClientDatabaseEntity
+    {
+        $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
+            'refreshToken' => $refreshToken,
+            'user' => Yii::$app->user->id
+        ]);
+
+        $ClientDatabase = ClientDatabase::findOne($ClientDatabaseHasRefreshToken->clientDatabase);
+        return new ClientDatabaseEntity($ClientDatabase->getAttributes());
     }
 
 
@@ -176,5 +191,19 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
         }
 
         return new ClientDatabaseEntity($ClientDatabase->getAttributes());
+    }
+
+
+    public function setDatabaseConnection(string $refreshToken): void
+    {        
+    }
+
+
+    public function getClientTable(array $params, string $refreshToken): array
+    {
+        $clientDatabaseEntity = $this->findByRefreshToken($refreshToken);
+
+        $clientDatabaseConnection = Yii::$app->clientDatabase->connect($clientDatabaseEntity);
+        return [];
     }
 }

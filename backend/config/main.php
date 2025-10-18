@@ -1,6 +1,7 @@
 <?php
 
 use yii\filters\Cors;
+use backend\modules\client_database\domain\component\ClientDatabaseComponent;
 
 
 $params = array_merge(
@@ -31,6 +32,9 @@ return [
             'identityClass' => 'backend\modules\user\data\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
+        'clientDatabase' => [
+            'class' => ClientDatabaseComponent::class
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

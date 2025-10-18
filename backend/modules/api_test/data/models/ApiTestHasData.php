@@ -11,7 +11,7 @@ use backend\modules\user\data\models\User;
  *
  * @property string $UUID
  * @property string $apiTest
- * @property string $fieldType
+ * @property string|null $fieldType
  * @property string|null $key
  * @property string|null $value
  * @property int $enabled
@@ -42,8 +42,8 @@ class ApiTestHasData extends \backend\components\db\AppModel
     public function rules()
     {
         return [
-            [['key', 'value', 'description', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'apiTest', 'fieldType', 'enabled'], 'required'],
+            [['key', 'value', 'description', 'fieldType', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
+            [['UUID', 'apiTest', 'enabled'], 'required'],
             [['value'], 'string'],
             [['enabled', 'valid', '_version'], 'integer'],
             [['UUID', 'apiTest', 'createdAt', 'createdBy', '_actionUUID'], 'string', 'max' => 40],

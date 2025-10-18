@@ -6,4 +6,5 @@ return [
     'backend/api-test/create' => 'api_test/api-test/create',
     'backend/api-test/update' => 'api_test/api-test/update',
     'backend/api-test/remove' => 'api_test/api-test/remove',
+    'backend/api-test/get-table-list' => 'api_test/api-test/get-table-list',
 ];

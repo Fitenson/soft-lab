@@ -126,4 +126,11 @@ class ApiTestController extends RestController {
     public function actionRemove() {
         return $this->apiTestService->removeApiTest(Yii::$app->request->post());
     }
+
+    
+    public function actionGetTableList() {
+        $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
+
+        return $this->apiTestService->getTableList($clientDatabaseToken);
+    }
 }
