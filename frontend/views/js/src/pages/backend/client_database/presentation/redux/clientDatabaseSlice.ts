@@ -1,16 +1,23 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
+import type {DataTableType} from "@/types";
+import type {ClientDatabaseTableDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseTableDTO.ts";
 
 
 interface ClientDatabaseState {
     clientDatabase: Partial<ClientDatabaseDTO> | null;
     clientDatabases: ClientDatabaseDTO[];
+    clientDatabaseTables: DataTableType<ClientDatabaseTableDTO>;
 }
 
 const initialState: ClientDatabaseState = {
     clientDatabase: null,
-    clientDatabases: []
+    clientDatabases: [],
+    clientDatabaseTables: {
+        total: "0",
+        rows: []
+    }
 }
 
 
@@ -37,6 +44,9 @@ const clientDatabaseSlice = createSlice({
         },
         logoutClientDatabase: (state) => {
             state.clientDatabase = null;
+        },
+        loadClientDatabaseTables: (state, action: PayloadAction<DataTableType<ClientDatabaseTableDTO>>) => {
+            state.clientDatabaseTables = action.payload;
         }
     }
 });
@@ -48,5 +58,6 @@ export const {
     connectClientDatabase,
     logoutClientDatabase,
     removeClientDatabase,
+    loadClientDatabaseTables,
 } = clientDatabaseSlice.actions;
 export default clientDatabaseSlice.reducer;

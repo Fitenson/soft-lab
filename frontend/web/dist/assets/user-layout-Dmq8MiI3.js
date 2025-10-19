@@ -1,0 +1,1 @@
+import{j as e}from"./main-DGN5mpaW.js";function a({children:l}){return e.jsx("div",{className:"flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12 px-4 py-6 w-full h-full mx-auto",children:l})}export{a as default};

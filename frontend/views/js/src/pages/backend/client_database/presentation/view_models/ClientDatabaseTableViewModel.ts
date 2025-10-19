@@ -3,13 +3,16 @@ import type {
     TableColumnDTO
 } from "@/pages/backend/client_database/data/dto/ClientDatabaseTableDTO.ts";
 
+
 export default class ClientDatabaseTableViewModel {
     private readonly _table: string;
     private readonly _columns?: TableColumnViewModel[]
+    private readonly _dto: ClientDatabaseTableDTO;
 
     constructor(dto: ClientDatabaseTableDTO) {
         this._table = dto.table;
         this._columns = dto.columns?.map((columnDTO) => new TableColumnViewModel(columnDTO));
+        this._dto = dto;
     }
 
     get table(): string {
@@ -18,6 +21,10 @@ export default class ClientDatabaseTableViewModel {
 
     get columns(): TableColumnViewModel[] {
         return this._columns ?? [];
+    }
+
+    get dto(): ClientDatabaseTableDTO {
+        return this._dto;
     }
 }
 

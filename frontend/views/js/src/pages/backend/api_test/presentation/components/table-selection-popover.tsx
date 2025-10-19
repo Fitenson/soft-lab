@@ -3,12 +3,23 @@ import { Label } from "@/components/ui/label.tsx";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command.tsx";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
 import { selectLoading } from "@/core/presentation/store/loadingSlice.ts";
-import type ClientDatabaseTableViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseTableViewModel.ts";
+import ClientDatabaseTableViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseTableViewModel.ts";
 import {Loader2} from "lucide-react";
+import {
+    selectClientDatabaseTables
+} from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors.ts";
+import {useEffect, useState} from "react";
 
 
-export default function TableSelectionPopover({ data, isOpen, setIsOpen }: { data: ClientDatabaseTableViewModel[], isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
+export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
     const isLoading = useAppSelector(selectLoading);
+    const tables = useAppSelector(selectClientDatabaseTables);
+    const [clientDatabaseTables, setClientDatabaseTables] = useState<ClientDatabaseTableViewModel[]>();
+
+
+    useEffect(() => {
+        setClientDatabaseTables(tables.rows.map((row) => new ClientDatabaseTableViewModel(row)));
+    }, [tables]);
 
 
     return (
@@ -52,9 +63,9 @@ export default function TableSelectionPopover({ data, isOpen, setIsOpen }: { dat
                                         </div>
                                     ) : (
                                         <>
-                                            {data && data.length > 0 ? (
+                                            {clientDatabaseTables && clientDatabaseTables.length > 0 ? (
                                                 <CommandGroup heading="Tables">
-                                                    {data?.map((table) => (
+                                                    {clientDatabaseTables?.map((table) => (
                                                         <CommandItem
                                                             key={table.table}
                                                             value={table.table}

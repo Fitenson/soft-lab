@@ -12,7 +12,7 @@ import {
     loadApiTests,
     removeApiTests as removeApiTestAction, updateApiTests
 } from "@/pages/backend/api_test/presentation/redux/apiTestSlice.ts";
-import {FormProvider} from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import useApiTestForm from "@/pages/backend/api_test/presentation/hooks/useApiTestForm.ts";
 import {useAppSelector} from "@/core/presentation/store/useAppSelector.ts";
 import {selectSelectedApiTest} from "@/pages/backend/api_test/presentation/redux/apiTestSelectors.ts";
@@ -26,6 +26,9 @@ import {
 } from "@/pages/backend/api_test/presentation/redux/apiTestUISlice.ts";
 import { selectClientDatabase } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors.ts";
 import useShowToast from "@/hooks/use-show-toast.ts";
+import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
+import type {Params} from "@/types";
+import {loadClientDatabaseTables} from "@/pages/backend/client_database/presentation/redux/clientDatabaseSlice.ts";
 
 
 export default function Dashboard() {
@@ -33,8 +36,17 @@ export default function Dashboard() {
     const { indexApiTest, createApiTest, updateApiTest } = useApiTestService();
     const selectedApiTestDTO = useAppSelector(selectSelectedApiTest);
     const clientDatabase = useAppSelector(selectClientDatabase);
+    const selectedClientDatabaseDTO = useAppSelector(selectClientDatabase);
     const { form } = useApiTestForm({ apiTestDTO: selectedApiTestDTO });
     const showToast = useShowToast();
+
+    const clientDatabaseTableParams: Params = {
+        offset: "0",
+        limit: "10",
+        sort: "table",
+        order: "asc",
+        filter: ""
+    };
 
     const { data }= useQuery({
         queryKey: ["/backend/api_test/index"],
@@ -42,6 +54,36 @@ export default function Dashboard() {
         enabled: true,
     });
 
+    useQuery({
+        queryKey: ["/backend/client_database/get-table-list"],
+        queryFn: async () => {
+            const response = await getTableList(
+                {
+                    params: clientDatabaseTableParams,
+                    clientDatabaseToken: selectedClientDatabaseDTO?.password ?? "",
+                },
+                {
+                    callbacks: {
+                        onSuccess: (response) => {
+                            const data = {
+                                total: response.total,
+                                rows: response.rows.map((viewModel) => viewModel.dto),
+                            };
+                            dispatch(loadClientDatabaseTables(data));
+                        },
+                        onError: (error) => {
+                            showToast("Error", "Failed to load client database tables", "error");
+                            console.error(error);
+                        },
+                    },
+                }
+            );
+            return response;
+        },
+        enabled: !!selectedClientDatabaseDTO?.password,
+    });
+
+    const { getTableList } = useClientDatabaseService();
 
     useEffect(() => {
         if(data) {
