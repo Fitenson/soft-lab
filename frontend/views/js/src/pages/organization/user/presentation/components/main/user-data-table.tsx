@@ -141,7 +141,7 @@ export default function UserDataTable<TData extends UserViewModel>({
             ...params,
             filter: JSON.stringify(debouncedFilterParams)
         }));
-    },[debouncedFilterParams, dispatch, params]);
+    },[debouncedFilterParams, dispatch]);
 
 
     const onSelectRow = (row: Row<TData>) => {

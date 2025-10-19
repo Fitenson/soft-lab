@@ -1,9 +1,14 @@
 import { Popover, PopoverTrigger } from "@/components/ui/popover.tsx";
 import { Label } from "@/components/ui/label.tsx";
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command.tsx";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command.tsx";
+import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
+import { selectLoading } from "@/core/presentation/store/loadingSlice.ts";
+import type ClientDatabaseTableViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseTableViewModel.ts";
+import {Loader2} from "lucide-react";
 
 
-export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
+export default function TableSelectionPopover({ data, isOpen, setIsOpen }: { data: ClientDatabaseTableViewModel[], isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
+    const isLoading = useAppSelector(selectLoading);
 
 
     return (
@@ -21,10 +26,7 @@ export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: b
                     />
 
                     {/* Centered Popover content */}
-                    <div className="relative z-50 w-80 p-4 text-center
-                                                                                        bg-neutral-900 border border-neutral-700 rounded-xl
-                                                                                        shadow-2xl text-gray-100"
-                    >
+                    <div className="relative z-50 w-80 p-4 text-center bg-neutral-900 border border-neutral-700 rounded-xl shadow-2xl text-gray-100">
                         <div className="flex items-center justify-between mb-3">
                             <Label className="text-gray-300 text-sm">Table</Label>
                             <button
@@ -43,8 +45,32 @@ export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: b
                             <CommandList>
                                 <CommandEmpty>No results found</CommandEmpty>
                                 <CommandGroup heading={"Suggestion"}>
-                                    <CommandItem>User</CommandItem>
-                                    <CommandItem>Project</CommandItem>
+                                    {isLoading ? (
+                                        <div className="flex justify-center py-6 text-gray-400">
+                                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                            Loading tables...
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {data && data.length > 0 ? (
+                                                <CommandGroup heading="Tables">
+                                                    {data?.map((table) => (
+                                                        <CommandItem
+                                                            key={table.table}
+                                                            value={table.table}
+                                                            onSelect={() => {
+                                                                setIsOpen(false);
+                                                            }}
+                                                        >
+                                                            {table.table}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            ) : (
+                                                <CommandEmpty>No tables found</CommandEmpty>
+                                            )}
+                                        </>
+                                    )}
                                 </CommandGroup>
                             </CommandList>
                         </Command>

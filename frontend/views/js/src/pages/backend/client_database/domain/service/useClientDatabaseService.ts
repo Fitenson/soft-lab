@@ -1,9 +1,10 @@
 import { handleServiceCall, type ServiceCallback } from "@/core/domain/service/serviceHandler";
 import useClientDatabaseRepository from "@/pages/backend/client_database/data/repository/useClientDatabaseRepository";
-import type { DataTableType } from "@/types";
+import type {DataTableType, Params} from "@/types";
 import ClientDatabaseViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseViewModel";
 import type { ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
 import ClientDatabaseEntity from "@/pages/backend/client_database/domain/entity/ClientDatabaseEntity";
+import ClientDatabaseTableViewModel from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseTableViewModel.ts";
 
 
 const useClientDatabaseService = () => {
@@ -13,6 +14,7 @@ const useClientDatabaseService = () => {
         updateClientDatabase: updateClientDatabaseRepo,
         removeClientDatabase: removeClientDatabaseRepo,
         connectClientDatabase: connectClientDatabaseRepo,
+        getTableList: getTableListRepo,
     } = useClientDatabaseRepository();
 
 
@@ -99,12 +101,29 @@ const useClientDatabaseService = () => {
     }
 
 
+    const getTableList = async (
+        { params, clientDatabaseToken }: { params: Params, clientDatabaseToken: string },
+        { callbacks }: { callbacks?: ServiceCallback<DataTableType<ClientDatabaseTableViewModel>> }
+    ) => {
+        return handleServiceCall<DataTableType<ClientDatabaseTableViewModel>>(async () => {
+            const response = await getTableListRepo({ params: params, clientDatabaseToken: clientDatabaseToken });
+            const rows = response.rows.map((dto) => new ClientDatabaseTableViewModel(dto));
+
+            return {
+                ...response,
+                rows,
+            };
+        }, callbacks);
+    };
+
+
     return {
         indexClientDatabase,
         createClientDatabase,
         updateClientDatabase,
         removeClientDatabase,
-        connectClientDatabase
+        connectClientDatabase,
+        getTableList,
     }
 }
 

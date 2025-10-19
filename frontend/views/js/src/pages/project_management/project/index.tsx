@@ -9,6 +9,7 @@ import HeadingSmall from "@/components/app/heading-small";
 import ProjectDataTable from "@/pages/project_management/project/presentation/components/main/project-data-table";
 import { projectMainColumns } from "@/pages/project_management/project/presentation/components/main/projectMainColumns";
 import type {BreadcrumbItem} from "@/types";
+import {useEffect} from "react";
 
 
 export default function ProjectGridview() {
@@ -26,6 +27,9 @@ export default function ProjectGridview() {
         { title: "Project", href: "/project_management/project" },
     ];
 
+    useEffect(() => {
+        console.log("Project: ", data);
+    }, [data]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

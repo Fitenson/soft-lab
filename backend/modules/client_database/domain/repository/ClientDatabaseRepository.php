@@ -15,6 +15,6 @@ interface ClientDatabaseRepository {
     public function generateRefreshToken(string $id);
     public function connect(array $params): ClientDatabaseEntity;
     public function loginClientDatabase(string $id, $password): ClientDatabaseEntity;
-    public function setDatabaseConnection(string $refreshToken): void;
     public function getClientTable(array $params, string $refreshToken): array;
+    public function getClientTableList(array $params, string $refreshToken): array;
 }

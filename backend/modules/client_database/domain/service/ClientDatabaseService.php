@@ -15,7 +15,7 @@ use backend\modules\client_database\domain\usecase\UpdateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\RemoveClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\LoginClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\GetClientRefreshTokenUseCase;
-
+use backend\modules\client_database\domain\usecase\GetTableListUseCase;
 
 class ClientDatabaseService {
     private IndexClientDatabaseUseCase $indexClientDatabaseUseCase;
@@ -25,6 +25,7 @@ class ClientDatabaseService {
     private RemoveClientDatabaseUseCase $removeClientDatabaseUseCase;
     private GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase;
     private ConnectClientDatabaseUseCase $connectClientDatabaseUseCase;
+    private GetTableListUseCase $getTableListUseCase;
 
 
     public function __construct(
@@ -34,7 +35,8 @@ class ClientDatabaseService {
         LoginClientDatabaseUseCase $loginClientDatabaseUseCase,
         RemoveClientDatabaseUseCase $removeClientDatabaseUseCase,
         GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase,
-        ConnectClientDatabaseUseCase $connectClientDatabaseUseCase
+        ConnectClientDatabaseUseCase $connectClientDatabaseUseCase,
+        GetTableListUseCase $getTableListUseCase
     )
     {
         $this->indexClientDatabaseUseCase = $indexClientDatabaseUseCase;
@@ -44,6 +46,7 @@ class ClientDatabaseService {
         $this->removeClientDatabaseUseCase = $removeClientDatabaseUseCase;
         $this->getClientRefreshTokenUseCase = $getClientRefreshTokenUseCase;
         $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
+        $this->getTableListUseCase = $getTableListUseCase;
     }
 
 
@@ -111,5 +114,11 @@ class ClientDatabaseService {
         $clientDatabaseEntity->setPassword($token);
 
         return $clientDatabaseEntity->asDTO();
+    }
+
+
+    public function getTableList(array $params, string $refreshToken)
+    {
+        return $this->getTableListUseCase->execute($params, $refreshToken);
     }
 }

@@ -25,10 +25,8 @@ export default function DataTable <T> ({
     variant = "data-table",
     table,
     isLoading,
-    error,
     onSelectRow,
 }: DataTableProps<T>) {
-    console.log(error);
     return (
         <ReactTable className="border rounded-lg border-accent dark:border-accent">
             <TableHeader>

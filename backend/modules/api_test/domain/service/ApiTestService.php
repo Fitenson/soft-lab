@@ -16,6 +16,7 @@ use backend\modules\api_test\domain\usecase\UpdateApiTestUseCase;
 use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\GetTableListUseCase;
 
+
 class ApiTestService {
     private IndexProjectUseCase $indexProjectUseCase;
     private ConnectClientDatabaseUseCase $connectClientDatabaseUseCase;
@@ -177,8 +178,8 @@ class ApiTestService {
         return $this->removeApiTestUseCase->execute($data);
     }
 
-    public function getTableList(string $refreshToken): array
+    public function getTableList(array $params, string $refreshToken): array
     {
-        return $this->getTableListUseCase->execute($refreshToken);
+        return $this->getTableListUseCase->execute($params, $refreshToken);
     }
 }

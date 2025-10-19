@@ -1,7 +1,8 @@
 import { useRequest } from "@/lib/useRequest";
-import type { DataTableType } from "@/types";
+import type { DataTableType, Params } from "@/types";
 import { clientDatabaseFormData, type ClientDatabaseDTO } from "@/pages/backend/client_database/data/dto/ClientDatabaseDTO";
 import ClientDatabaseEntity from "@/pages/backend/client_database/domain/entity/ClientDatabaseEntity";
+import type {ClientDatabaseTableDTO} from "@/pages/backend/client_database/data/dto/ClientDatabaseTableDTO.ts";
 
 
 const useClientDatabaseRepository = () => {
@@ -69,12 +70,32 @@ const useClientDatabaseRepository = () => {
     }
 
 
+    const getTableList = async ({ params, clientDatabaseToken }: { params: Params, clientDatabaseToken: string }) => {
+        const formData = new FormData();
+
+        formData.append("param[offset]", params.offset);
+        formData.append("param[limit]", params.limit);
+        formData.append("param[sort]", params.sort);
+        formData.append("param[order]", params.order);
+
+        return await request<DataTableType<ClientDatabaseTableDTO>>({
+            url: `/client-database/get-table-list`,
+            method: "POST",
+            data: formData,
+            headers: {
+                "X-Client-Database-Token": clientDatabaseToken
+            }
+        });
+    }
+
+
     return {
         indexClientDatabase,
         createClientDatabase,
         updateClientDatabase,
         removeClientDatabase,
         connectClientDatabase,
+        getTableList,
     };
 }
 

@@ -38,7 +38,6 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
         $clientDatabaseDTO = $clientDatabaseEntity->asDTO();
         $ClientDatabase = new ClientDatabase();
         $ClientDatabase->load($clientDatabaseDTO->getAttributes(), '');
-        $ClientDatabase->passwordHash = Yii::$app->security->generatePasswordHash($clientDatabaseDTO->password);
         $ClientDatabase->_actionUUID = $_actionUUID;
 
         if(!$ClientDatabase->save(false)) {
@@ -194,16 +193,69 @@ class YiiClientDatabaseRepository extends BaseRepository implements ClientDataba
     }
 
 
-    public function setDatabaseConnection(string $refreshToken): void
-    {        
-    }
-
-
     public function getClientTable(array $params, string $refreshToken): array
     {
         $clientDatabaseEntity = $this->findByRefreshToken($refreshToken);
 
-        $clientDatabaseConnection = Yii::$app->clientDatabase->connect($clientDatabaseEntity);
-        return [];
+        return Yii::$app->clientDatabase->connect($clientDatabaseEntity, function ($db) {
+            // Get all table names
+            $tables = $db->createCommand('SHOW TABLES')->queryColumn();
+
+            $structure = [];
+
+            foreach ($tables as $tableName) {
+                // Get detailed structure for each table
+                $columns = $db->createCommand("SHOW FULL COLUMNS FROM `{$tableName}`")->queryAll();
+            
+                // Convert keys to camelCase for each column
+                $columnsCamelCase = array_map(function ($column) {
+                    $newColumn = [];
+                    foreach ($column as $key => $value) {
+                        $camelKey = lcfirst(str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $key))));
+                        $newColumn[$camelKey] = $value;
+                    }
+                    return $newColumn;
+                }, $columns);
+            
+                $structure[] = [
+                    'table' => $tableName,
+                    'columns' => $columnsCamelCase,
+                ];
+            }
+
+
+            return $structure;
+        });
+    }
+
+
+    public function getClientTableList(array $params, string $refreshToken): array
+    {
+        $clientDatabaseEntity = $this->findByRefreshToken($refreshToken);
+
+        return Yii::$app->clientDatabase->connect($clientDatabaseEntity, function ($db) use ($params) {
+            // Extract pagination + filter params with defaults
+            $offset = isset($params['offset']) ? (int)$params['offset'] : 0;
+            $limit = isset($params['limit']) ? (int)$params['limit'] : 10;
+            $filter = isset($params['filter']) ? trim($params['filter']) : '';
+
+            $tables = $db->createCommand('SHOW TABLES')->queryColumn();
+        
+            if (!empty($filter)) {
+                $tables = array_filter($tables, function ($tableName) use ($filter) {
+                    return stripos($tableName, $filter) !== false;
+                });
+            }
+
+            // Get total count before pagination
+            $total = count($tables);
+            $pagedTables = array_slice($tables, $offset, $limit);
+
+            // Return structured data
+            return [
+                'total' => $total,
+                'rows' => array_map(fn($t) => ['table' => $t], $pagedTables),
+            ];
+        });
     }
 }

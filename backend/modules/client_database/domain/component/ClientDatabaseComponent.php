@@ -8,9 +8,13 @@ use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
 
 class ClientDatabaseComponent extends Component {
-    public function connect(ClientDatabaseEntity $clientDatabaseEntity, callable $callback)
+    public function connect(ClientDatabaseEntity $clientDatabaseEntity, ?callable $callback)
     {
         $dsn = $clientDatabaseEntity->getDsn();
+
+        // echo '<pre>';
+        // print_r($clientDatabaseEntity);
+        // die;
 
         // Create a temporary DB connection
         $tempDb = new Connection([
@@ -22,10 +26,13 @@ class ClientDatabaseComponent extends Component {
 
         try {
             $tempDb->open();
-            $result = call_user_func($callback, $tempDb);
+            
+            if ($callback) {
+                $result = call_user_func($callback, $tempDb);
+                return $result;
+            }
 
-            return $result;
-
+            return $tempDb;
         } catch (\Throwable $error) {
             throw $error;
         } finally {

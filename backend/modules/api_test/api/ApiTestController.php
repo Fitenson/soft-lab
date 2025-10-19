@@ -130,7 +130,8 @@ class ApiTestController extends RestController {
     
     public function actionGetTableList() {
         $clientDatabaseToken = Yii::$app->request->headers->get('X-Client-Database-Token');
+        $params = Yii::$app->request->post()['param'];
 
-        return $this->apiTestService->getTableList($clientDatabaseToken);
+        return $this->apiTestService->getTableList($params, $clientDatabaseToken);
     }
 }

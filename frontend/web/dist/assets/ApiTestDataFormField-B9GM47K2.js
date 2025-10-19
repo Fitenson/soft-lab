@@ -1,0 +1,1 @@
+import{c as e}from"./main-B9kSPlih.js";const l={enabled:e({name:"enabled",label:"Enabled"}),key:e({name:"key",label:"Key",max:100}),value:e({name:"value",label:"Value"}),description:e({name:"description",label:"Description",max:500}),fieldType:e({name:"fieldType",label:"Field Type",max:100})};export{l as A};

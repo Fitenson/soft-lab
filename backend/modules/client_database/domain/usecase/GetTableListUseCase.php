@@ -13,10 +13,25 @@ class GetTableListUseCase {
         $this->clientDatabaseRepository = $clientDatabaseRepository;
     }
 
-    public function execute(string $refreshToken)
-    {
-        $ClientDatabaseEntity = $this->clientDatabaseRepository->findByRefreshToken($refreshToken);
 
-        return [];
+    public function execute(array $params, string $refreshToken, $strategy = 'list')
+    {
+        if($strategy != 'list') {
+            return $this->getTableDetails($params, $refreshToken);
+        }
+
+        return $this->getTableList($params, $refreshToken);
+    }
+
+
+    private function getTableDetails(array $params, string $refreshToken)
+    {
+        return $this->clientDatabaseRepository->getClientTable($params, $refreshToken);
+    }
+
+
+    private function getTableList(array $params, string $refreshToken) 
+    {
+        return $this->clientDatabaseRepository->getClientTableList($params, $refreshToken);
     }
 }

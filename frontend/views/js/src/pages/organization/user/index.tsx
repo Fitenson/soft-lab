@@ -7,15 +7,12 @@ import UserDataTable from "@/pages/organization/user/presentation/components/mai
 import { userMainColumns } from "@/pages/organization/user/presentation/components/main/userMainColumns.tsx";
 import breadcrumbItems from "@/components/app/breadcrumb-items.tsx";
 import { useAppSelector } from "@/core/presentation/store/useAppSelector.ts";
-// import { useDispatch } from "react-redux";
-// import { setIndexData } from "./presentation/redux/userDataTableSlice";
 import useUserService from "@/pages/organization/user/domain/service/useUserService.tsx";
 import UserViewModel from "@/pages/organization/user/presentation/view-models/UserViewModel.ts";
 import type { BreadcrumbItem } from "@/types";
 
 
 export default function UserGridview() {
-    // const dispatch = useDispatch();
     const { params } = useAppSelector(state => state.userDataTable);
     const { index } = useUserService();
 
@@ -29,12 +26,6 @@ export default function UserGridview() {
         ...(breadcrumbItems ?? []),
         { title: "User", href: "/organization/user" },
     ];
-
-    // useEffect(() => {
-    //     if(data) {
-    //         dispatch(setIndexData(data));
-    //     }
-    // }, [params, data, dispatch]);
 
 
     return (

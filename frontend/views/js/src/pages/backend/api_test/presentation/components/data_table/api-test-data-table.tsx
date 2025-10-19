@@ -20,6 +20,11 @@ import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/sch
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select.tsx";
 import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
 import TableSelectionPopover from "@/pages/backend/api_test/presentation/components/table-selection-popover.tsx";
+import useClientDatabaseService from "@/pages/backend/client_database/domain/service/useClientDatabaseService.ts";
+import type ClientDatabaseTableViewModel
+    from "@/pages/backend/client_database/presentation/view_models/ClientDatabaseTableViewModel.ts";
+import type {Params} from "@/types";
+import {selectClientDatabase} from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors.ts";
 
 
 const dataKeys = ["key", "value", "description"] as const;
@@ -30,6 +35,32 @@ type RowPath = `apiTestData.${number}.${DataRowKey}`;
 
 
 export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
+    const [tables, setTables] = useState<ClientDatabaseTableViewModel[]>();
+    const { getTableList } = useClientDatabaseService();
+    const selectedClientDatabaseDTO = useAppSelector(selectClientDatabase);
+
+    useEffect(() => {
+        const fetchTables = async () => {
+            const params: Params = {
+                offset: "0",
+                limit: "10",
+                sort: "table",
+                order: "asc",
+                filter: ""
+            };
+
+            await getTableList({ params: params, clientDatabaseToken: selectedClientDatabaseDTO?.password ?? "" }, {
+                callbacks: {
+                    onSuccess: (data) => {
+                        setTables(data.rows);
+                    }
+                }
+            });
+        };
+
+        fetchTables();
+    }, []);
+
     const [openTablePopover, setOpenTablePopover] = useState(false);
 
     const { fields, append } = useFieldArray({
@@ -220,7 +251,7 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                                 </SelectContent>
                                                                             </Select>
 
-                                                                            <TableSelectionPopover isOpen={openTablePopover} setIsOpen={setOpenTablePopover}/>
+                                                                            <TableSelectionPopover data={tables ?? []} isOpen={openTablePopover} setIsOpen={setOpenTablePopover}/>
                                                                         </Fragment>
                                                                     )}
                                                                 </FormControl>

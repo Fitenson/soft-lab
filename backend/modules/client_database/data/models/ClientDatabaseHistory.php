@@ -14,7 +14,7 @@ use Yii;
  * @property string $host
  * @property string $port
  * @property string $username
- * @property string $passwordHash
+ * @property string $password
  * @property string $project
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -44,11 +44,11 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version', 'action', 'date_created'], 'default', 'value' => null],
-            [['historyUUID', 'UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'project', 'user_id'], 'required'],
+            [['historyUUID', 'UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'project', 'user_id'], 'required'],
             [['valid', '_version'], 'integer'],
             [['historyUUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'user_id', 'action'], 'string', 'max' => 50],
             [['UUID', 'project', '_actionUUID'], 'string', 'max' => 40],
-            [['passwordHash'], 'string', 'max' => 500],
+            [['password'], 'string', 'max' => 500],
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['date_created'], 'string', 'max' => 100],
             [['historyUUID'], 'unique'],
@@ -68,7 +68,7 @@ class ClientDatabaseHistory extends \backend\components\db\AppModel
             'host' => 'Host',
             'port' => 'Port',
             'username' => 'Username',
-            'passwordHash' => 'Password Hash',
+            'password' => 'Password',
             'project' => 'Project',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',

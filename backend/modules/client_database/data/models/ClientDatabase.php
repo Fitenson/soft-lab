@@ -14,7 +14,7 @@ use backend\modules\project\data\models\Project;
  * @property string $host
  * @property string $port
  * @property string $username
- * @property string $passwordHash
+ * @property string $password
  * @property string $project
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -43,11 +43,11 @@ class ClientDatabase extends \backend\components\db\AppModel
     {
         return [
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
-            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'passwordHash', 'project'], 'required'],
+            [['UUID', 'databaseName', 'databaseSchema', 'host', 'port', 'username', 'password', 'project'], 'required'],
             [['valid', '_version'], 'integer'],
             [['UUID', 'project', '_actionUUID'], 'string', 'max' => 40],
             [['databaseName', 'databaseSchema', 'host', 'port', 'username'], 'string', 'max' => 50],
-            [['passwordHash'], 'string', 'max' => 500],
+            [['password'], 'string', 'max' => 500],
             [['createdAt', 'updatedAt', 'createdBy', 'updatedBy'], 'string', 'max' => 30],
             [['databaseName'], 'unique'],
             [['databaseSchema'], 'unique'],
@@ -68,7 +68,7 @@ class ClientDatabase extends \backend\components\db\AppModel
             'host' => 'Host',
             'port' => 'Port',
             'username' => 'Username',
-            'passwordHash' => 'Password Hash',
+            'password' => 'Password Hash',
             'project' => 'Project',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
@@ -93,10 +93,5 @@ class ClientDatabase extends \backend\components\db\AppModel
     public static function find()
     {
         return new \backend\modules\client_database\data\query\ClientDatabaseQuery(get_called_class());
-    }
-
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->passwordHash);
     }
 }
