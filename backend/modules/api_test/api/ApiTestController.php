@@ -101,7 +101,7 @@ class ApiTestController extends RestController {
             
                 $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
             }
-        }        
+        }
 
         $apiTestData = $apiTestForm->getAttributes();
 

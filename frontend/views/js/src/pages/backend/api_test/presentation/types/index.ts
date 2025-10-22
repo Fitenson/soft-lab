@@ -44,7 +44,7 @@ export class DataFieldType {
     }
 
     asJSONString(): string {
-        return JSON.stringify(this.field, null, 2);
+        return btoa(JSON.stringify(this.field, null, 2));
     }
 
     asJson() {

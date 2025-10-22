@@ -1,10 +1,9 @@
 import { useRequest } from "@/lib/useRequest.ts";
-import type {ProjectListDTO} from "@/pages/backend/api_test/data/dto/ProjectListDTO.ts";
-import type {DataTableType} from "@/types";
-import {type ApiTestDTO, apiTestFormData} from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
+import type { ProjectListDTO } from "@/pages/backend/api_test/data/dto/ProjectListDTO.ts";
+import type { DataTableType } from "@/types";
+import { type ApiTestDTO, apiTestFormData } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
-import type ApiTestDataEntity from "@/pages/backend/api_test/domain/entity/ApiTestDataEntity.ts";
-import {apiTestDataFormData} from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
+import { apiTestDataFormData } from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
 
 
 const useApiTestRepository = () => {
@@ -50,9 +49,11 @@ const useApiTestRepository = () => {
     const updateApiTest = async ({
         apiTestEntity,
         clientDatabaseToken
-    }: { apiTestEntity: ApiTestEntity, apiTestDataEntity?: ApiTestDataEntity[], clientDatabaseToken: string }) => {
+    }: { apiTestEntity: ApiTestEntity, clientDatabaseToken: string }) => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
+
+        console.log("Repository: ", apiTestDTO.apiTestData);
 
         if (Array.isArray(apiTestDTO.apiTestData) && apiTestDTO.apiTestData.length > 0) {
             apiTestDataFormData(apiTestDTO.apiTestData, formData);

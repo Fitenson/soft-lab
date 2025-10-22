@@ -204,12 +204,11 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                                     const fieldType = new DataFieldType();
                                                                                     fieldType.setField(value as "text" | "file" | "dropdown");
 
+                                                                                    field.onChange(fieldType.asJSONString());
+
                                                                                     if (value === "dropdown") {
                                                                                         setTimeout(() => setOpenTablePopover(true), 500);
-                                                                                        fieldType.setDropdown("user");
                                                                                     }
-
-                                                                                    field.onChange(fieldType.asJSONString());
                                                                                 }}
                                                                             >
                                                                                 <SelectTrigger className="h-6 w-6 flex items-center justify-center rounded-md border text-xs p-1" />
@@ -220,7 +219,11 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                                 </SelectContent>
                                                                             </Select>
 
-                                                                            <TableSelectionPopover isOpen={openTablePopover} setIsOpen={setOpenTablePopover}/>
+                                                                            <TableSelectionPopover
+                                                                                rowIndex={rowIndex}
+                                                                                isOpen={openTablePopover}
+                                                                                setIsOpen={setOpenTablePopover}
+                                                                            />
                                                                         </Fragment>
                                                                     )}
                                                                 </FormControl>

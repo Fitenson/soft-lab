@@ -2,6 +2,7 @@
 
 namespace backend\modules\api_test\domain\entity;
 
+use InvalidArgumentException;
 use backend\components\entity\Entity;
 use backend\modules\api_test\data\dto\ApiTestHasDataDTO;
 
@@ -46,7 +47,17 @@ class ApiTestHasDataEntity extends Entity {
 
     public function setFieldType(?string $fieldType = null): void
     {
-        $this->fieldType = $fieldType;
+        if ($fieldType === null) {
+            $this->fieldType = null;
+            return;
+        }
+
+        if ($this->isValidBase64($fieldType)) {
+            $decoded = base64_decode($fieldType, true);
+            $this->fieldType = $decoded !== false ? $decoded : null;
+        } else {
+            $this->fieldType = "";
+        }
     }
 
     public function getFieldType(): ?string
@@ -92,5 +103,19 @@ class ApiTestHasDataEntity extends Entity {
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+
+    /**
+     * Validate if a string is valid Base64.
+     */
+    private function isValidBase64(string $string): bool
+    {
+        // Base64 strings must be multiple of 4 and only contain A–Z, a–z, 0–9, +, /, or =
+        if (preg_match('/^[A-Za-z0-9+\/=]+$/', $string) && strlen($string) % 4 === 0) {
+            $decoded = base64_decode($string, true);
+            return $decoded !== false && base64_encode($decoded) === $string;
+        }
+        return false;
     }
 }

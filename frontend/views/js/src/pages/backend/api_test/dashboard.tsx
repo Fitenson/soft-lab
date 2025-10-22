@@ -57,7 +57,7 @@ export default function Dashboard() {
     useQuery({
         queryKey: ["/backend/client_database/get-table-list"],
         queryFn: async () => {
-            const response = await getTableList(
+            await getTableList(
                 {
                     params: clientDatabaseTableParams,
                     clientDatabaseToken: selectedClientDatabaseDTO?.password ?? "",
@@ -78,7 +78,6 @@ export default function Dashboard() {
                     },
                 }
             );
-            return response;
         },
         enabled: !!selectedClientDatabaseDTO?.password,
     });

@@ -9,9 +9,14 @@ import {
     selectClientDatabaseTables
 } from "@/pages/backend/client_database/presentation/redux/clientDatabaseSelectors.ts";
 import {useEffect, useState} from "react";
+import {useFormContext} from "react-hook-form";
+import type {ApiTestFormModel} from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
+import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/ApiTestDataFormField.ts";
+import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
 
 
-export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
+export default function TableSelectionPopover({ rowIndex, isOpen, setIsOpen }: { rowIndex: number, isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
+    const form = useFormContext<ApiTestFormModel>();
     const isLoading = useAppSelector(selectLoading);
     const tables = useAppSelector(selectClientDatabaseTables);
     const [clientDatabaseTables, setClientDatabaseTables] = useState<ClientDatabaseTableViewModel[]>();
@@ -70,6 +75,15 @@ export default function TableSelectionPopover({ isOpen, setIsOpen }: { isOpen: b
                                                             key={table.table}
                                                             value={table.table}
                                                             onSelect={() => {
+                                                                const fieldType = new DataFieldType();
+                                                                fieldType.setField("dropdown");
+                                                                fieldType.setDropdown(table.table);
+
+                                                                form.setValue(
+                                                                    `apiTestData.${rowIndex}.${ApiTestDataFormField.fieldType.name}`,
+                                                                    fieldType.asJSONString()
+                                                                );
+
                                                                 setIsOpen(false);
                                                             }}
                                                         >

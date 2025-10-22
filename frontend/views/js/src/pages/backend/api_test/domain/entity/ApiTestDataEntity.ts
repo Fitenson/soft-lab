@@ -22,7 +22,7 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
         this._value = model.value ?? "";
         this._description = model.description ?? "";
         this._enabled = model.enabled ?? 1;
-        this._fieldType = model.fieldType ?? "";
+        this._fieldType = btoa(model.fieldType ?? "");
         this._apiTestDataDTO = model;
     }
 
@@ -80,11 +80,11 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
     }
 
     get fieldType(): string {
-        return this._fieldType;
+        return atob(this._fieldType);
     }
 
     set fieldType(value: string) {
-        this._fieldType = value;
+        this._fieldType = btoa(value);
     }
 
     get apiTestDataDTO(): Partial<ApiTestDataDTO> {
