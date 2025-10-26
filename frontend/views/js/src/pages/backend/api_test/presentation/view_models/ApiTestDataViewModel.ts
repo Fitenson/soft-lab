@@ -9,6 +9,7 @@ export default class ApiTestDataViewModel {
     private _description: string;
     private _enabled: number;
     private _fieldType: string;
+    private _isNew: boolean;
 
 
     constructor(dto: Partial<ApiTestDataDTO>) {
@@ -19,6 +20,7 @@ export default class ApiTestDataViewModel {
         this._description = dto.description ?? "";
         this._enabled = dto.enabled ?? 1;
         this._fieldType = dto.fieldType ?? "";
+        this._isNew = dto.isNew ?? false;
     }
 
 
@@ -48,5 +50,22 @@ export default class ApiTestDataViewModel {
 
     get fieldType(): string {
         return this._fieldType;
+    }
+
+    get isNew(): boolean {
+        return this._isNew;
+    }
+
+    get dto(): Partial<ApiTestDataDTO> {
+        return {
+            UUID: this._UUID,
+            apiTest: this._apiTest,
+            key: this._key,
+            value: this._value,
+            description: this._description,
+            enabled: this._enabled,
+            fieldType: this._fieldType,
+            isNew: this._isNew,
+        };
     }
 }

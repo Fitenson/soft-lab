@@ -82,7 +82,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                     ...form.getValues(),
                     project: projectUUID,
                     clientDatabase: clientDatabase.UUID,
-                    apiTestData: apiTestDataDTO as ApiTestDataDTO[] ?? []
+                    apiTestHasDatas: apiTestDataDTO as ApiTestDataDTO[] ?? []
                 }
 
                 const UUIDs = [selectedApiTestDTO?.UUID].filter(

@@ -6,12 +6,12 @@ import type { SetFormError, SetFormErrorOptions } from "@/core/presentation/form
 import ApiTestViewModel from "@/pages/backend/api_test/presentation/view_models/ApiTestViewModel.ts";
 import { type ApiTestFormModel, apiTestSchema } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
 import type { ApiTestDTO } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 
 const useApiTestForm = ({ apiTestDTO }: { apiTestDTO?: Partial<ApiTestDTO> | null }) => {
     const [apiTestViewModel, setApiTestViewModel] = useState<ApiTestViewModel | null>(
-        () => apiTestDTO ? new ApiTestViewModel(apiTestDTO) : null
+        () => (apiTestDTO ? new ApiTestViewModel(apiTestDTO) : null)
     );
 
     const form = useForm<ApiTestFormModel>({
@@ -25,9 +25,34 @@ const useApiTestForm = ({ apiTestDTO }: { apiTestDTO?: Partial<ApiTestDTO> | nul
             transmission: apiTestViewModel?.transmission ?? "",
             description: apiTestViewModel?.description ?? "",
             moreDescription: apiTestViewModel?.moreDescription ?? "",
-            apiTestData: apiTestViewModel?.apiTestData ?? []
-        }
+            apiTestData: apiTestViewModel?.apiTestData
+                ? apiTestViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+                : [],
+        },
     });
+
+
+    useEffect(() => {
+        if (apiTestDTO) {
+            const updatedViewModel = new ApiTestViewModel(apiTestDTO);
+            setApiTestViewModel(updatedViewModel);
+
+            form.reset({
+                parentApiTest: updatedViewModel.parentApiTest ?? "",
+                clientDatabase: updatedViewModel.clientDatabase ?? "",
+                project: updatedViewModel.project ?? "",
+                testName: updatedViewModel.testName ?? "",
+                isFolder: updatedViewModel.isFolder ?? 0,
+                transmission: updatedViewModel.transmission ?? "",
+                description: updatedViewModel.description ?? "",
+                moreDescription: updatedViewModel.moreDescription ?? "",
+                // ✅ deep clone again here
+                apiTestData: updatedViewModel.apiTestData
+                    ? updatedViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+                    : [],
+            });
+        }
+    }, [apiTestDTO, form]);
 
 
     const setFormError: SetFormError = (

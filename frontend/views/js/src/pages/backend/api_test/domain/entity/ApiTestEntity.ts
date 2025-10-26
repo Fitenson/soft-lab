@@ -30,7 +30,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";
-        this._apiTestData = (model.apiTestData ?? []).map(
+        this._apiTestData = (model.apiTestHasDatas ?? []).map(
             (dto) => new ApiTestDataEntity(dto)
         );
         this._apiTests = (model.apiTests ?? []).map((dto) => new ApiTestEntity(dto));

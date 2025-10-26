@@ -154,27 +154,41 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
 
 
     /**
-    * @param array{
-    *     apiTestHasDataEntities: ApiTestHasDataEntity[],
-    * } $params
+    * @param ApiTestHasDataEntity $apiTestHasDataEntity
      * 
-     * @return ApiTestHasDataEntity[] $apiTestHasDataEntity[]
+     * @return ApiTestHasDataEntity $apiTestHasDataEntity
     */
-    public function createApiTestHasData(array $params): array
+    public function createApiTestHasData(ApiTestHasDataEntity $apiTestHasDataEntity): ApiTestHasDataEntity
     {
-        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
-        $newApiTestHasDataEntities = [];
         $_actionUUID = $this->getActionUUID();
 
-        foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
-            $ApiTestHasData = new ApiTestHasData();
-            $ApiTestHasData->load($apiTestHasDataEntity->asArray(), '');
-            $ApiTestHasData->_actionUUID = $_actionUUID;
-            $ApiTestHasData->save(false);
+        $ApiTestHasData = new ApiTestHasData();
+        $ApiTestHasData->load($apiTestHasDataEntity->asArray(), '');
+        $ApiTestHasData->_actionUUID = $_actionUUID;
+        $ApiTestHasData->save(false);
 
-            $newApiTestHasDataEntities[] = new ApiTestHasDataEntity($ApiTestHasData->getAttributes());
-        }
-        
-        return $newApiTestHasDataEntities;
+        $newApiTestHasDataEntity = new ApiTestHasDataEntity($ApiTestHasData->getAttributes());
+
+        return $newApiTestHasDataEntity;
+    }
+
+
+    /**
+    * @param ApiTestHasDataEntity $apiTestHasDataEntity
+     * 
+     * @return ApiTestHasDataEntity $apiTestHasDataEntity
+    */
+    public function updateApiTestHasData(ApiTestHasDataEntity $apiTestHasDataEntity): ApiTestHasDataEntity
+    {
+        $_actionUUID = $this->getActionUUID();
+
+        $ApiTestHasData = ApiTestHasData::findOne($apiTestHasDataEntity->getUUID());
+        $ApiTestHasData->load($apiTestHasDataEntity->asArray(), '');
+        $ApiTestHasData->_actionUUID = $_actionUUID;
+        $ApiTestHasData->save(false);
+
+        $newApiTestHasDataEntity = new ApiTestHasDataEntity($ApiTestHasData->getAttributes());
+
+        return $newApiTestHasDataEntity;
     }
 }

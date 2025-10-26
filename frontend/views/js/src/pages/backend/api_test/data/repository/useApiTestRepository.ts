@@ -53,10 +53,10 @@ const useApiTestRepository = () => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
-        console.log("Repository: ", apiTestDTO.apiTestData);
+        console.log("Repository: ", apiTestDTO.apiTestHasDatas);
 
-        if (Array.isArray(apiTestDTO.apiTestData) && apiTestDTO.apiTestData.length > 0) {
-            apiTestDataFormData(apiTestDTO.apiTestData, formData);
+        if (Array.isArray(apiTestDTO.apiTestHasDatas) && apiTestDTO.apiTestHasDatas.length > 0) {
+            apiTestDataFormData(apiTestDTO.apiTestHasDatas, formData);
         }
 
         const response = await request<{ apiTest: ApiTestDTO}>({

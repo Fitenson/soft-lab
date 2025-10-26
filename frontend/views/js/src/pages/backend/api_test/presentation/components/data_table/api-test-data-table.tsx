@@ -30,16 +30,15 @@ type RowPath = `apiTestData.${number}.${DataRowKey}`;
 
 
 export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
-    const [openTablePopover, setOpenTablePopover] = useState(false);
+    const [openTablePopover, setOpenTablePopover] = useState<number | null>(null);
 
     const { fields, append } = useFieldArray({
         control: form.control,
         name: "apiTestData",
     });
 
-
     const table: TableType<ApiTestDataViewModel> = useReactTable({
-        data: (form.getValues("apiTestData") ?? []) as ApiTestDataViewModel[],
+        data: structuredClone(fields) as unknown as ApiTestDataViewModel[],
         columns: apiTestDataColumns,
         enableRowSelection: true,
         enableSorting: false,
@@ -59,7 +58,7 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
         const fieldType = new DataFieldType();
         fieldType.setField("text");
-        append({ enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
+        append({ isNew: true, enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
     };
 
     const handleEnabledToggle = (rowIndex: number, next: number) => {
@@ -82,9 +81,10 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
     };
 
 
+
     useEffect(() => {
         if (fields.length === 0) {
-            append({ enabled: 0, key: "", value: "", description: "" }, { shouldFocus: false });
+            append({ isNew: true, enabled: 0, key: "", value: "", description: "" }, { shouldFocus: false });
             lastAppendFromIndexRef.current = null;
         }
     }, [fields.length, append]);
@@ -176,30 +176,44 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                     <FormField
                                                         control={form.control}
                                                         name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormControl>
-                                                                    <Input
-                                                                        {...field}
-                                                                        value={field.value ?? ""}
-                                                                        onChange={(e) => field.onChange(e.target.value)}
-                                                                        onFocus={() => handleInputFocus(rowIndex)}
-                                                                        className="w-full h-8"
-                                                                    />
-                                                                </FormControl>
-                                                            </FormItem>
-                                                        )}
+                                                        render={({ field }) => {
+                                                            return (
+                                                                <FormItem>
+                                                                    <FormControl>
+                                                                        <Input
+                                                                            {...field}
+                                                                            value={field.value ?? ""}
+                                                                            onChange={(e) => field.onChange(e.target.value)}
+                                                                            onFocus={() => handleInputFocus(rowIndex)}
+                                                                            className="w-full h-8"
+                                                                        />
+                                                                    </FormControl>
+                                                                </FormItem>
+                                                            )
+                                                        }
+                                                    }
                                                     />
 
                                                     <FormField
                                                         name={`apiTestData.${rowIndex}.${ApiTestDataFormField.fieldType.name}`}
                                                         control={form.control}
-                                                        render={({ field }) => (
+                                                        render={({ field }) => {
+                                                            const currentType = (() => {
+                                                                try {
+                                                                    const parsed = typeof field.value === "string" ? JSON.parse(field.value) : field.value;
+                                                                    return parsed?.field ?? "text";
+                                                                } catch {
+                                                                    return "text";
+                                                                }
+                                                            })();
+
+                                                            return (
                                                             <FormItem>
                                                                 <FormControl>
                                                                     {column.id === ApiTestDataFormField.value.name && (
                                                                         <Fragment>
                                                                             <Select
+                                                                                value={currentType}
                                                                                 onValueChange={(value) => {
                                                                                     const fieldType = new DataFieldType();
                                                                                     fieldType.setField(value as "text" | "file" | "dropdown");
@@ -207,7 +221,9 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                                     field.onChange(fieldType.asJSONString());
 
                                                                                     if (value === "dropdown") {
-                                                                                        setTimeout(() => setOpenTablePopover(true), 500);
+                                                                                        setTimeout(() => setOpenTablePopover(rowIndex), 500);
+                                                                                    } else {
+                                                                                        setTimeout(() => setOpenTablePopover(null), 500);
                                                                                     }
                                                                                 }}
                                                                             >
@@ -221,14 +237,15 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
                                                                             <TableSelectionPopover
                                                                                 rowIndex={rowIndex}
-                                                                                isOpen={openTablePopover}
-                                                                                setIsOpen={setOpenTablePopover}
+                                                                                isOpen={openTablePopover === rowIndex}
+                                                                                setIsOpen={(isOpen: boolean) => setOpenTablePopover(isOpen ? rowIndex : null)}
                                                                             />
                                                                         </Fragment>
                                                                     )}
                                                                 </FormControl>
                                                             </FormItem>
-                                                        )}
+                                                            )
+                                                        }}
                                                     />
                                                 </div>
                                             )

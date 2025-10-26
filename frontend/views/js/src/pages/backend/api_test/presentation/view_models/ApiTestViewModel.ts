@@ -29,7 +29,7 @@ export default class ApiTestViewModel {
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
 
-        this._apiTestData = (data.apiTestData ?? []).map(
+        this._apiTestData = (data.apiTestHasDatas ?? []).map(
             (dto) => new ApiTestDataViewModel(dto)
         );
 

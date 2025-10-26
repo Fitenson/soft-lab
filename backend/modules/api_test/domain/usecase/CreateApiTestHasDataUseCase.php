@@ -3,6 +3,7 @@
 namespace backend\modules\api_test\domain\usecase;
 
 use backend\modules\api_test\domain\repository\ApiTestRepository;
+use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 
 
 class CreateApiTestHasDataUseCase {
@@ -14,17 +15,11 @@ class CreateApiTestHasDataUseCase {
     }
 
     /**
-    * @param array{
-    *     apiTestHasDataEntities: ApiTestHasDataEntity[],
-    * } $params
+    * @param ApiTestHasDataEntity $apiTestHasDataEntity
      * 
-     *  @return ApiTestHasDataEntity[]
+     * @return ApiTestHasDataEntity
     */
-    public function execute(array $params) {
-        $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
-
-        return $this->apiTestRepository->createApiTestHasData([
-            'apiTestHasDataEntities' => $apiTestHasDataEntities
-        ]);
+    public function execute(ApiTestHasDataEntity $apiTestHasDataEntity) {
+       return $this->apiTestRepository->createApiTestHasData($apiTestHasDataEntity);
     }
 }

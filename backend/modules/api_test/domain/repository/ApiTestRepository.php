@@ -32,11 +32,16 @@ interface ApiTestRepository {
     public function removeApiTest(array $data): array;
 
     /**
-    * @param array{
-    *     apiTestHasDataEntities: ApiTestHasDataEntity[],
-    * } $params
+    * @param ApiTestHasDataEntity $apiTestHasDataEntity
      * 
-     *  @return ApiTestHasDataEntity[]
+     * @return ApiTestHasDataEntity
     */
-    public function createApiTestHasData(array $params): array;
+    public function createApiTestHasData(ApiTestHasDataEntity $apiTestHasDataEntity): ApiTestHasDataEntity;
+
+    /**
+    * @param ApiTestHasDataEntity $apiTestHasDataEntity
+     * 
+     * @return ApiTestHasDataEntity
+    */
+    public function updateApiTestHasData(ApiTestHasDataEntity $apiTestHasDataEntity): ApiTestHasDataEntity;
 }

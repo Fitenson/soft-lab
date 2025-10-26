@@ -113,14 +113,16 @@ export default function Dashboard() {
                     UUID: selectedApiTestDTO.UUID,
                     project: clientDatabase.project,
                     clientDatabase: clientDatabase.UUID,
-                    apiTestData: apiTestDataDTO as ApiTestDataDTO[] ?? []
+                    apiTestHasDatas: apiTestDataDTO as ApiTestDataDTO[] ?? []
                 }
+
 
                 const UUIDs = [selectedApiTestDTO?.UUID].filter(
                     (UUID): UUID is string => UUID !== undefined
                 );
 
                 if(selectedApiTestDTO.isNew) {
+                    console.log("Create API Test");
                     await createApiTest({
                         apiTestDTO: newApiTestDTO,
                         clientDatabaseToken: clientDatabase.password
@@ -140,7 +142,7 @@ export default function Dashboard() {
                         }
                     });
                 } else {
-
+                    console.log("Update API Test");
                     await updateApiTest({
                         apiTestDTO: newApiTestDTO,
                         clientDatabaseToken: clientDatabase.password

@@ -12,6 +12,7 @@ use backend\modules\api_test\domain\usecase\IndexApiTestUseCase;
 use backend\modules\project\domain\usecase\IndexProjectUseCase;
 use backend\modules\api_test\domain\usecase\CreateApiTestUseCase;
 use backend\modules\api_test\domain\usecase\RemoveApiTestUseCase;
+use backend\modules\api_test\domain\usecase\UpdateApiTestHasDataUseCase;
 use backend\modules\api_test\domain\usecase\UpdateApiTestUseCase;
 use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\GetTableListUseCase;
@@ -23,6 +24,7 @@ class ApiTestService {
     private IndexApiTestUseCase $indexApiTestUseCase;
     private CreateApiTestUseCase $createApiTestUseCase;
     private CreateApiTestHasDataUseCase $createApiTestHasDataUseCase;
+    private UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase;
     private UpdateApiTestUseCase $updateApiTestUseCase;
     private RemoveApiTestUseCase $removeApiTestUseCase;
     private GetTableListUseCase $getTableListUseCase;
@@ -36,6 +38,7 @@ class ApiTestService {
         RemoveApiTestUseCase $removeApiTestUseCase,
         ConnectClientDatabaseUseCase $connectClientDatabaseUseCase,
         CreateApiTestHasDataUseCase $createApiTestHasDataUseCase,
+        UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase,
         GetTableListUseCase $getTableListUseCase
     )
     {
@@ -46,6 +49,7 @@ class ApiTestService {
         $this->removeApiTestUseCase = $removeApiTestUseCase;
         $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
         $this->createApiTestHasDataUseCase = $createApiTestHasDataUseCase;
+        $this->updateApiTestHasDataUseCase = $updateApiTestHasDataUseCase;
         $this->getTableListUseCase = $getTableListUseCase;
     }
 
@@ -101,12 +105,9 @@ class ApiTestService {
             
             $newApiTestEntity = $this->createApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
 
-            $newApiTestHasDataEntities = $this->createApiTestHasDataUseCase->execute([
-                'apiTestHasDataEntities' => $apiTestHasDataEntities
-            ]);
-
-            $newApiTestHasDataDTO = [];
-            foreach($newApiTestHasDataEntities as $newApiTestHasDataEntity) {
+            foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
+                $apiTestHasDataEntity->setApiTest($newApiTestEntity->getUUID());
+                $newApiTestHasDataEntity = $this->createApiTestHasDataUseCase->execute($apiTestHasDataEntity);
                 $newApiTestHasDataDTO[] = $newApiTestHasDataEntity->asDTO();
             }
 
@@ -150,16 +151,18 @@ class ApiTestService {
             $newApiTestHasDataDTO = [];
 
             if(!empty($apiTestHasDataEntities)) {
-                $newApiTestHasDataEntities = $this->createApiTestHasDataUseCase->execute([
-                    'apiTestHasDataEntities' => $apiTestHasDataEntities
-                ]);
+                foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
+                    if(!empty($apiTestHasDataEntity->getUUID())) {
+                        $newApiTestHasDataEntity = $this->updateApiTestHasDataUseCase->execute($apiTestHasDataEntity);
+                    } else {
+                        $newApiTestHasDataEntity = $this->createApiTestHasDataUseCase->execute($apiTestHasDataEntity);
+                    }
 
-                foreach($newApiTestHasDataEntities as $newApiTestHasDataEntity) {
                     $newApiTestHasDataDTO[] = $newApiTestHasDataEntity->asDTO();
                 }
             }
 
-            // $transaction->commit();
+            $transaction->commit();
 
             return [
                 'apiTestDTO' => $newApiTestEntity->asDTO(),

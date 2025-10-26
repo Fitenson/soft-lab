@@ -1,0 +1,1 @@
+import{c as e}from"./main-DY2sbF6P.js";const l={enabled:e({name:"enabled",label:"Enabled"}),key:e({name:"key",label:"Key",max:100}),value:e({name:"value",label:"Value"}),description:e({name:"description",label:"Description",max:500}),fieldType:e({name:"fieldType",label:"Field Type",max:100}),isNew:e({name:"isNew",label:"Is New"})};export{l as A};

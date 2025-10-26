@@ -12,7 +12,7 @@ export interface ApiTestDTO {
     transmission: string;
     description: string;
     moreDescription: string;
-    apiTestData?: ApiTestDataDTO[];
+    apiTestHasDatas?: ApiTestDataDTO[];
     apiTests?: ApiTestDTO[];
     isNew?: boolean;
 }
