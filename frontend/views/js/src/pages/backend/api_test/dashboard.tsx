@@ -101,7 +101,7 @@ export default function Dashboard() {
 
                 const apiTestDataDTO: Partial<ApiTestDataDTO>[] = formValues.map(data => ({
                     apiTest: selectedApiTestDTO.UUID,
-                    enabled: data.enabled ?? 0,
+                    enabled: data.enabled ?? "0",
                     key: data.key ?? "",
                     value: data.value ?? "",
                     description: data.description ?? "",
@@ -122,7 +122,6 @@ export default function Dashboard() {
                 );
 
                 if(selectedApiTestDTO.isNew) {
-                    console.log("Create API Test");
                     await createApiTest({
                         apiTestDTO: newApiTestDTO,
                         clientDatabaseToken: clientDatabase.password
@@ -142,7 +141,6 @@ export default function Dashboard() {
                         }
                     });
                 } else {
-                    console.log("Update API Test");
                     await updateApiTest({
                         apiTestDTO: newApiTestDTO,
                         clientDatabaseToken: clientDatabase.password
@@ -152,6 +150,22 @@ export default function Dashboard() {
                             dispatch(updateApiTests(newApiTestViewModel));
                             dispatch(triggerMenuAction({ action: null }));
                             dispatch(setSelectedApiTest(newApiTestViewModel.apiTestDTO));
+
+                            console.log("ViewModel: ", newApiTestViewModel);
+
+                            form.reset({
+                                parentApiTest: newApiTestViewModel.parentApiTest ?? "",
+                                clientDatabase: newApiTestViewModel.clientDatabase ?? "",
+                                project: newApiTestViewModel.project ?? "",
+                                testName: newApiTestViewModel.testName ?? "",
+                                isFolder: newApiTestViewModel.isFolder ?? 0,
+                                transmission: newApiTestViewModel.transmission ?? "",
+                                description: newApiTestViewModel.description ?? "",
+                                moreDescription: newApiTestViewModel.moreDescription ?? "",
+                                apiTestData: newApiTestViewModel.apiTestData
+                                    ? newApiTestViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+                                    : [],
+                            });
                         },
                         onError: (error) => {
                             console.error(error);

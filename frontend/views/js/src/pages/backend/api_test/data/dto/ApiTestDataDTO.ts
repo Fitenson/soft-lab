@@ -6,9 +6,9 @@ export interface ApiTestDataDTO {
     fieldType: string;
     key: string;
     value: string;
-    enabled: number;
+    enabled: string;
     description: string;
-    isNew: boolean;
+    isNew: string;
 }
 
 
@@ -29,7 +29,7 @@ export function apiTestDataFormData(
 ) {
     const normalizedData = apiTestData.map((data) => ({
         ...data,
-        UUID: data.isNew ? "" : data.UUID ?? "",
+        UUID: data.isNew === "1" ? "" : data.UUID ?? "",
     }));
 
     return buildFormData(normalizedData, apiTestDataDTOKeys, formData, 'apiTestHasData');

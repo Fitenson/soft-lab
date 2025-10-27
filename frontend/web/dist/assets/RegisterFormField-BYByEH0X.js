@@ -1,1 +1,0 @@
-import{c as a}from"./main-DY2sbF6P.js";const m={username:a({name:"username",label:"Username",max:100}),fullName:a({name:"fullName",label:"Full name",max:255}),email:a({name:"email",label:"Email",max:100}),password:a({name:"password",label:"Password",max:50,min:5})};export{m as default};

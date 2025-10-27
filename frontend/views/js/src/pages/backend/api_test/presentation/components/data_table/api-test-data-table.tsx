@@ -13,7 +13,7 @@ import { selectLoading } from "@/core/presentation/store/loadingSlice.ts";
 import { Input } from "@/components/ui/input.tsx";
 import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/ApiTestDataFormField.ts";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form.tsx";
+import { FormControl, FormField, FormItem } from "@/components/ui/form.tsx";
 import { useFieldArray, type UseFormReturn } from "react-hook-form";
 import {Fragment, useEffect, useRef, useState} from "react";
 import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/schema/apiTestSchema.ts";
@@ -58,12 +58,14 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
         const fieldType = new DataFieldType();
         fieldType.setField("text");
-        append({ isNew: true, enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
+
+        console.log("Text: ", fieldType.asJSONString());
+        append({ isNew: "1", enabled: "0", key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
     };
 
-    const handleEnabledToggle = (rowIndex: number, next: number) => {
+    const handleEnabledToggle = (rowIndex: number, next: string) => {
         form.setValue(`apiTestData.${rowIndex}.enabled`, next);
-        if (rowIndex === fields.length - 1 && next === 1) {
+        if (rowIndex === fields.length - 1 && next === "1") {
             addEmptyRow(rowIndex);
         }
     };
@@ -71,8 +73,8 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
     const handleInputFocus = (rowIndex: number) => {
         const enabled = form.getValues(`apiTestData.${rowIndex}.enabled`);
-        if (enabled !== 1) {
-            form.setValue(`apiTestData.${rowIndex}.enabled`, 1);
+        if (enabled !== "1") {
+            form.setValue(`apiTestData.${rowIndex}.enabled`, "1");
         }
 
         if (rowIndex === fields.length - 1) {
@@ -84,130 +86,134 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
     useEffect(() => {
         if (fields.length === 0) {
-            append({ isNew: true, enabled: 0, key: "", value: "", description: "" }, { shouldFocus: false });
+            const fieldType = new DataFieldType();
+            fieldType.setField("text");
+
+            console.log("JSON: ", fieldType.asJSONString());
+
+            append({ isNew: "1", enabled: "0", key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
             lastAppendFromIndexRef.current = null;
         }
     }, [fields.length, append]);
 
 
     return (
-        <Form {...form}>
-            <Table className="card">
-                <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="border-b border-accent dark:border-accent">
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <TableHead
-                                        className="m-0 p-0 border-r border-accent dark:border-accent last:border-r-0"
-                                        key={header.id}
-                                        style={{  width: header.getSize() }}
-                                    >
-                                        {header.isPlaceholder ? null :
-                                            flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-
-                                        {header.column.getCanResize() && (
-                                            <div
-                                                onMouseDown={header.getResizeHandler()}
-                                                onTouchStart={header.getResizeHandler()}
-                                                className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none
-                                            ${header.column.getIsResizing() ? "bg-blue-500" : "bg-transparent hover:bg-gray-400"}`}
-                                            />
+        <Table className="card">
+            <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id} className="border-b border-accent dark:border-accent">
+                        {headerGroup.headers.map((header) => {
+                            return (
+                                <TableHead
+                                    className="m-0 p-0 border-r border-accent dark:border-accent last:border-r-0"
+                                    key={header.id}
+                                    style={{  width: header.getSize() }}
+                                >
+                                    {header.isPlaceholder ? null :
+                                        flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
                                         )}
-                                    </TableHead>
-                                )
-                            })}
+
+                                    {header.column.getCanResize() && (
+                                        <div
+                                            onMouseDown={header.getResizeHandler()}
+                                            onTouchStart={header.getResizeHandler()}
+                                            className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none
+                                            ${header.column.getIsResizing() ? "bg-blue-500" : "bg-transparent hover:bg-gray-400"}`}
+                                        />
+                                    )}
+                                </TableHead>
+                            )
+                        })}
+                    </TableRow>
+                ))}
+            </TableHeader>
+            <TableBody>
+                {isLoading ? (
+                    // 🔹 Loading state
+                    Array.from({ length: 5 }).map((_, i) => (
+                        <TableRow key={`skeleton-${i}`}>
+                            {table.getAllLeafColumns().map((column) => (
+                                <td key={column.id} className="px-2 py-2">
+                                    <Skeleton className="h-4 w-full rounded-2xl p-4 m-1 gap-2" />
+                                </td>
+                            ))}
                         </TableRow>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {isLoading ? (
-                        // 🔹 Loading state
-                        Array.from({ length: 5 }).map((_, i) => (
-                            <TableRow key={`skeleton-${i}`}>
-                                {table.getAllLeafColumns().map((column) => (
-                                    <td key={column.id} className="px-2 py-2">
-                                        <Skeleton className="h-4 w-full rounded-2xl p-4 m-1 gap-2" />
-                                    </td>
-                                ))}
-                            </TableRow>
-                        ))
-                    ) : fields.length > 0 ? (
-                        // 🔹 Form-connected rows (useFieldArray)
-                        fields.map((field, rowIndex) => (
-                            <TableRow
-                                key={field.id}
-                                className="cursor-pointer p-2 border border-accent dark:border-accent text-foreground dark:text-foreground"
-                            >
-                                {table.getAllLeafColumns().map((column) => (
-                                    <TableCell key={column.id} className="p-2">
-                                        {column.id === ApiTestDataFormField.enabled.name ? (
-                                            <FormField
-                                                control={form.control}
-                                                name={`apiTestData.${rowIndex}.enabled` as `apiTestData.${number}.enabled`}
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormControl>
-                                                            <div
-                                                                onClick={(e) => e.stopPropagation()}
-                                                                className="flex items-center"
-                                                            >
-                                                                <Checkbox
-                                                                    checked={field.value === 1}
-                                                                    onCheckedChange={(v) => {
-                                                                        const next = v ? 1 : 0;
-                                                                        field.onChange(next);
-                                                                        handleEnabledToggle(rowIndex, next);
-                                                                    }}
-                                                                    aria-label="Toggle"
-                                                                    className="cursor-pointer h-6 w-6 shrink-0 translate-y-[1px]"
-                                                                />
-                                                            </div>
-                                                        </FormControl>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        ) : (
-                                            isDataRowKey(column.id) && (
-                                                <div className="flex flex-row gap-1">
-                                                    <FormField
-                                                        control={form.control}
-                                                        name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
-                                                        render={({ field }) => {
-                                                            return (
-                                                                <FormItem>
-                                                                    <FormControl>
-                                                                        <Input
-                                                                            {...field}
-                                                                            value={field.value ?? ""}
-                                                                            onChange={(e) => field.onChange(e.target.value)}
-                                                                            onFocus={() => handleInputFocus(rowIndex)}
-                                                                            className="w-full h-8"
-                                                                        />
-                                                                    </FormControl>
-                                                                </FormItem>
-                                                            )
-                                                        }
+                    ))
+                ) : fields.length > 0 ? (
+                    // 🔹 Form-connected rows (useFieldArray)
+                    fields.map((field, rowIndex) => (
+                        <TableRow
+                            key={field.id}
+                            className="cursor-pointer p-2 border border-accent dark:border-accent text-foreground dark:text-foreground"
+                        >
+                            {table.getAllLeafColumns().map((column) => (
+                                <TableCell key={column.id} className="p-2">
+                                    {column.id === ApiTestDataFormField.enabled.name ? (
+                                        <FormField
+                                            control={form.control}
+                                            name={`apiTestData.${rowIndex}.enabled` as `apiTestData.${number}.enabled`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <div
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            className="flex items-center"
+                                                        >
+                                                            <Checkbox
+                                                                checked={field.value === "1"}
+                                                                onCheckedChange={(v) => {
+                                                                    const next = v ? "1" : "0";
+                                                                    field.onChange(next);
+                                                                    handleEnabledToggle(rowIndex, next);
+                                                                }}
+                                                                aria-label="Toggle"
+                                                                className="cursor-pointer h-6 w-6 shrink-0 translate-y-[1px]"
+                                                            />
+                                                        </div>
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    ) : (
+                                        isDataRowKey(column.id) && (
+                                            <div className="flex flex-row gap-1">
+                                                <FormField
+                                                    control={form.control}
+                                                    name={`apiTestData.${rowIndex}.${column.id}` as RowPath}
+                                                    render={({ field }) => {
+                                                        return (
+                                                            <FormItem>
+                                                                <FormControl>
+                                                                    <Input
+                                                                        {...field}
+                                                                        value={field.value ?? ""}
+                                                                        onChange={(e) => field.onChange(e.target.value)}
+                                                                        onFocus={() => handleInputFocus(rowIndex)}
+                                                                        className="w-full h-8"
+                                                                    />
+                                                                </FormControl>
+                                                            </FormItem>
+                                                        )
                                                     }
-                                                    />
+                                                    }
+                                                />
 
-                                                    <FormField
-                                                        name={`apiTestData.${rowIndex}.${ApiTestDataFormField.fieldType.name}`}
-                                                        control={form.control}
-                                                        render={({ field }) => {
-                                                            const currentType = (() => {
-                                                                try {
-                                                                    const parsed = typeof field.value === "string" ? JSON.parse(field.value) : field.value;
-                                                                    return parsed?.field ?? "text";
-                                                                } catch {
-                                                                    return "text";
-                                                                }
-                                                            })();
+                                                <FormField
+                                                    name={`apiTestData.${rowIndex}.${ApiTestDataFormField.fieldType.name}`}
+                                                    control={form.control}
+                                                    render={({ field }) => {
+                                                        const currentType = (() => {
+                                                            try {
+                                                                const parsed = typeof field.value === "string" ? JSON.parse(field.value) : field.value;
+                                                                return parsed?.field ?? "text";
+                                                            } catch {
+                                                                return "text";
+                                                            }
+                                                        })();
 
-                                                            return (
+                                                        return (
                                                             <FormItem>
                                                                 <FormControl>
                                                                     {column.id === ApiTestDataFormField.value.name && (
@@ -244,29 +250,28 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                     )}
                                                                 </FormControl>
                                                             </FormItem>
-                                                            )
-                                                        }}
-                                                    />
-                                                </div>
-                                            )
-                                        )}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))
-                    ) : (
-                        // 🔹 Empty state
-                        <TableRow>
-                            <TableCell
-                                colSpan={table.getAllLeafColumns().length}
-                                className="h-24 text-center text-muted-foreground"
-                            >
-                                No test data rows found.
-                            </TableCell>
+                                                        )
+                                                    }}
+                                                />
+                                            </div>
+                                        )
+                                    )}
+                                </TableCell>
+                            ))}
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </Form>
+                    ))
+                ) : (
+                    // 🔹 Empty state
+                    <TableRow>
+                        <TableCell
+                            colSpan={table.getAllLeafColumns().length}
+                            className="h-24 text-center text-muted-foreground"
+                        >
+                            No test data rows found.
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     );
 }

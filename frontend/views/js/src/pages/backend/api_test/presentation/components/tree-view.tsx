@@ -71,7 +71,7 @@ export default function TreeView({ node, level = 0 }: { node: ApiTestViewModel, 
                 const formValues = form.getValues("apiTestData") as Partial<ApiTestDataDTO>[];
 
                 const apiTestDataDTO: Partial<ApiTestDataDTO>[] = formValues.map(data => ({
-                    enabled: data.enabled ?? 0,
+                    enabled: data.enabled ?? "0",
                     key: data.key ?? "",
                     value: data.value ?? "",
                     description: data.description ?? "",

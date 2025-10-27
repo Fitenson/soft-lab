@@ -127,11 +127,20 @@ class YiiApiTestRepository extends BaseRepository implements ApiTestRepository {
         ];
 
         $UUIDs = $data['UUIDs'];
-        $ApiTests = ApiTest::find()->where(['UUID' => $UUIDs])->all();
+        $ApiTests = ApiTest::find()
+        ->where(['apiTest.UUID' => $UUIDs])
+        ->joinWith('apiTestHasDatas')
+        ->all();
 
         foreach($ApiTests as $ApiTest) {
             try {
                 $transaction = Yii::$app->db->beginTransaction();
+
+                foreach($ApiTest->apiTestHasDatas as $ApiTestData) {
+                    $ApiTestData->_actionUUID = $_actionUUID;
+                    $ApiTestData->delete();
+                }
+
                 $ApiTest->_actionUUID = $_actionUUID;
                 $ApiTest->delete();
                 $transaction->commit();

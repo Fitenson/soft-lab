@@ -95,7 +95,7 @@ class ApiTestService {
     {
         $apiTestEntity = $params['apiTestEntity'];
         $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
-        $clientDatabaseToken = $params['clientDatabaseToken'];
+        $clientDatabaseToken = $params['clientDatabaseToken'];        
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
@@ -104,6 +104,8 @@ class ApiTestService {
             ]);
             
             $newApiTestEntity = $this->createApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
+
+            $newApiTestHasDataDTO = [];
 
             foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
                 $apiTestHasDataEntity->setApiTest($newApiTestEntity->getUUID());

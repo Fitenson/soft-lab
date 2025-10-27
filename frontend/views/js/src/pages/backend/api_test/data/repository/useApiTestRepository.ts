@@ -3,7 +3,8 @@ import type { ProjectListDTO } from "@/pages/backend/api_test/data/dto/ProjectLi
 import type { DataTableType } from "@/types";
 import { type ApiTestDTO, apiTestFormData } from "@/pages/backend/api_test/data/dto/ApiTestDTO.ts";
 import ApiTestEntity from "@/pages/backend/api_test/domain/entity/ApiTestEntity.ts";
-import { apiTestDataFormData } from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
+import {type ApiTestDataDTO, apiTestDataFormData} from "@/pages/backend/api_test/data/dto/ApiTestDataDTO.ts";
+import ApiTestDataEntity from "@/pages/backend/api_test/domain/entity/ApiTestDataEntity.ts";
 
 
 const useApiTestRepository = () => {
@@ -32,7 +33,7 @@ const useApiTestRepository = () => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
-        const response = await request<{ apiTest: ApiTestDTO}>({
+        const response = await request<{ apiTest: ApiTestDTO, apiTestHasData: ApiTestDataDTO[] }>({
             url: `/api-test/create`,
             method: "POST",
             data: formData,
@@ -42,7 +43,12 @@ const useApiTestRepository = () => {
         });
 
         const newApiTestDTO: ApiTestDTO = response.apiTest;
-        return new ApiTestEntity(newApiTestDTO);
+        const newApiTestDataDTO: ApiTestDataDTO[] = response.apiTestHasData;
+
+        const newApiTestEntity = new ApiTestEntity(newApiTestDTO);
+        newApiTestEntity.apiTestData = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
+
+        return newApiTestEntity;
     }
 
 
@@ -53,13 +59,11 @@ const useApiTestRepository = () => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
-        console.log("Repository: ", apiTestDTO.apiTestHasDatas);
-
         if (Array.isArray(apiTestDTO.apiTestHasDatas) && apiTestDTO.apiTestHasDatas.length > 0) {
             apiTestDataFormData(apiTestDTO.apiTestHasDatas, formData);
         }
 
-        const response = await request<{ apiTest: ApiTestDTO}>({
+        const response = await request<{ apiTest: ApiTestDTO, apiTestHasData: ApiTestDataDTO[] }>({
             url: `/api-test/update?id=${apiTestDTO.UUID}`,
             method: "POST",
             data: formData,
@@ -69,7 +73,12 @@ const useApiTestRepository = () => {
         });
 
         const newApiTestDTO: ApiTestDTO = response.apiTest;
-        return new ApiTestEntity(newApiTestDTO);
+        const newApiTestDataDTO: ApiTestDataDTO[] = response.apiTestHasData;
+        const newApiTestEntity = new ApiTestEntity(newApiTestDTO);
+
+        newApiTestEntity.apiTestData = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
+
+        return newApiTestEntity;
     }
 
 

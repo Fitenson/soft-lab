@@ -55,6 +55,7 @@ export default function TestCaseForm() {
                             />
                         )}
                         <Button
+                            type="submit"
                             disabled={isLoading}
                             className="p-2 px-6"
                         >Save</Button>
