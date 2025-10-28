@@ -11,6 +11,7 @@ type ColumnConfig<TData> = {
     minSize?: number;
     maxSize?: number;
     cell?: (props: CellContext<TData, unknown>) => React.ReactNode;
+    isHidden?: boolean;
 }
 
 
@@ -22,6 +23,7 @@ const createColumn = <TData,> ({
     maxSize,
     enableSorting = true,
     cell,
+    isHidden = false
 }: ColumnConfig<TData>): ColumnDef<TData> => {
     const columnDef: ColumnDef<TData> = {
         accessorKey: accessorKey as string,
@@ -32,6 +34,7 @@ const createColumn = <TData,> ({
         size,
         minSize,
         maxSize,
+        enableHiding: true,
         header: header === null ? () => null
             : ({ column }) => {
                 const isSorted = column.getIsSorted();
@@ -49,9 +52,9 @@ const createColumn = <TData,> ({
             },
     };
 
-    if (cell) {
-        columnDef.cell = cell;
-    }
+    if (cell) columnDef.cell = cell;
+    if (isHidden) (columnDef as any).meta = { ...columnDef.meta, hidden: true };
+
 
     return columnDef;
 };

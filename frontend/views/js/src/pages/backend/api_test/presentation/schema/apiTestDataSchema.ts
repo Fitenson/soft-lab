@@ -11,6 +11,7 @@ import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/Api
 
 
 export const apiTestDataSchema = z.object({
+    UUID: z.string().optional(),
     enabled: z.string().optional(),
     key: z.string().max(ApiTestDataFormField.key.max, { error: ApiTestDataFormField.key.maxError }).optional(),
     value: z.string().max(ApiTestDataFormField.value.max, { error: ApiTestDataFormField.value.maxError }).optional(),

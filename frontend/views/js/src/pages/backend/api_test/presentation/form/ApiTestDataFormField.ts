@@ -2,6 +2,7 @@ import { createFormField } from "@/lib/utils.ts";
 
 
 const ApiTestDataFormField = {
+    UUID: createFormField({ name: "UUID", label: "UUID" }),
     enabled: createFormField({ name: "enabled", label: "Enabled" }),
     key: createFormField({ name: "key", label: "Key", max: 100 }),
     value: createFormField({ name: "value", label: "Value" }),

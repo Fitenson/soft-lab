@@ -22,7 +22,7 @@ import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
 import TableSelectionPopover from "@/pages/backend/api_test/presentation/components/table-selection-popover.tsx";
 
 
-const dataKeys = ["key", "value", "description"] as const;
+const dataKeys = ["UUID", "key", "value", "description"] as const;
 type DataRowKey = typeof dataKeys[number];
 const isDataRowKey = (k: string): k is DataRowKey =>
     (dataKeys as readonly string[]).includes(k);
@@ -89,8 +89,6 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
             const fieldType = new DataFieldType();
             fieldType.setField("text");
 
-            console.log("JSON: ", fieldType.asJSONString());
-
             append({ isNew: "1", enabled: "0", key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
             lastAppendFromIndexRef.current = null;
         }
@@ -150,6 +148,18 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                         >
                             {table.getAllLeafColumns().map((column) => (
                                 <TableCell key={column.id} className="p-2">
+                                    {column.id === "UUID" && (
+                                        <FormField
+                                            control={form.control}
+                                            name={`apiTestData.${rowIndex}.UUID` as `apiTestData.${number}.UUID`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <Input {...field} className="hidden" />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )}
+
                                     {column.id === ApiTestDataFormField.enabled.name ? (
                                         <FormField
                                             control={form.control}
@@ -206,8 +216,15 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                     render={({ field }) => {
                                                         const currentType = (() => {
                                                             try {
-                                                                const parsed = typeof field.value === "string" ? JSON.parse(field.value) : field.value;
-                                                                return parsed?.field ?? "text";
+                                                                if (!field.value) return "text";
+                                                                const parsed =
+                                                                    typeof field.value === "string"
+                                                                        ? JSON.parse(field.value)
+                                                                        : field.value;
+
+                                                                // Extract the first key (e.g. "dropdown", "text", "file")
+                                                                const type = parsed ? Object.keys(parsed)[0] : "text";
+                                                                return type || "text";
                                                             } catch {
                                                                 return "text";
                                                             }
@@ -227,9 +244,9 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                                     field.onChange(fieldType.asJSONString());
 
                                                                                     if (value === "dropdown") {
-                                                                                        setTimeout(() => setOpenTablePopover(rowIndex), 500);
+                                                                                        setTimeout(() => setOpenTablePopover(rowIndex), 300);
                                                                                     } else {
-                                                                                        setTimeout(() => setOpenTablePopover(null), 500);
+                                                                                        setTimeout(() => setOpenTablePopover(null), 300);
                                                                                     }
                                                                                 }}
                                                                             >
@@ -244,13 +261,15 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                             <TableSelectionPopover
                                                                                 rowIndex={rowIndex}
                                                                                 isOpen={openTablePopover === rowIndex}
-                                                                                setIsOpen={(isOpen: boolean) => setOpenTablePopover(isOpen ? rowIndex : null)}
+                                                                                setIsOpen={(isOpen: boolean) =>
+                                                                                    setOpenTablePopover(isOpen ? rowIndex : null)
+                                                                                }
                                                                             />
                                                                         </Fragment>
                                                                     )}
                                                                 </FormControl>
                                                             </FormItem>
-                                                        )
+                                                        );
                                                     }}
                                                 />
                                             </div>

@@ -7,6 +7,11 @@ import {createBooleanCheckboxCell} from "@/components/ui/data-table-cell.tsx";
 
 export const apiTestDataColumns: ColumnDef<ApiTestDataViewModel>[] = [
     createColumn<ApiTestDataViewModel>({
+        accessorKey: ApiTestDataFormField.key.name,
+        header: ApiTestDataFormField.key.label,
+        enableSorting: false,
+    }),
+    createColumn<ApiTestDataViewModel>({
         accessorKey: ApiTestDataFormField.enabled.name,
         header: null,
         size: 44,

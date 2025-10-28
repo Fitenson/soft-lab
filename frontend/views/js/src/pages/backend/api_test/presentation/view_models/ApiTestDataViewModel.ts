@@ -19,7 +19,7 @@ export default class ApiTestDataViewModel {
         this._value = dto.value ?? "";
         this._description = dto.description ?? "";
         this._enabled = dto.enabled ?? "1";
-        this._fieldType = dto.fieldType ?? "";
+        this._fieldType = this.decodeFieldType(dto.fieldType ?? "");
         this._isNew = dto.isNew ?? "0";
     }
 
@@ -64,8 +64,24 @@ export default class ApiTestDataViewModel {
             value: this._value,
             description: this._description,
             enabled: this._enabled,
-            fieldType: this._fieldType,
+            fieldType: this.encodeFieldType(this._fieldType),
             isNew: this._isNew,
         };
+    }
+
+    private decodeFieldType(encoded: string): string {
+        try {
+            const decoded = atob(encoded);
+            // verify it’s JSON, not plain string
+            JSON.parse(decoded);
+            return decoded;
+        } catch {
+            // fallback if it’s already JSON or invalid
+            return encoded;
+        }
+    }
+
+    private encodeFieldType(jsonString: string): string {
+        return btoa(jsonString);
     }
 }
