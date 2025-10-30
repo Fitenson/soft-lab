@@ -19,7 +19,7 @@ class ApiTestHasDataForm extends Form {
     public function rules()
     {
         return [
-            [['key', 'value', 'description'], 'default', 'value' => null],
+            [['UUID', 'key', 'value', 'description'], 'default', 'value' => null],
             [['enabled'], 'required'],
             [['value'], 'string'],
             [['enabled'], 'integer'],

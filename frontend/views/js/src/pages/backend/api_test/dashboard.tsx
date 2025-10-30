@@ -100,8 +100,9 @@ export default function Dashboard() {
                 const formValues = form.getValues("apiTestData") as Partial<ApiTestDataDTO>[];
 
                 const apiTestDataDTO: Partial<ApiTestDataDTO>[] = formValues.map(data => ({
+                    UUID: data.UUID,
                     apiTest: selectedApiTestDTO.UUID,
-                    enabled: data.enabled ?? "0",
+                    enabled: data.enabled ?? 0,
                     key: data.key ?? "",
                     value: data.value ?? "",
                     description: data.description ?? "",
@@ -151,8 +152,6 @@ export default function Dashboard() {
                             dispatch(triggerMenuAction({ action: null }));
                             dispatch(setSelectedApiTest(newApiTestViewModel.apiTestDTO));
 
-                            console.log("ViewModel: ", newApiTestViewModel);
-
                             form.reset({
                                 parentApiTest: newApiTestViewModel.parentApiTest ?? "",
                                 clientDatabase: newApiTestViewModel.clientDatabase ?? "",
@@ -162,8 +161,8 @@ export default function Dashboard() {
                                 transmission: newApiTestViewModel.transmission ?? "",
                                 description: newApiTestViewModel.description ?? "",
                                 moreDescription: newApiTestViewModel.moreDescription ?? "",
-                                apiTestData: newApiTestViewModel.apiTestData
-                                    ? newApiTestViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+                                apiTestData: newApiTestViewModel.apiTestHasDatas
+                                    ? newApiTestViewModel?.apiTestHasDatas.map((viewModel) => viewModel.dto)
                                     : [],
                             });
                         },
@@ -189,6 +188,11 @@ export default function Dashboard() {
         }
     }
 
+    const onError = (errorList: any) => {
+        console.error(form.getValues());
+        console.error("❌ Validation errors:", errorList);
+    };
+
 
     return (
         <AppLayout>
@@ -204,7 +208,7 @@ export default function Dashboard() {
                         <div className="flex flex-1 space-x-2">
                             <Form {...form}>
                                 <form
-                                    onSubmit={form.handleSubmit(submit)}
+                                    onSubmit={form.handleSubmit(submit, onError)}
                                     className="grid grid-cols-1 md:grid-cols-5 gap-2 w-full">
                                     <div className="border rounded-lg p-4 md:col-span-3">
                                         <TestCaseForm />

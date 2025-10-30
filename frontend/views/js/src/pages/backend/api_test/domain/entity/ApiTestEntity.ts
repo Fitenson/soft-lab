@@ -14,7 +14,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
-    private _apiTestData: ApiTestDataEntity[];
+    private _apiTestHasDatas: ApiTestDataEntity[];
     private _apiTests: ApiTestEntity[];
     private _isNew: boolean;
 
@@ -30,7 +30,7 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._transmission = model.transmission ?? "";
         this._description = model.description ?? "";
         this._moreDescription = model.moreDescription ?? "";
-        this._apiTestData = (model.apiTestHasDatas ?? []).map(
+        this._apiTestHasDatas = (model.apiTestHasDatas ?? []).map(
             (dto) => new ApiTestDataEntity(dto)
         );
         this._apiTests = (model.apiTests ?? []).map((dto) => new ApiTestEntity(dto));
@@ -38,7 +38,20 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
     }
 
     asViewModel(): ApiTestViewModel {
-        return new ApiTestViewModel(this.asDto());
+        return new ApiTestViewModel({
+            UUID: this._UUID,
+            parentApiTest: this._parentApiTest,
+            clientDatabase: this._clientDatabase,
+            project: this._project,
+            testName: this._testName,
+            isFolder: this._isFolder,
+            isNew: this._isNew,
+            transmission: this._transmission,
+            description: this._description,
+            moreDescription: this._moreDescription,
+            apiTests: this._apiTests,
+            apiTestHasDatas: this._apiTestHasDatas
+        });
     }
 
 
@@ -122,12 +135,12 @@ export default class ApiTestEntity extends BaseEntity<ApiTestDTO>{
         this._apiTests = value;
     }
 
-    get apiTestData(): ApiTestDataEntity[] {
-        return this._apiTestData;
+    get apiTestHasDatas(): ApiTestDataEntity[] {
+        return this._apiTestHasDatas;
     }
 
-    set apiTestData(value: ApiTestDataEntity[]) {
-        this._apiTestData = value;
+    set apiTestHasDatas(value: ApiTestDataEntity[]) {
+        this._apiTestHasDatas = value;
     }
 
     get isNew(): boolean {

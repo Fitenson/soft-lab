@@ -12,7 +12,7 @@ export default class ApiTestViewModel {
     private _transmission: string;
     private _description: string;
     private _moreDescription: string;
-    private _apiTestData: ApiTestDataViewModel[];
+    private _apiTestHasDatas: ApiTestDataViewModel[];
     private _apiTests: ApiTestViewModel[];
     private _apiTestDTO: Partial<ApiTestDTO>;
     private _isNew: boolean;
@@ -29,7 +29,7 @@ export default class ApiTestViewModel {
         this._description = data.description ?? "";
         this._moreDescription = data.moreDescription ?? "";
 
-        this._apiTestData = (data.apiTestHasDatas ?? []).map(
+        this._apiTestHasDatas = (data.apiTestHasDatas ?? []).map(
             (dto) => new ApiTestDataViewModel(dto)
         );
 
@@ -75,8 +75,8 @@ export default class ApiTestViewModel {
         return this._isFolder;
     }
 
-    get apiTestData(): ApiTestDataViewModel[] {
-        return this._apiTestData;
+    get apiTestHasDatas(): ApiTestDataViewModel[] {
+        return this._apiTestHasDatas;
     }
 
     get apiTests(): ApiTestViewModel[] {

@@ -12,12 +12,12 @@ import ApiTestDataFormField from "@/pages/backend/api_test/presentation/form/Api
 
 export const apiTestDataSchema = z.object({
     UUID: z.string().optional(),
-    enabled: z.string().optional(),
+    enabled: z.number().optional(),
     key: z.string().max(ApiTestDataFormField.key.max, { error: ApiTestDataFormField.key.maxError }).optional(),
     value: z.string().max(ApiTestDataFormField.value.max, { error: ApiTestDataFormField.value.maxError }).optional(),
     description: z.string().max(ApiTestDataFormField.description.max, { error: ApiTestDataFormField.description.maxError }).optional(),
     fieldType: z.string().optional(),
-    isNew: z.string().optional(),
+    isNew: z.number().optional(),
 });
 
 

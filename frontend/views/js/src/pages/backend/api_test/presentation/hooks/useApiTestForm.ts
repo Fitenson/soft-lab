@@ -25,8 +25,8 @@ const useApiTestForm = ({ apiTestDTO }: { apiTestDTO?: Partial<ApiTestDTO> | nul
             transmission: apiTestViewModel?.transmission ?? "",
             description: apiTestViewModel?.description ?? "",
             moreDescription: apiTestViewModel?.moreDescription ?? "",
-            apiTestData: apiTestViewModel?.apiTestData
-                ? apiTestViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+            apiTestData: apiTestViewModel?.apiTestHasDatas
+                ? apiTestViewModel?.apiTestHasDatas.map((viewModel) => viewModel.dto)
                 : [],
         },
     });
@@ -47,8 +47,8 @@ const useApiTestForm = ({ apiTestDTO }: { apiTestDTO?: Partial<ApiTestDTO> | nul
                 description: updatedViewModel.description ?? "",
                 moreDescription: updatedViewModel.moreDescription ?? "",
                 // ✅ deep clone again here
-                apiTestData: updatedViewModel.apiTestData
-                    ? updatedViewModel?.apiTestData.map((viewModel) => viewModel.dto)
+                apiTestData: updatedViewModel.apiTestHasDatas
+                    ? updatedViewModel?.apiTestHasDatas.map((viewModel) => viewModel.dto)
                     : [],
             });
         }

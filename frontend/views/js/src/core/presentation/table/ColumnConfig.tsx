@@ -30,7 +30,7 @@ const createColumn = <TData,> ({
         filterFn: "includesString",
         enableResizing: true,
         enableSorting: enableSorting,
-        meta: { label: header },
+        meta: { label: header, hidden: isHidden },
         size,
         minSize,
         maxSize,
@@ -52,9 +52,9 @@ const createColumn = <TData,> ({
             },
     };
 
-    if (cell) columnDef.cell = cell;
-    if (isHidden) (columnDef as any).meta = { ...columnDef.meta, hidden: true };
-
+    if (cell) {
+        columnDef.cell = cell as ColumnDef<TData>["cell"];
+    }
 
     return columnDef;
 };

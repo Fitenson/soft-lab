@@ -22,7 +22,7 @@ import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
 import TableSelectionPopover from "@/pages/backend/api_test/presentation/components/table-selection-popover.tsx";
 
 
-const dataKeys = ["UUID", "key", "value", "description"] as const;
+const dataKeys = ["key", "value", "description"] as const;
 type DataRowKey = typeof dataKeys[number];
 const isDataRowKey = (k: string): k is DataRowKey =>
     (dataKeys as readonly string[]).includes(k);
@@ -59,13 +59,12 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
         const fieldType = new DataFieldType();
         fieldType.setField("text");
 
-        console.log("Text: ", fieldType.asJSONString());
-        append({ isNew: "1", enabled: "0", key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
+        append({ isNew: 1, enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
     };
 
-    const handleEnabledToggle = (rowIndex: number, next: string) => {
+    const handleEnabledToggle = (rowIndex: number, next: number) => {
         form.setValue(`apiTestData.${rowIndex}.enabled`, next);
-        if (rowIndex === fields.length - 1 && next === "1") {
+        if (rowIndex === fields.length - 1 && next === 1) {
             addEmptyRow(rowIndex);
         }
     };
@@ -73,8 +72,8 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
 
     const handleInputFocus = (rowIndex: number) => {
         const enabled = form.getValues(`apiTestData.${rowIndex}.enabled`);
-        if (enabled !== "1") {
-            form.setValue(`apiTestData.${rowIndex}.enabled`, "1");
+        if (enabled !== 1) {
+            form.setValue(`apiTestData.${rowIndex}.enabled`, 1);
         }
 
         if (rowIndex === fields.length - 1) {
@@ -89,7 +88,7 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
             const fieldType = new DataFieldType();
             fieldType.setField("text");
 
-            append({ isNew: "1", enabled: "0", key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
+            append({ isNew: 1, enabled: 0, key: "", value: "", description: "", fieldType: fieldType.asJSONString() }, { shouldFocus: false });
             lastAppendFromIndexRef.current = null;
         }
     }, [fields.length, append]);
@@ -148,18 +147,6 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                         >
                             {table.getAllLeafColumns().map((column) => (
                                 <TableCell key={column.id} className="p-2">
-                                    {column.id === "UUID" && (
-                                        <FormField
-                                            control={form.control}
-                                            name={`apiTestData.${rowIndex}.UUID` as `apiTestData.${number}.UUID`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <Input {...field} className="hidden" />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    )}
-
                                     {column.id === ApiTestDataFormField.enabled.name ? (
                                         <FormField
                                             control={form.control}
@@ -172,9 +159,9 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                             className="flex items-center"
                                                         >
                                                             <Checkbox
-                                                                checked={field.value === "1"}
+                                                                checked={field.value === 1}
                                                                 onCheckedChange={(v) => {
-                                                                    const next = v ? "1" : "0";
+                                                                    const next = v ? 1 : 0;
                                                                     field.onChange(next);
                                                                     handleEnabledToggle(rowIndex, next);
                                                                 }}

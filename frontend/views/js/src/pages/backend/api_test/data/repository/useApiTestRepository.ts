@@ -46,7 +46,7 @@ const useApiTestRepository = () => {
         const newApiTestDataDTO: ApiTestDataDTO[] = response.apiTestHasData;
 
         const newApiTestEntity = new ApiTestEntity(newApiTestDTO);
-        newApiTestEntity.apiTestData = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
+        newApiTestEntity.apiTestHasDatas = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
 
         return newApiTestEntity;
     }
@@ -76,7 +76,7 @@ const useApiTestRepository = () => {
         const newApiTestDataDTO: ApiTestDataDTO[] = response.apiTestHasData;
         const newApiTestEntity = new ApiTestEntity(newApiTestDTO);
 
-        newApiTestEntity.apiTestData = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
+        newApiTestEntity.apiTestHasDatas = newApiTestDataDTO.map((dto) => new ApiTestDataEntity(dto));
 
         return newApiTestEntity;
     }
