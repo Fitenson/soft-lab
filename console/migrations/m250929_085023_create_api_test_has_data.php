@@ -19,6 +19,7 @@ class m250929_085023_create_api_test_has_data extends DbMigration
             'key' => $this->string(100)->null(),
             'value' => $this->text()->null(),
             'enabled' => $this->smallInteger()->notNull(),
+            'seq' => $this->smallInteger()->notNull(),
             'description' => $this->string(500)->null(),
         ], $this->timestamps(), $this->systemFields()), $tableOptions);
 
@@ -30,6 +31,7 @@ class m250929_085023_create_api_test_has_data extends DbMigration
             'key' => $this->string(100)->null(),
             'value' => $this->text()->null(),
             'enabled' => $this->smallInteger()->notNull(),
+            'seq' => $this->smallInteger()->notNull(),
             'description' => $this->string(500)->null(),
         ], $this->timestamps(), $this->systemFields(), $this->historyFields()), $tableOptions);
 

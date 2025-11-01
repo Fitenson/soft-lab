@@ -2,20 +2,48 @@
 
 namespace backend\modules\user\domain\usecase;
 
-use backend\modules\user\domain\repository\UserRepository;
+use Yii;
+use Throwable;
+use backend\modules\user\data\models\User;
+use backend\modules\user\data\dto\UserDTO;
 
 
 class RemoveUserUseCase {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public string $actionUUID;
 
 
     public function execute(array $data): array
     {
-        return $this->userRepository->remove($data);
+        $_actionUUID = $this->actionUUID;
+
+        $status = [
+            'success' => [],
+            'failed' => []
+        ];
+
+        $UUIDs = $data['UUIDs'];
+        $Users = User::find()->where(['UUID' => $UUIDs])->all();
+
+        foreach($Users as $User) {
+            try {
+                $transaction = Yii::$app->db->beginTransaction();
+                $User->_actionUUID = $_actionUUID;
+                $User->delete();
+                $transaction->commit();
+
+                $userDTO = new UserDTO();
+                $userDTO->load($User->getAttributes(), '');
+                $status['success'][] = $userDTO;
+            } catch(Throwable $error) {
+                $transaction->rollBack();
+
+                $userDTO = new UserDTO();
+                $userDTO->load($User->getAttributes(), '');
+                $status['failed'][] = $userDTO;
+                $status['failed']['message'] = $error->getMessage();
+            }
+        }
+
+        return $status;
     }
 }

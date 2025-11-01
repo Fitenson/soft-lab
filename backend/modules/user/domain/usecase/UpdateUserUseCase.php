@@ -2,23 +2,24 @@
 
 namespace backend\modules\user\domain\usecase;
 
-use Yii;
-use Throwable;
+use backend\modules\user\data\models\User;
 use backend\modules\user\domain\entity\UserEntity;
-use backend\modules\user\domain\repository\UserRepository;
 
 
 class UpdateUserUseCase {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public string $actionUUID;
 
 
     public function execute(UserEntity $userEntity): UserEntity
     {
-        return $this->userRepository->update($userEntity);
+        $_actionUUID = $this->actionUUID;
+        $userDTO = $userEntity->asDTO();
+
+        $User = User::findOne($userDTO->UUID);
+        $User->_actionUUID = $_actionUUID;
+        $User->load($userDTO->asArray(), '');
+        $User->save(false);
+
+        return new UserEntity($User->getAttributes());
     }
 }
