@@ -4,21 +4,28 @@ namespace backend\modules\project\domain\usecase;
 
 use Yii;
 use Throwable;
+use backend\modules\project\data\models\Project;
 use backend\modules\project\domain\entity\ProjectEntity;
-use backend\modules\project\domain\repository\ProjectRepository;
 
 
 class UpdateProjectUseCase {
-    private ProjectRepository $projectRepository;
+    public string $actionUUID;
 
-    public function __construct(ProjectRepository $projectRepository)
+
+    public function execute(ProjectEntity $projectEntity): ProjectEntity
     {
-        $this->projectRepository = $projectRepository;
-    }
+        $_actionUUID = $this->actionUUID;
 
+        $projectDTO = $projectEntity->asDTO();
+        $Project = Project::findOne($projectDTO->UUID);
 
-    public function execute(ProjectEntity $ProjectEntity): ProjectEntity
-    {
-        return $this->projectRepository->update($ProjectEntity);
+        $Project->load($projectDTO->getAttributes(), '');
+        $Project->_actionUUID = $_actionUUID;
+
+        if(!$Project->save(false)) {
+            Yii::$app->exception->throw($Project->getErrors(), 500);
+        }
+
+        return new ProjectEntity($Project->getAttributes());
     }
 }

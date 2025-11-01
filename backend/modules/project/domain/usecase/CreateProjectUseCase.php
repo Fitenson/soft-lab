@@ -2,21 +2,28 @@
 
 namespace backend\modules\project\domain\usecase;
 
+use Yii;
+use backend\modules\project\data\models\Project;
 use backend\modules\project\domain\entity\ProjectEntity;
-use backend\modules\project\domain\repository\ProjectRepository;
 
 
 class CreateProjectUseCase {
-    private ProjectRepository $projectRepository;
-
-    public function __construct(ProjectRepository $projectRepository)
-    {
-        $this->projectRepository = $projectRepository;
-    }
+    public string $actionUUID;
 
 
     public function execute(ProjectEntity $projectEntity): ProjectEntity
     {
-        return $this->projectRepository->create($projectEntity);
+        $_actionUUID = $this->actionUUID;
+
+        $projectDTO = $projectEntity->asDTO();
+        $Project = new Project();
+        $Project->load($projectDTO->getAttributes(), '');
+        $Project->_actionUUID = $_actionUUID;
+
+        if(!$Project->save(false)) {
+            Yii::$app->exception->throw($Project->getErrors(), 500);
+        }
+
+        return new ProjectEntity($Project->getAttributes());
     }
 }

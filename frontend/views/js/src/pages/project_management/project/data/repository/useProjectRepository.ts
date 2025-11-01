@@ -66,7 +66,7 @@ const useProjectRepository = () => {
         });
 
         return await request<{ success: ProjectDTO[], failed: ProjectDTO[] }>({
-            url: "/user/remove",
+            url: "/project/remove",
             method: "POST",
             data: formData,
         });

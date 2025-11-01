@@ -3,42 +3,96 @@
 namespace backend\modules\project\domain\usecase;
 
 use Yii;
-use backend\modules\project\domain\repository\ProjectRepository;
+use backend\modules\project\data\models\Project;
 
 
 class IndexProjectUseCase {
-    private ProjectRepository $projectRepository;
-
-
-    public function __construct(ProjectRepository $projectRepository)
-    {
-        $this->projectRepository = $projectRepository;
-    }
-
-
     public function execute(array $params = [], $strategy = 'index')
     {
+        $offset = !empty($params['offset']) ? $params['offset'] : 0;
+        $sort = !empty($params['sort']) ? $params['sort'] : 'createdAt';
+        $limit = !empty($params['limit']) ? $params['limit'] : 20;
+        $valid = !empty($params['valid']) ? $params['valid'] : 1;
+        $likeFilterFields = !empty($params['likeFilterFields']) ? $params['likeFilterFields'] : [];
+        $compareFields = !empty($params['compareFields']) ? $params['compareFields'] : [];
+
+
         switch($strategy) {
             case 'list':
-                return $this->projectRepository->listProjects();
+                $Projects = Project::find()->select([
+                    'project.UUID',
+                    'project.projectCode',
+                    'project.projectName',
+                    'project.description',
+                ])->joinWith(['clientDatabases' => function($a) {
+                    $a->select([
+                        'clientDatabase.UUID',
+                        'clientDatabase.project',
+                        'clientDatabase.databaseName',
+                        'clientDatabase.databaseSchema',
+                    ]);
+                }])
+                ->asArray()
+                ->all();
+            
+                $total = count($Projects);
+            
+                return [
+                    'total' => (string)$total,
+                    'rows' => $Projects
+                ];
                 break;
             case 'dropdownTable':
-                return $this->dropdownTable($params);
+                $query = Project::find()->select([
+                    'UUID',
+                    'projectCode',
+                    'projectName',
+                    'description',
+                ])
+                ->where($valid)
+                ->andWhere($compareFields)
+                ->having($likeFilterFields);
+                
+                $total = $query->count();
+                
+                $Projects = $query
+                ->orderBy($sort)
+                ->offset($offset)
+                ->limit($limit)
+                ->asArray()
+                ->all();
+                
+                
+                return [
+                    'total' => $total,
+                    'rows' => $Projects
+                ];
                 break;
+
             case 'index':
-                return $this->index($params);
+                $query = Project::find()->selectIndex()
+                ->where($valid)
+                ->andWhere($compareFields)
+                ->having($likeFilterFields);
+
+                $total = $query->count();
+
+                $Projects = $query
+                ->orderBy($sort)
+                ->offset($offset)
+                ->limit($limit)
+                ->asArray()
+                ->all();
+
+
+                return [
+                    'total' => $total,
+                    'rows' => $Projects
+                ];
+                break;
+
             default:
-                Yii::$app->exception->throw('Unknown strategy: ' . $strategy, 422);
+                Yii::$app->execution->throw('Strategy: ' . $strategy . ' not being implemented');
         }
-    }
-
-
-    private function index(array $params) {
-        return $this->projectRepository->index($params);
-    }
-
-
-    private function dropdownTable(array $params) {
-        return $this->projectRepository->dropdownTable($params);
     }
 }
