@@ -13,6 +13,7 @@ class ApiTestHasDataForm extends Form {
     public ?string $key = null;
     public ?string $value = null;
     public ?int $enabled = 1;
+    public ?int $seq = 1;
     public ?string $description = null;
 
 
@@ -22,7 +23,7 @@ class ApiTestHasDataForm extends Form {
             [['UUID', 'key', 'value', 'description'], 'default', 'value' => null],
             [['enabled'], 'required'],
             [['value'], 'string'],
-            [['enabled'], 'integer'],
+            [['enabled', 'seq'], 'integer'],
             [['fieldType', 'key'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 500],
             [['apiTest'], 'exist', 'skipOnError' => true, 'targetClass' => ApiTest::class, 'targetAttribute' => ['apiTest' => 'UUID']],

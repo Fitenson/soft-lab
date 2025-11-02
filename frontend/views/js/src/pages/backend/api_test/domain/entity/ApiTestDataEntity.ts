@@ -12,6 +12,7 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
     private _enabled: number;
     private _fieldType: string;
     private _isNew: number;
+    private _seq: number;
     private _apiTestDataDTO: Partial<ApiTestDataDTO>;
 
 
@@ -22,10 +23,11 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
         this._key = model.key ?? "";
         this._value = model.value ?? "";
         this._description = model.description ?? "";
-        this._enabled = model.enabled ?? 0;
+        this._enabled = Number(model.enabled);
         this._fieldType = btoa(model.fieldType ?? "");
         this._apiTestDataDTO = model;
         this._isNew = model.isNew ?? 0;
+        this._seq = model.seq ?? 1;
     }
 
     public asViewModel(): ApiTestDataDTO {
@@ -74,11 +76,11 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
     }
 
     get enabled(): number {
-        return this._enabled;
+        return Number(this._enabled);
     }
 
     set enabled(value: number) {
-        this._enabled = value;
+        this._enabled = Number(value);
     }
 
     get fieldType(): string {
@@ -103,5 +105,13 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
 
     set isNew(value: number) {
         this._isNew = value;
+    }
+
+    get seq(): number {
+        return this._seq;
+    }
+
+    set seq(value: number) {
+        this._seq = value;
     }
 }

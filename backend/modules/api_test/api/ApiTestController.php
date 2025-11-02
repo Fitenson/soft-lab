@@ -10,6 +10,7 @@ use backend\modules\api_test\domain\service\ApiTestService;
 use backend\modules\api_test\form\ApiTestForm;
 use backend\modules\api_test\form\ApiTestHasDataForm;
 
+
 class ApiTestController extends RestController {
     private ApiTestService $apiTestService;
 
@@ -38,21 +39,24 @@ class ApiTestController extends RestController {
         $apiTestForm = new ApiTestForm();
         $apiTestForm->load($post['apiTest'], '');
 
+        
         if(!$apiTestForm->validate()) {
             Yii::$app->exception->throw($apiTestForm->getErrors(), 422);
         }
 
         $apiTestHasDataEntities = [];
 
-        if(!empty($post['apiTestHasData'])) {
-            $apiTestHasDataForm = new ApiTestHasDataForm();
-            $apiTestHasDataForm->load($post['apiTestHasData'], '');
-
-            if(!$apiTestHasDataForm->validate()) {
-                Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+        if(!empty($post['apiTestHasData']) && is_array($post['apiTestHasData'])) {
+            foreach($post['apiTestHasData'] as $apiTestHasDataPost) {
+                $apiTestHasDataForm = new ApiTestHasDataForm();
+                $apiTestHasDataForm->load($apiTestHasDataPost, '');
+             
+                if(!$apiTestHasDataForm->validate()) {
+                    Yii::$app->exception->throw($apiTestHasDataForm->getErrors(), 422);
+                }
+                
+                $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
             }
-
-            $apiTestHasDataEntities[] = new ApiTestHasDataEntity($apiTestHasDataForm->getAttributes());
         }
         
 
@@ -90,7 +94,7 @@ class ApiTestController extends RestController {
 
         $apiTestHasDataEntities = [];
 
-        if(!empty($post['apiTestHasData'])) {
+        if(!empty($post['apiTestHasData']) && is_array($post['apiTestHasData'])) {
             foreach($post['apiTestHasData'] as $apiTestHasDataPost) {
                 $apiTestHasDataForm = new ApiTestHasDataForm();
                 $apiTestHasDataForm->load($apiTestHasDataPost, '');

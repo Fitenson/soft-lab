@@ -14,6 +14,7 @@ use Yii;
  * @property string|null $key
  * @property string|null $value
  * @property int $enabled
+ * @property int $seq
  * @property string|null $description
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -28,8 +29,6 @@ use Yii;
  */
 class ApiTestHasDataHistory extends \backend\components\db\AppModel
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -47,7 +46,7 @@ class ApiTestHasDataHistory extends \backend\components\db\AppModel
             [['key', 'value', 'description', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'valid', '_actionUUID', '_version'], 'default', 'value' => null],
             [['historyUUID', 'UUID', 'apiTest', 'fieldType', 'enabled', 'user_id', 'action', 'date_created'], 'required'],
             [['value'], 'string'],
-            [['enabled', 'valid', '_version'], 'integer'],
+            [['enabled', 'seq', 'valid', '_version'], 'integer'],
             [['historyUUID', 'UUID', 'apiTest', 'createdAt', 'createdBy', '_actionUUID', 'user_id'], 'string', 'max' => 40],
             [['fieldType', 'key'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 500],

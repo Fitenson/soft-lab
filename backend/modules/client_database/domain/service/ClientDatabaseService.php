@@ -5,53 +5,51 @@ namespace backend\modules\client_database\domain\service;
 use Yii;
 use Throwable;
 use backend\components\exception\ApiException;
-
+use backend\components\service\BaseService;
+use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\client_database\data\dto\ClientDatabaseDTO;
+use backend\modules\client_database\data\models\ClientDatabaseHasRefreshToken;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
-use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\CreateClientDatabaseUseCase;
-use backend\modules\client_database\domain\usecase\IndexClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\UpdateClientDatabaseUseCase;
 use backend\modules\client_database\domain\usecase\RemoveClientDatabaseUseCase;
-use backend\modules\client_database\domain\usecase\LoginClientDatabaseUseCase;
-use backend\modules\client_database\domain\usecase\GetClientRefreshTokenUseCase;
 use backend\modules\client_database\domain\usecase\GetTableListUseCase;
 
-class ClientDatabaseService {
-    private IndexClientDatabaseUseCase $indexClientDatabaseUseCase;
+
+class ClientDatabaseService extends BaseService {
     private CreateClientDatabaseUseCase $createClientDatabaseUseCase;
     private UpdateClientDatabaseUseCase $updateClientDatabaseUseCase;
-    private LoginClientDatabaseUseCase $loginClientDatabaseUseCase;
     private RemoveClientDatabaseUseCase $removeClientDatabaseUseCase;
-    private GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase;
-    private ConnectClientDatabaseUseCase $connectClientDatabaseUseCase;
     private GetTableListUseCase $getTableListUseCase;
 
 
     public function __construct(
-        IndexClientDatabaseUseCase $indexClientDatabaseUseCase,
         CreateClientDatabaseUseCase $createClientDatabaseUseCase,
         UpdateClientDatabaseUseCase $updateClientDatabaseUseCase,
-        LoginClientDatabaseUseCase $loginClientDatabaseUseCase,
         RemoveClientDatabaseUseCase $removeClientDatabaseUseCase,
-        GetClientRefreshTokenUseCase $getClientRefreshTokenUseCase,
-        ConnectClientDatabaseUseCase $connectClientDatabaseUseCase,
         GetTableListUseCase $getTableListUseCase
     )
     {
-        $this->indexClientDatabaseUseCase = $indexClientDatabaseUseCase;
         $this->createClientDatabaseUseCase = $createClientDatabaseUseCase;
         $this->updateClientDatabaseUseCase = $updateClientDatabaseUseCase;
-        $this->loginClientDatabaseUseCase = $loginClientDatabaseUseCase;
         $this->removeClientDatabaseUseCase = $removeClientDatabaseUseCase;
-        $this->getClientRefreshTokenUseCase = $getClientRefreshTokenUseCase;
-        $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
         $this->getTableListUseCase = $getTableListUseCase;
     }
 
 
     public function index() {
-        return $this->indexClientDatabaseUseCase->execute();
+        $query = ClientDatabase::find()->selectIndex();
+
+        $total = $query->count();
+
+        $ClientDatabases = $query
+        ->asArray()
+        ->all();
+
+        return [
+            'total' => $total,
+            'rows' => $ClientDatabases
+        ];
     }
 
 
@@ -59,6 +57,7 @@ class ClientDatabaseService {
     {
         try {
             $transaction = Yii::$app->db->beginTransaction();
+            $this->createClientDatabaseUseCase->actionUUID = $this->getActionUUID();
             $clientDatabaseEntity = $this->createClientDatabaseUseCase->execute($clientDatabaseEntity);
             $transaction->commit();
             return $clientDatabaseEntity->asDTO();
@@ -74,6 +73,7 @@ class ClientDatabaseService {
     {
         try {
             $transaction = Yii::$app->db->beginTransaction();
+            $this->updateClientDatabaseUseCase->actionUUID = $this->getActionUUID();
             $clientDatabaseEntity = $this->updateClientDatabaseUseCase->execute($clientDatabaseEntity);
             $transaction->commit();
             return $clientDatabaseEntity->asDTO();
@@ -87,37 +87,46 @@ class ClientDatabaseService {
 
     public function removeClientDatabase(array $data): array
     {
+        $this->removeClientDatabaseUseCase->actionUUID = $this->getActionUUID();
         return $this->removeClientDatabaseUseCase->execute($data);
-    }
-
-
-    public function loginClientDatabase(string $id, string $password): ClientDatabaseDTO
-    {
-        try {
-            $clientDatabaseEntity = $this->loginClientDatabaseUseCase->execute($id, $password);
-            return $clientDatabaseEntity->asDTO();
-        } catch(Throwable $error) {
-            throw $error;
-        }
     }
 
 
     public function connectClientDatabase(string $id, ?string $refreshToken = null): ClientDatabaseDTO
     {
-        $token = $this->getClientRefreshTokenUseCase->execute($id);
+        $User = Yii::$app->user->identity;
 
-        $clientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
-            'id' => $id,
-            'refreshToken' => $refreshToken
-        ]);
+        if(!empty($refreshToken)) {
+            $ClientDatabase = ClientDatabase::find()
+            ->byRefreshToken($refreshToken)
+            ->one();
+        } else {
+            $ClientDatabase = ClientDatabase::findOne($id);
 
-        $clientDatabaseEntity->setPassword($token);
+            $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::find()->where([
+                'user' => $User->UUID,
+                'clientDatabase' => $id
+            ])
+            ->one();
+
+            if(empty($ClientDatabaseHasRefreshToken)) {
+                $ClientDatabaseHasRefreshToken = new ClientDatabaseHasRefreshToken();
+                $ClientDatabaseHasRefreshToken->user = $User->UUID;
+                $ClientDatabaseHasRefreshToken->clientDatabase = $id;
+            }
+
+            $refreshToken = $ClientDatabaseHasRefreshToken->generateRefreshToken();
+            $ClientDatabaseHasRefreshToken->save(false);
+        }
+
+        $clientDatabaseEntity = new ClientDatabaseEntity($ClientDatabase->getAttributes());
+        $clientDatabaseEntity->setPassword($refreshToken);
 
         return $clientDatabaseEntity->asDTO();
     }
 
-
-    public function getTableList(array $params, string $refreshToken)
+    
+    public function getTableList(array $params, string $refreshToken): array
     {
         return $this->getTableListUseCase->execute($params, $refreshToken);
     }

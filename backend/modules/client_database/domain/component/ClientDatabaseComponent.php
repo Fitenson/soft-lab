@@ -12,10 +12,6 @@ class ClientDatabaseComponent extends Component {
     {
         $dsn = $clientDatabaseEntity->getDsn();
 
-        // echo '<pre>';
-        // print_r($clientDatabaseEntity);
-        // die;
-
         // Create a temporary DB connection
         $tempDb = new Connection([
             'dsn' => $dsn,

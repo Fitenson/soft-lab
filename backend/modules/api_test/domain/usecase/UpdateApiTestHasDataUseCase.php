@@ -2,17 +2,13 @@
 
 namespace backend\modules\api_test\domain\usecase;
 
-use backend\modules\api_test\domain\repository\ApiTestRepository;
+use backend\modules\api_test\data\models\ApiTestHasData;
 use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 
 
 class UpdateApiTestHasDataUseCase {
-    private ApiTestRepository $apiTestRepository;
+    public string $actionUUID;
 
-    public function __construct(ApiTestRepository $apiTestRepository)
-    {
-        $this->apiTestRepository = $apiTestRepository;
-    }
 
     /**
     * @param ApiTestHasDataEntity $apiTestHasDataEntity
@@ -20,6 +16,15 @@ class UpdateApiTestHasDataUseCase {
      * @return ApiTestHasDataEntity
     */
     public function execute(ApiTestHasDataEntity $apiTestHasDataEntity) {
-       return $this->apiTestRepository->createApiTestHasData($apiTestHasDataEntity);
+        $_actionUUID = $this->actionUUID;
+
+        $ApiTestHasData = ApiTestHasData::findOne($apiTestHasDataEntity->getUUID());
+        $ApiTestHasData->load($apiTestHasDataEntity->asArray(), '');
+        $ApiTestHasData->_actionUUID = $_actionUUID;
+        $ApiTestHasData->save(false);
+
+        $newApiTestHasDataEntity = new ApiTestHasDataEntity($ApiTestHasData->getAttributes());
+
+        return $newApiTestHasDataEntity;
     }
 }

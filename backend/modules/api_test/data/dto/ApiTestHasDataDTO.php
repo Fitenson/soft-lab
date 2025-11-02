@@ -13,6 +13,7 @@ class ApiTestHasDataDTO extends Model implements JsonSerializable {
     public ?string $key = null;
     public ?string $value = null;
     public int $enabled = 1;
+    public ?int $seq = 1;
     public ?string $description = null;
 
 
@@ -20,7 +21,7 @@ class ApiTestHasDataDTO extends Model implements JsonSerializable {
     {
         return [[
             ['UUID', 'apiTest', 'fieldType', 'key', 'value',
-            'enabled', 'description'
+            'enabled', 'seq', 'description'
             ],'safe'
         ]];
     }

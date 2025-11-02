@@ -2,23 +2,24 @@
 
 namespace backend\modules\api_test\domain\usecase;
 
+use backend\modules\api_test\data\models\ApiTest;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
-use backend\modules\api_test\domain\repository\ApiTestRepository;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 
 
 class UpdateApiTestUseCase {
-    private ApiTestRepository $apiTestRepository;
+    public string $actionUUID;
 
-    public function __construct(ApiTestRepository $apiTestRepository)
-    {
-        $this->apiTestRepository = $apiTestRepository;
-    }
 
-    public function execute(ApiTestEntity $apiTestEntity, ClientDatabaseEntity $clientDatabaseEntity) {
-        return $this->apiTestRepository->updateApiTest([
-            'apiTestEntity' => $apiTestEntity,
-            'clientDatabaseEntity' => $clientDatabaseEntity
-        ]);
+    public function execute(ApiTestEntity $apiTestEntity) {
+        $_actionUUID = $this->actionUUID;
+
+        $apiTestDTO = $apiTestEntity->asDTO();
+        $ApiTest = ApiTest::findOne($apiTestEntity->getUUID());
+        $ApiTest->load($apiTestDTO->asArray(), '');
+        $ApiTest->_actionUUID = $_actionUUID;
+        $ApiTest->save(false);
+
+        return new ApiTestEntity($ApiTest->getAttributes());
     }
 }

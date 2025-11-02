@@ -10,6 +10,7 @@ export default class ApiTestDataViewModel {
     private _enabled: number;
     private _fieldType: string;
     private _isNew: number;
+    private _seq: number;
 
 
     constructor(dto: Partial<ApiTestDataDTO>) {
@@ -18,9 +19,10 @@ export default class ApiTestDataViewModel {
         this._key = dto.key ?? "";
         this._value = dto.value ?? "";
         this._description = dto.description ?? "";
-        this._enabled = dto.enabled ?? 1;
+        this._enabled = Number(dto.enabled);
         this._fieldType = this.decodeFieldType(dto.fieldType ?? "");
         this._isNew = dto.isNew ?? 0;
+        this._seq = dto.seq ?? 1;
     }
 
 
@@ -45,7 +47,7 @@ export default class ApiTestDataViewModel {
     }
 
     get enabled(): number {
-        return this._enabled;
+        return Number(this._enabled);
     }
 
     get fieldType(): string {
@@ -54,6 +56,10 @@ export default class ApiTestDataViewModel {
 
     get isNew(): number {
         return this._isNew;
+    }
+
+    get seq(): number {
+        return this._seq;
     }
 
     get dto(): Partial<ApiTestDataDTO> {
@@ -66,6 +72,7 @@ export default class ApiTestDataViewModel {
             enabled: this._enabled,
             fieldType: this.encodeFieldType(this._fieldType),
             isNew: this._isNew,
+            seq: this._seq,
         };
     }
 

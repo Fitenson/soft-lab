@@ -245,7 +245,7 @@ export default function DatabaseDialog({ clientDatabaseDTO, open, onOpenChange }
                             />
 
                             <FormField
-                                name={ClientDatabaseFormField.project.name}
+                                name={ClientDatabaseFormField.projectName.name}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{ClientDatabaseFormField.projectName.label}</FormLabel>

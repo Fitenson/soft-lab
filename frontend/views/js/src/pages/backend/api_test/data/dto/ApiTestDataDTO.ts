@@ -8,6 +8,7 @@ export interface ApiTestDataDTO {
     value: string;
     enabled: number;
     description: string;
+    seq: number;
     isNew: number;
 }
 
@@ -19,6 +20,7 @@ const apiTestDataDTOKeys: (keyof ApiTestDataDTO)[] = [
     "key",
     "value",
     "enabled",
+    "seq",
     "description",
 ];
 

@@ -2,6 +2,9 @@
 
 namespace backend\modules\client_database\data\query;
 
+use Yii;
+use backend\modules\client_database\data\models\ClientDatabase;
+use backend\modules\client_database\data\models\ClientDatabaseHasRefreshToken;
 use backend\modules\project\data\models\Project;
 
 /**
@@ -46,5 +49,18 @@ class ClientDatabaseQuery extends \backend\components\db\AppQuery
             'project',
             'projectName' => Project::find()->select(['projectName'])->where('project.UUID = clientDatabase.project'),
         ]);
+    }
+
+
+    public function byRefreshToken(string $refreshToken): self
+    {
+        $ClientDatabaseHasRefreshToken = ClientDatabaseHasRefreshToken::findOne([
+            'refreshToken' => $refreshToken,
+            'user' => Yii::$app->user->id
+        ]);
+
+        $this->andWhere(['UUID' => $ClientDatabaseHasRefreshToken->clientDatabase]);
+
+        return $this;
     }
 }

@@ -3,10 +3,11 @@
 namespace backend\modules\universal\domain\service;
 
 use Yii;
+use backend\components\service\BaseService;
 use backend\modules\project\domain\usecase\IndexProjectUseCase;
 
 
-class UniversalService {
+class UniversalService extends BaseService {
     private array $useCases;
 
 
@@ -20,6 +21,7 @@ class UniversalService {
 
 
     public function dropdownTable(array $params, array $tables) {
+        $params = $this->getParams($params);
         $data = [];
         $useCases = $this->useCases;
 

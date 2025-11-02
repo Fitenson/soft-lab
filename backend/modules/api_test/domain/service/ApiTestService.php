@@ -4,24 +4,23 @@ namespace backend\modules\api_test\domain\service;
 
 use Yii;
 use Throwable;
+use backend\components\service\BaseService;
+use backend\modules\api_test\data\models\ApiTest;
 use backend\modules\api_test\data\dto\ApiTestDTO;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
+use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
 use backend\modules\api_test\domain\usecase\CreateApiTestHasDataUseCase;
-use backend\modules\api_test\domain\usecase\IndexApiTestUseCase;
 use backend\modules\project\domain\usecase\IndexProjectUseCase;
 use backend\modules\api_test\domain\usecase\CreateApiTestUseCase;
 use backend\modules\api_test\domain\usecase\RemoveApiTestUseCase;
 use backend\modules\api_test\domain\usecase\UpdateApiTestHasDataUseCase;
 use backend\modules\api_test\domain\usecase\UpdateApiTestUseCase;
-use backend\modules\client_database\domain\usecase\ConnectClientDatabaseUseCase;
+use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\usecase\GetTableListUseCase;
 
-
-class ApiTestService {
+class ApiTestService extends BaseService {
     private IndexProjectUseCase $indexProjectUseCase;
-    private ConnectClientDatabaseUseCase $connectClientDatabaseUseCase;
-    private IndexApiTestUseCase $indexApiTestUseCase;
     private CreateApiTestUseCase $createApiTestUseCase;
     private CreateApiTestHasDataUseCase $createApiTestHasDataUseCase;
     private UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase;
@@ -32,22 +31,18 @@ class ApiTestService {
 
     public function __construct(
         IndexProjectUseCase $indexProjectUseCase,
-        IndexApiTestUseCase $indexApiTestUseCase,
         CreateApiTestUseCase $createApiTestUseCase,
         UpdateApiTestUseCase $updateApiTestUseCase,
         RemoveApiTestUseCase $removeApiTestUseCase,
-        ConnectClientDatabaseUseCase $connectClientDatabaseUseCase,
         CreateApiTestHasDataUseCase $createApiTestHasDataUseCase,
         UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase,
         GetTableListUseCase $getTableListUseCase
     )
     {
         $this->indexProjectUseCase = $indexProjectUseCase;
-        $this->indexApiTestUseCase = $indexApiTestUseCase;
         $this->createApiTestUseCase = $createApiTestUseCase;
         $this->updateApiTestUseCase = $updateApiTestUseCase;
         $this->removeApiTestUseCase = $removeApiTestUseCase;
-        $this->connectClientDatabaseUseCase = $connectClientDatabaseUseCase;
         $this->createApiTestHasDataUseCase = $createApiTestHasDataUseCase;
         $this->updateApiTestHasDataUseCase = $updateApiTestHasDataUseCase;
         $this->getTableListUseCase = $getTableListUseCase;
@@ -62,13 +57,31 @@ class ApiTestService {
 
     public function index()
     {
-        $parentApiTests = $this->indexApiTestUseCase->execute();
-
-        // foreach($parentApiTests as &$parentApiTest) {
-        //     $apiTests = $parentApiTest['apiTests'];
-
-        //     // $apiTestHasData = $parentApiTest[''];
-        // }
+        $parentApiTests = ApiTest::find()
+        ->selectIndex()
+        ->joinWith(['apiTests' => function($subApiTestQuery) {
+            $subApiTestQuery
+            ->selectIndex('apiTest')
+            ->orderBy(['apiTest.testName' => SORT_ASC]);
+        }])
+        ->joinWith(['apiTestHasDatas' => function($parentApiTestHasDataQuery) {
+            $parentApiTestHasDataQuery
+            ->alias('parentApiTestHasData')
+            ->select([
+                'parentApiTestHasData.UUID',
+                'parentApiTestHasData.apiTest',
+                'parentApiTestHasData.fieldType',
+                'parentApiTestHasData.key',
+                'parentApiTestHasData.value',
+                'parentApiTestHasData.enabled',
+                'parentApiTestHasData.seq',
+                'parentApiTestHasData.description',
+            ])
+            ->orderBy(['parentApiTestHasData.seq' => SORT_ASC]);
+        }])
+        ->orderBy(['parentApiTest.testName' => SORT_ASC])
+        ->asArray()
+        ->all();
 
         $total = count($parentApiTests);
 
@@ -93,21 +106,29 @@ class ApiTestService {
     */
     public function createApiTest($params): array
     {
+        $_actionUUID = $this->getActionUUID();
+        $this->createApiTestUseCase->actionUUID = $_actionUUID;
+        $this->createApiTestHasDataUseCase->actionUUID = $_actionUUID;
+
         $apiTestEntity = $params['apiTestEntity'];
         $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
         $clientDatabaseToken = $params['clientDatabaseToken'];        
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
-                'refreshToken' => $clientDatabaseToken
-            ]);
+            $ClientDatabase = ClientDatabase::find()
+            ->byRefreshToken($clientDatabaseToken)
+            ->one();
+
+            $clientDatabaseEntity = new ClientDatabaseEntity($ClientDatabase->getAttributes());
             
-            $newApiTestEntity = $this->createApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
+            $newApiTestEntity = $this->createApiTestUseCase->execute($apiTestEntity, $clientDatabaseEntity);
 
             $newApiTestHasDataDTO = [];
 
-            foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
+            foreach($apiTestHasDataEntities as $index => $apiTestHasDataEntity) {
+                $seq = $index + 1;
+                $apiTestHasDataEntity->setSeq($seq);
                 $apiTestHasDataEntity->setApiTest($newApiTestEntity->getUUID());
                 $newApiTestHasDataEntity = $this->createApiTestHasDataUseCase->execute($apiTestHasDataEntity);
                 $newApiTestHasDataDTO[] = $newApiTestHasDataEntity->asDTO();
@@ -138,22 +159,32 @@ class ApiTestService {
     */
     public function updateApiTest($params): array
     {
+        $_actionUUID = $this->getActionUUID();
+        $this->updateApiTestUseCase->actionUUID = $_actionUUID;
+        $this->createApiTestHasDataUseCase->actionUUID = $_actionUUID;
+        $this->updateApiTestHasDataUseCase->actionUUID = $_actionUUID;
+
         $apiTestEntity = $params['apiTestEntity'];
         $apiTestHasDataEntities = $params['apiTestHasDataEntities'];
         $clientDatabaseToken = $params['clientDatabaseToken'];
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $ClientDatabaseEntity = $this->connectClientDatabaseUseCase->execute([
-                'refreshToken' => $clientDatabaseToken
-            ]);
+            $ClientDatabase = ClientDatabase::find()
+            ->byRefreshToken($clientDatabaseToken)
+            ->one();
 
-            $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity, $ClientDatabaseEntity);
+            $clientDatabaseEntity = new ClientDatabaseEntity($ClientDatabase->getAttributes());
+            $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity, $clientDatabaseEntity);
             
             $newApiTestHasDataDTO = [];
 
             if(!empty($apiTestHasDataEntities)) {
-                foreach($apiTestHasDataEntities as $apiTestHasDataEntity) {
+                foreach($apiTestHasDataEntities as $index => $apiTestHasDataEntity) {
+                    $seq = $index + 1;
+                    $apiTestHasDataEntity->setSeq($seq);
+                    $apiTestHasDataEntity->setApiTest($newApiTestEntity->getUUID());
+
                     if(!empty($apiTestHasDataEntity->getUUID())) {
                         $newApiTestHasDataEntity = $this->updateApiTestHasDataUseCase->execute($apiTestHasDataEntity);
                     } else {
@@ -180,6 +211,7 @@ class ApiTestService {
 
     public function removeApiTest(array $data): array
     {
+        $this->removeApiTestUseCase->actionUUID = $this->getActionUUID();
         return $this->removeApiTestUseCase->execute($data);
     }
 

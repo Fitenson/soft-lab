@@ -33,6 +33,10 @@ const useApiTestRepository = () => {
         const apiTestDTO: Partial<ApiTestDTO> = apiTestEntity.asDto();
         const formData: FormData = apiTestFormData(apiTestDTO, new FormData());
 
+        if (Array.isArray(apiTestDTO.apiTestHasDatas) && apiTestDTO.apiTestHasDatas.length > 0) {
+            apiTestDataFormData(apiTestDTO.apiTestHasDatas, formData);
+        }
+
         const response = await request<{ apiTest: ApiTestDTO, apiTestHasData: ApiTestDataDTO[] }>({
             url: `/api-test/create`,
             method: "POST",

@@ -155,7 +155,7 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                 <FormItem>
                                                     <FormControl>
                                                         <div
-                                                            onClick={(e) => e.stopPropagation()}
+                                                            onClick={(e ) => e.stopPropagation()}
                                                             className="flex items-center"
                                                         >
                                                             <Checkbox
@@ -193,8 +193,7 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                                                 </FormControl>
                                                             </FormItem>
                                                         )
-                                                    }
-                                                    }
+                                                    }}
                                                 />
 
                                                 <FormField

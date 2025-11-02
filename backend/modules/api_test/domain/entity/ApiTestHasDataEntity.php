@@ -16,6 +16,7 @@ class ApiTestHasDataEntity extends Entity {
     private ?string $key = null;
     private ?string $value = null;
     private int $enabled = 1;
+    private ?int $seq = 1;
     private ?string $description = null;
 
 
@@ -93,6 +94,16 @@ class ApiTestHasDataEntity extends Entity {
     public function getEnabled(): int
     {
         return $this->enabled;
+    }
+
+    public function setSeq(?int $seq): void
+    {
+        $this->seq = $seq;
+    }
+
+    public function getSeq(): ?int
+    {
+        return $this->seq;
     }
 
     public function setDescription(?string $description = null): void
