@@ -211,11 +211,14 @@ export default function Dashboard() {
                             <Form {...form}>
                                 <form
                                     onSubmit={form.handleSubmit(submit, onError)}
-                                    className="grid grid-cols-1 md:grid-cols-5 gap-2 w-full">
-                                    <div className="border rounded-lg p-4 md:col-span-3">
-                                        <TestCaseForm />
+                                    className="flex flex-col gap-4 w-full"
+                                >
+                                    <div className="border rounded-lg p-4 h-[400px] flex flex-col">
+                                        <div className="flex-1 overflow-auto">
+                                            <TestCaseForm />
+                                        </div>
                                     </div>
-                                    <div className="border rounded-lg p-4 md:col-span-2">
+                                    <div className="border rounded-lg p-4">
                                         <TestCaseOutput />
                                     </div>
                                 </form>
