@@ -26,8 +26,8 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
         this._enabled = Number(model.enabled);
         this._fieldType = btoa(model.fieldType ?? "");
         this._apiTestDataDTO = model;
-        this._isNew = model.isNew ?? 0;
-        this._seq = model.seq ?? 1;
+        this._isNew = Number(model.isNew ?? 0);
+        this._seq = Number(model.seq ?? 1);
     }
 
     public asViewModel(): ApiTestDataDTO {
@@ -100,11 +100,11 @@ export default class ApiTestDataEntity extends BaseEntity<ApiTestDataDTO>{
     }
 
     get isNew(): number {
-        return this._isNew;
+        return Number(this._isNew ?? 0);
     }
 
     set isNew(value: number) {
-        this._isNew = value;
+        this._isNew = Number(value ?? 0);
     }
 
     get seq(): number {

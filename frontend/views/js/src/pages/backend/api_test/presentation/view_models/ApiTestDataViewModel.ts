@@ -19,10 +19,10 @@ export default class ApiTestDataViewModel {
         this._key = dto.key ?? "";
         this._value = dto.value ?? "";
         this._description = dto.description ?? "";
-        this._enabled = Number(dto.enabled);
+        this._enabled = Number(dto.enabled ?? 0);
         this._fieldType = this.decodeFieldType(dto.fieldType ?? "");
-        this._isNew = dto.isNew ?? 0;
-        this._seq = dto.seq ?? 1;
+        this._isNew = Number(dto.isNew ?? 0);
+        this._seq = Number(dto.seq ?? 1);
     }
 
 
@@ -47,7 +47,7 @@ export default class ApiTestDataViewModel {
     }
 
     get enabled(): number {
-        return Number(this._enabled);
+        return Number(this._enabled ?? 0);
     }
 
     get fieldType(): string {
@@ -55,7 +55,7 @@ export default class ApiTestDataViewModel {
     }
 
     get isNew(): number {
-        return this._isNew;
+        return Number(this._isNew ?? 0);
     }
 
     get seq(): number {

@@ -18,6 +18,7 @@ export const apiTestDataSchema = z.object({
     description: z.string().max(ApiTestDataFormField.description.max, { error: ApiTestDataFormField.description.maxError }).optional(),
     fieldType: z.string().optional(),
     isNew: z.number().optional(),
+    isDelete: z.number().optional(),
 });
 
 

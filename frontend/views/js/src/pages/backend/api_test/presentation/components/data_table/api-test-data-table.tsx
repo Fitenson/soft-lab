@@ -20,6 +20,7 @@ import type { ApiTestFormModel } from "@/pages/backend/api_test/presentation/sch
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select.tsx";
 import {DataFieldType} from "@/pages/backend/api_test/presentation/types";
 import TableSelectionPopover from "@/pages/backend/api_test/presentation/components/table-selection-popover.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 
 const dataKeys = ["key", "value", "description"] as const;
@@ -32,7 +33,7 @@ type RowPath = `apiTestData.${number}.${DataRowKey}`;
 export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTestFormModel> }) {
     const [openTablePopover, setOpenTablePopover] = useState<number | null>(null);
 
-    const { fields, append } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "apiTestData",
     });
@@ -81,6 +82,11 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
         }
     };
 
+
+    const handleRemoveRow = (rowIndex: number) => {
+        form.setValue(`apiTestData.${rowIndex}.isDelete`, 1);
+        remove(rowIndex);
+    }
 
 
     useEffect(() => {
@@ -139,7 +145,6 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                         </TableRow>
                     ))
                 ) : fields.length > 0 ? (
-                    // 🔹 Form-connected rows (useFieldArray)
                     fields.map((field, rowIndex) => (
                         <TableRow
                             key={field.id}
@@ -263,6 +268,18 @@ export default function ApiTestDataTable({ form }: { form: UseFormReturn<ApiTest
                                     )}
                                 </TableCell>
                             ))}
+
+                            <TableCell className="text-center w-4">
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => handleRemoveRow(rowIndex)}
+                                    className="h-8 w-8 p-2 rounded-full"
+                                >
+                                    ✕
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))
                 ) : (

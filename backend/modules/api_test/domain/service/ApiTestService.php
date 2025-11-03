@@ -7,24 +7,26 @@ use Throwable;
 use backend\components\service\BaseService;
 use backend\modules\api_test\data\models\ApiTest;
 use backend\modules\api_test\data\dto\ApiTestDTO;
+use backend\modules\api_test\data\models\ApiTestHasData;
 use backend\modules\api_test\domain\entity\ApiTestEntity;
 use backend\modules\client_database\data\models\ClientDatabase;
 use backend\modules\api_test\domain\entity\ApiTestHasDataEntity;
+use backend\modules\api_test\data\dto\ApiTestHasDataDTO;
+
 use backend\modules\api_test\domain\usecase\CreateApiTestHasDataUseCase;
 use backend\modules\project\domain\usecase\IndexProjectUseCase;
 use backend\modules\api_test\domain\usecase\CreateApiTestUseCase;
 use backend\modules\api_test\domain\usecase\RemoveApiTestUseCase;
 use backend\modules\api_test\domain\usecase\UpdateApiTestHasDataUseCase;
-use backend\modules\api_test\domain\usecase\UpdateApiTestUseCase;
 use backend\modules\client_database\domain\entity\ClientDatabaseEntity;
 use backend\modules\client_database\domain\usecase\GetTableListUseCase;
+use yii\helpers\ArrayHelper;
 
 class ApiTestService extends BaseService {
     private IndexProjectUseCase $indexProjectUseCase;
     private CreateApiTestUseCase $createApiTestUseCase;
     private CreateApiTestHasDataUseCase $createApiTestHasDataUseCase;
     private UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase;
-    private UpdateApiTestUseCase $updateApiTestUseCase;
     private RemoveApiTestUseCase $removeApiTestUseCase;
     private GetTableListUseCase $getTableListUseCase;
 
@@ -32,7 +34,6 @@ class ApiTestService extends BaseService {
     public function __construct(
         IndexProjectUseCase $indexProjectUseCase,
         CreateApiTestUseCase $createApiTestUseCase,
-        UpdateApiTestUseCase $updateApiTestUseCase,
         RemoveApiTestUseCase $removeApiTestUseCase,
         CreateApiTestHasDataUseCase $createApiTestHasDataUseCase,
         UpdateApiTestHasDataUseCase $updateApiTestHasDataUseCase,
@@ -41,7 +42,6 @@ class ApiTestService extends BaseService {
     {
         $this->indexProjectUseCase = $indexProjectUseCase;
         $this->createApiTestUseCase = $createApiTestUseCase;
-        $this->updateApiTestUseCase = $updateApiTestUseCase;
         $this->removeApiTestUseCase = $removeApiTestUseCase;
         $this->createApiTestHasDataUseCase = $createApiTestHasDataUseCase;
         $this->updateApiTestHasDataUseCase = $updateApiTestHasDataUseCase;
@@ -160,7 +160,6 @@ class ApiTestService extends BaseService {
     public function updateApiTest($params): array
     {
         $_actionUUID = $this->getActionUUID();
-        $this->updateApiTestUseCase->actionUUID = $_actionUUID;
         $this->createApiTestHasDataUseCase->actionUUID = $_actionUUID;
         $this->updateApiTestHasDataUseCase->actionUUID = $_actionUUID;
 
@@ -175,11 +174,33 @@ class ApiTestService extends BaseService {
             ->one();
 
             $clientDatabaseEntity = new ClientDatabaseEntity($ClientDatabase->getAttributes());
-            $newApiTestEntity = $this->updateApiTestUseCase->execute($apiTestEntity, $clientDatabaseEntity);
+
+            $ApiTest = ApiTest::find()
+            ->where(['apiTest.UUID' => $apiTestEntity->getUUID()])
+            ->joinWith('apiTestHasDatas')
+            ->one();
+
+            $ApiTestHasDatas = ArrayHelper::index($ApiTest->apiTestHasDatas, 'UUID');
+
+            $apiTestDTO = $apiTestEntity->asDTO();
+            $ApiTest->load($apiTestDTO->getAttributes(), '');
+            $ApiTest->_actionUUID = $_actionUUID;
+            $ApiTest->save(false);
             
             $newApiTestHasDataDTO = [];
+            $newApiTestEntity = new ApiTestEntity($ApiTest->getAttributes(), '');
 
             if(!empty($apiTestHasDataEntities)) {
+                $existingApiTestHasDataUUIDs = array_filter(array_map(fn($entity) => $entity->getUUID(), $apiTestHasDataEntities));
+
+                foreach($ApiTestHasDatas as $ApiTestHasData) {
+                    if(!in_array($ApiTestHasData->UUID, $existingApiTestHasDataUUIDs)) {
+                        $ApiTestHasData->_actionUUID = $_actionUUID;
+                        $ApiTestHasData->delete();
+                    }
+                }
+
+
                 foreach($apiTestHasDataEntities as $index => $apiTestHasDataEntity) {
                     $seq = $index + 1;
                     $apiTestHasDataEntity->setSeq($seq);
@@ -214,6 +235,7 @@ class ApiTestService extends BaseService {
         $this->removeApiTestUseCase->actionUUID = $this->getActionUUID();
         return $this->removeApiTestUseCase->execute($data);
     }
+
 
     public function getTableList(array $params, string $refreshToken): array
     {
